@@ -24,4 +24,9 @@ public class AdhdStavka {
 
     @Enumerated(EnumType.STRING)
     private VremenskiOdgovor odgovor;
+
+    public AdhdStavka(AdhdPitanje pitanje, VremenskiOdgovor odgovor) {
+        this.pitanje = pitanje;
+        this.odgovor = odgovor;
+    }
 }

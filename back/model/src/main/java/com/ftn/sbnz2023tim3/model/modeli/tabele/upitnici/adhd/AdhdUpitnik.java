@@ -19,33 +19,46 @@ public class AdhdUpitnik {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka prva;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka druga;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka treca;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka cetvrta;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka peta;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka sesta;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka sedma;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka osma;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka deveta;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private AdhdStavka deseta;
+
+    public AdhdUpitnik(AdhdStavka prva, AdhdStavka druga, AdhdStavka treca, AdhdStavka cetvrta, AdhdStavka peta, AdhdStavka sesta, AdhdStavka sedma, AdhdStavka osma, AdhdStavka deveta, AdhdStavka deseta) {
+        this.prva = prva;
+        this.druga = druga;
+        this.treca = treca;
+        this.cetvrta = cetvrta;
+        this.peta = peta;
+        this.sesta = sesta;
+        this.sedma = sedma;
+        this.osma = osma;
+        this.deveta = deveta;
+        this.deseta = deseta;
+    }
 }

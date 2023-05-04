@@ -22,4 +22,12 @@ public class EpilepsijaUcestalostStavka {
 
     @Enumerated(EnumType.STRING)
     private UcestalostOdgovor odgovor;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private EpilepsijaPitanje pitanje;
+
+    public EpilepsijaUcestalostStavka(UcestalostOdgovor odgovor, EpilepsijaPitanje pitanje) {
+        this.odgovor = odgovor;
+        this.pitanje = pitanje;
+    }
 }

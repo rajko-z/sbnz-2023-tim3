@@ -22,4 +22,12 @@ public class NesanicaVremenskaStavka {
 
     @Enumerated(EnumType.STRING)
     private VremenskiOdgovor odgovor;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private NesanicaPitanje pitanje;
+
+    public NesanicaVremenskaStavka(VremenskiOdgovor odgovor, NesanicaPitanje pitanje) {
+        this.odgovor = odgovor;
+        this.pitanje = pitanje;
+    }
 }

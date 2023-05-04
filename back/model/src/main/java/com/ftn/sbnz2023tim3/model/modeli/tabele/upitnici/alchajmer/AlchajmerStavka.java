@@ -23,4 +23,12 @@ public class AlchajmerStavka {
 
     @Enumerated(EnumType.STRING)
     private VremenskiOdgovor odgovor;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private AlchajmerPitanje pitanje;
+
+    public AlchajmerStavka(AlchajmerPitanje pitanje,VremenskiOdgovor odgovor) {
+        this.odgovor = odgovor;
+        this.pitanje = pitanje;
+    }
 }

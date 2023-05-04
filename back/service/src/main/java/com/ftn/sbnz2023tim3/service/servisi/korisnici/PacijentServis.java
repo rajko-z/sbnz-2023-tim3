@@ -17,6 +17,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +37,10 @@ public class PacijentServis {
                                     .stream()
                                     .map(KorisnikDTOKonverter::konvertuj)
                                     .collect(Collectors.toList());
+    }
+
+    public Optional<Pacijent> findPacijentByEmail(String email) {
+        return pacijentRepozitorijum.findById(email);
     }
 
     public void addPacijent(NoviPacijentDTO pacijent) {
@@ -66,5 +71,9 @@ public class PacijentServis {
         byte[] bytes = new byte[14];
         random.nextBytes(bytes);
         return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    public void sacuvaj(Pacijent pacijent) {
+        this.pacijentRepozitorijum.save(pacijent);
     }
 }

@@ -32,7 +32,7 @@ public class Pregled {
     @ManyToOne(fetch = FetchType.LAZY)
     private Pacijent pacijent;
 
-    @OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pregled", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<IzdatLek> izdatiLekovi = new ArrayList<>();
 
     @Column
@@ -62,15 +62,15 @@ public class Pregled {
     @Column(nullable = false)
     private boolean zavrsen;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AdhdUpitnik adhdUpitnik;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private AlchajmerUpitnik alchajmerUpitnik;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EpilepsijaUpitnik epilepsijaUpitnik;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private NesanicaUpitnik nesanicaUpitnik;
 }
