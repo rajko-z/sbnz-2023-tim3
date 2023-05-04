@@ -1,0 +1,51 @@
+package com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.nesanica;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name="nesanica_upitnici")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class NesanicaUpitnik {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaVremenskaStavka prva;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaTrajanjeStavka druga;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka treca;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka cetvrta;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka peta;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka sesta;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka sedma;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaVremenskaStavka osma;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka deveta;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private NesanicaDaNeStavka deseta;
+}
