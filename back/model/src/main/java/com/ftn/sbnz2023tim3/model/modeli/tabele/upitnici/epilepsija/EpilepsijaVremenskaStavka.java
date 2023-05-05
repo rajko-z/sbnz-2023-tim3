@@ -1,6 +1,7 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija;
 
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,7 @@ public class EpilepsijaVremenskaStavka {
     public double getVrednost() {
         return odgovor.getValue() * pitanje.getKategorija().getValue();
     }
+
+    @Transient
+    private Pregled pregled;
 }

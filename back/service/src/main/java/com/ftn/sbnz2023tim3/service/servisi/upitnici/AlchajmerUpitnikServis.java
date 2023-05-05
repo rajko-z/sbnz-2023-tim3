@@ -2,12 +2,10 @@ package com.ftn.sbnz2023tim3.service.servisi.upitnici;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenAlchajmerUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
-import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerPitanje;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerUpitnik;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.alchajmer.AlchajmerPitanjeRepozitorijum;
-import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.alchajmer.AlchajmerUpitnikRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
 import org.kie.api.runtime.KieContainer;
@@ -16,15 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
 public class AlchajmerUpitnikServis {
 
-    private final AlchajmerUpitnikRepozitorijum alchajmerUpitnikRepozitorijum;
-    
     private final AlchajmerPitanjeRepozitorijum alchajmerPitanjeRepozitorijum;
 
     private final PregledServis pregledServis;
@@ -56,7 +50,6 @@ public class AlchajmerUpitnikServis {
 
         trenutniPregled.setAlchajmerUpitnik(upitnik);
         pregledServis.sacuvaj(trenutniPregled);
-        alchajmerUpitnikRepozitorijum.save(upitnik);
     }
 
 }

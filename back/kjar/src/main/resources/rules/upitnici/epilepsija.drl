@@ -1,0 +1,76 @@
+package rules.upitnici;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija.EpilepsijaUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija.EpilepsijaDaNeStavka;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija.EpilepsijaVremenskaStavka;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija.EpilepsijaUcestalostStavka;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.kategorije.EpilepsijaKategorijaPitanja;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.DaNeOdgovor;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.UcestalostOdgovor;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
+
+declare EpilepsijaStavkaRezultata
+    pregledId: Long
+    vrednost: Double
+end
+
+
+rule "Obradi EpilepsijaVremenskaStavka"
+when
+    $pregled: Pregled()
+    $vs: EpilepsijaVremenskaStavka(pregled == $pregled, $vrednost: getVrednost())
+then
+    insert(new EpilepsijaStavkaRezultata($pregled.getId(), $vrednost));
+end
+
+rule "Obradi EpilepsijaDaNeStavka"
+when
+    $pregled: Pregled()
+    $vs: EpilepsijaDaNeStavka(pregled == $pregled, $vrednost: getVrednost())
+then
+    insert(new EpilepsijaStavkaRezultata($pregled.getId(), $vrednost));
+end
+
+rule "Obradi EpilepsijaUcestalostStavka"
+when
+    $pregled: Pregled()
+    $vs: EpilepsijaUcestalostStavka(pregled == $pregled, $vrednost: getVrednost())
+then
+    insert(new EpilepsijaStavkaRezultata($pregled.getId(), $vrednost));
+end
+
+rule "Obradi konacan upitnik za epilepsiju"
+when
+    $pregled: Pregled()
+    $ukupno: Double (this >= 0) from accumulate (
+        $stavka: EpilepsijaStavkaRezultata(pregledId == $pregled.id, $vrednost: vrednost),
+        init( int brojac = 0; double suma = 0; ),
+        action( brojac++; suma += $vrednost; ),
+        reverse (brojac--; suma -= $vrednost; ),
+        result (brojac == 10 ? suma : -1)
+    )
+then
+    double simptomiNapada = EpilepsijaKategorijaPitanja.SIMPTOMI_NAPADA.getValue();
+    double faktoriRizika = EpilepsijaKategorijaPitanja.FAKTORI_RIZIKA.getValue();
+    double dodatniSimptomi = EpilepsijaKategorijaPitanja.DODATNI_SIMPTOMI.getValue();
+    double okidaciNapada = EpilepsijaKategorijaPitanja.OKIDACI_NAPADA.getValue();
+    double ucestalostNapada = EpilepsijaKategorijaPitanja.UCESTALOST_NAPADA.getValue();
+
+    double daNe = DaNeOdgovor.DA.getValue();
+    double ucestalost = UcestalostOdgovor.NEDELJA.getValue();
+    double vremesnki = VremenskiOdgovor.CESTO.getValue();
+
+    double maxUkupno = daNe * simptomiNapada +
+                       ucestalost * ucestalostNapada +
+                       vremesnki * simptomiNapada * 4 +
+                       vremesnki * okidaciNapada +
+                       daNe * faktoriRizika * 2 +
+                       vremesnki * dodatniSimptomi;
+
+    double procenat = $ukupno / maxUkupno;
+    modify($pregled){
+        setEpilepsijaProcenat(procenat)
+    }
+    System.out.println("Set epilepsija procenat upitnika: " + procenat);
+end

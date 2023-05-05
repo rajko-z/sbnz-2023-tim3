@@ -1,5 +1,6 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija;
 
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

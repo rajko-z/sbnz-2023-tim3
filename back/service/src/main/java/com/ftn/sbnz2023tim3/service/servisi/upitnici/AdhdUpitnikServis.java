@@ -6,10 +6,8 @@ import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdPitanje;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdUpitnik;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.adhd.AdhdPitanjeRepozitorijum;
-import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.adhd.AdhdUpitnikRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
-import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
@@ -22,8 +20,6 @@ import java.util.stream.Stream;
 @Service
 @AllArgsConstructor
 public class AdhdUpitnikServis {
-
-    private final AdhdUpitnikRepozitorijum adhdUpitnikRepozitorijum;
 
     private final AdhdPitanjeRepozitorijum adhdPitanjeRepozitorijum;
 
@@ -58,6 +54,5 @@ public class AdhdUpitnikServis {
         AdhdUpitnik upitnik = new AdhdUpitnik(prva, druga,treca,cetvrta,peta,sesta,sedma,osma,deveta,deseta);
         trenutniPregled.setAdhdUpitnik(upitnik);
         pregledServis.sacuvaj(trenutniPregled);
-        adhdUpitnikRepozitorijum.save(upitnik);
     }
 }
