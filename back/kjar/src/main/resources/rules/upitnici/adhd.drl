@@ -1,11 +1,10 @@
 package rules.upitnici;
 
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka
-import com.ftn.sbnz2023tim3.model.modeli.tabele.kategorije.AdhdKategorijaPitanja
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.kategorije.AdhdKategorijaPitanja;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.kategorije.AdhdKategorijaPitanja
 
-rule "Obrada Upitnika"
+rule "Obrada Adhd Upitnika"
 when
     $hipeaktivnostStavka: AdhdStavka($pregled: pregled, pitanje.kategorija.name == "HIPERAKTIVNOST" )
     $nePaznjaVrednost: Double (this >= 0) from accumulate (

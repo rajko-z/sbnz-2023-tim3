@@ -1,0 +1,33 @@
+package rules.upitnici;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerUpitnik
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.kategorije.AlchajmerKategorijaPitanja
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
+
+rule "Obrada Alchajmer Upitnika"
+when
+    $pregled: Pregled ($id: id)
+    $au: AlchajmerUpitnik(pregled == $pregled)
+then
+    double maxKognitivna = AlchajmerKategorijaPitanja.KOGNITIVNA.getValue() * VremenskiOdgovor.CESTO.getValue() * 4;
+    double maxSvakodnevnica = AlchajmerKategorijaPitanja.SVAKODNEVNICA.getValue() * VremenskiOdgovor.CESTO.getValue() * 3;
+    double maxSocijalnoEmotivno = AlchajmerKategorijaPitanja.SOCIJALNO_EMITVNO.getValue() * VremenskiOdgovor.CESTO.getValue() * 3;
+    double maxUkupno = maxKognitivna + maxSvakodnevnica + maxSocijalnoEmotivno;
+
+    double ukupno = $au.getPrva().getVrednost() +
+                    $au.getDruga().getVrednost() +
+                    $au.getTreca().getVrednost() +
+                    $au.getCetvrta().getVrednost() +
+                    $au.getPeta().getVrednost() +
+                    $au.getSesta().getVrednost() +
+                    $au.getOsma().getVrednost() +
+                    $au.getDeveta().getVrednost() +
+                    $au.getDeseta().getVrednost();
+
+    double procenat = ukupno / maxUkupno;
+    modify($pregled){
+        setAlchajmerProcenat(procenat)
+    }
+    System.out.println("Set alchajmer procenat upitnika: " + procenat);
+end

@@ -55,10 +55,6 @@ public class AdhdUpitnikServis {
         ksession.fireAllRules();
         ksession.dispose();
 
-        System.out.println("---------------");
-        System.out.println(trenutniPregled.getAdhdProcenat());
-        System.out.println("---------------");
-
         AdhdUpitnik upitnik = new AdhdUpitnik(prva, druga,treca,cetvrta,peta,sesta,sedma,osma,deveta,deseta);
         trenutniPregled.setAdhdUpitnik(upitnik);
         pregledServis.sacuvaj(trenutniPregled);
