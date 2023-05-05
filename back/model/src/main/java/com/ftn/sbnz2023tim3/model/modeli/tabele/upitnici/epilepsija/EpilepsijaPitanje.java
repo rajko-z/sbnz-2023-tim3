@@ -24,6 +24,9 @@ public class EpilepsijaPitanje {
     @Column(nullable = false)
     private String pitanje;
 
+    @Column(nullable = false)
+    private int redniBroj;
+
     @Enumerated(EnumType.STRING)
     private EpilepsijaKategorijaPitanja kategorija;
 }

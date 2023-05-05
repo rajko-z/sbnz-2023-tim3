@@ -142,55 +142,56 @@ values
     (20,'ADOLESCENT'),
     (20,'ODRASTAO');
 
-insert into adhd_pitanja(kategorija, pitanje)
+
+insert into adhd_pitanja(redni_broj, kategorija, pitanje)
 values
-    ('NEPAZNJA', 'Da li ste primetili da imate poteškoća u održavanju pažnje na zadacima ili aktivnostima koje zahtevaju koncentraciju,kao što su školski zadaci, čitanje ili obavljanje kućnih poslova?'),
-    ('NEPAZNJA', 'Da li ste primetili da često gubite stvari koje su vam potrebne za svakodnevne aktivnosti, kao što su ključevi, mobilnitelefon, novčanik ili školski materijali?'),
-    ('NEPAZNJA', 'Da li ste primetili da često zaboravljate obaveze ili zadatke koje ste morali obaviti, kao što su dogovoreni sastanci,rokovi za predaju domaćeg ili obaveze kod kuće?'),
-    ('NEPAZNJA', 'Da li ste primetili da često menjate aktivnosti ili zadatke, bez da završite ono što ste započeli?'),
-    ('NEPAZNJA', 'Da li ste primetili da vam je teško da se organizujete ili organizujete svoje stvari, kao što su školska torba, radni prostor ili raspored obaveza?'),
-    ('NEPAZNJA', 'Da li ste primetili da imate poteškoća u praćenju uputstava ili smernica koje vam se daju, kao što su učiteljeva uputstva u školi ili uputstva za obavljanje zadataka na poslu?'),
-    ('IMPULSIVNOST', 'Da li ste primetili da često delujete impulsivno ili bez razmišljanja o mogućim posledicama, kao što su prekidanje drugih ili donošenje brzopletih odluka?'),
-    ('HIPERAKTIVNOST', 'Da li ste primetili da često delujete nemirno ili ne možete ostati na mestu ili u miru, kao što se često pomera rukama ili nogama, prelazite sa jednog mesta na drugo ili imate potrebu za konstantnom aktivnošću?'),
-    ('IMPULSIVNOST', 'Da li ste primetili da često govorite previše ili ne možete sačekati red dok drugi govore?'),
-    ('NEPAZNJA', 'Da li ste primetili da imate poteškoća sa organizovanjem vlastitog vremena ili obaveza, kao što su planiranje, obavljanje zadataka ili držanje rasporeda?');
+    (1,'NEPAZNJA', 'Da li ste primetili da imate poteškoća u održavanju pažnje na zadacima ili aktivnostima koje zahtevaju koncentraciju,kao što su školski zadaci, čitanje ili obavljanje kućnih poslova?'),
+    (2,'NEPAZNJA', 'Da li ste primetili da često gubite stvari koje su vam potrebne za svakodnevne aktivnosti, kao što su ključevi, mobilnitelefon, novčanik ili školski materijali?'),
+    (3,'NEPAZNJA', 'Da li ste primetili da često zaboravljate obaveze ili zadatke koje ste morali obaviti, kao što su dogovoreni sastanci,rokovi za predaju domaćeg ili obaveze kod kuće?'),
+    (4,'NEPAZNJA', 'Da li ste primetili da često menjate aktivnosti ili zadatke, bez da završite ono što ste započeli?'),
+    (5,'NEPAZNJA', 'Da li ste primetili da vam je teško da se organizujete ili organizujete svoje stvari, kao što su školska torba, radni prostor ili raspored obaveza?'),
+    (6,'NEPAZNJA', 'Da li ste primetili da imate poteškoća u praćenju uputstava ili smernica koje vam se daju, kao što su učiteljeva uputstva u školi ili uputstva za obavljanje zadataka na poslu?'),
+    (7,'IMPULSIVNOST', 'Da li ste primetili da često delujete impulsivno ili bez razmišljanja o mogućim posledicama, kao što su prekidanje drugih ili donošenje brzopletih odluka?'),
+    (8,'HIPERAKTIVNOST', 'Da li ste primetili da često delujete nemirno ili ne možete ostati na mestu ili u miru, kao što se često pomera rukama ili nogama, prelazite sa jednog mesta na drugo ili imate potrebu za konstantnom aktivnošću?'),
+    (9,'IMPULSIVNOST', 'Da li ste primetili da često govorite previše ili ne možete sačekati red dok drugi govore?'),
+    (10,'NEPAZNJA', 'Da li ste primetili da imate poteškoća sa organizovanjem vlastitog vremena ili obaveza, kao što su planiranje, obavljanje zadataka ili držanje rasporeda?');
 
 
-insert into alchajmer_pitanja(kategorija, pitanje)
+insert into alchajmer_pitanja(redni_broj,kategorija, pitanje)
 values
-    ('KOGNITIVNA','Da li ste primetili promene u pamćenju ili sposobnosti za učenje?'),
-    ('KOGNITIVNA','Koliko dugo primećujete promene u pamćenju ili učenju? Da li ste primetili da se te promene pogoršavaju s vremenom?'),
-    ('SVAKODNEVNICA','Da li ste primetili poteškoće u svakodnevnim aktivnostima koje su pre bile rutinske za vas, kao što su obavljanje kućnih poslova, upravljanje finansijama ili vođenje dnevnih beleški?'),
-    ('SOCIJALNO_EMITVNO','Da li ste primetili promene u vašem ponašanju ili emocionalnom stanju, kao što su zaboravnost, dezorijentacija upoznatom okruženju, promene raspoloženja ili povlačenje iz društvenih aktivnosti?'),
-    ('SOCIJALNO_EMITVNO','Da li ste primetili probleme s verbalnim ili pismenim izražavanjem, kao što su poteškoće u traženju ili korištenju reči, gubitak sposobnosti pisanja ili govora, ili poteškoće u komunikaciji s drugima?'),
-    ('KOGNITIVNA','Da li ste primetili probleme s orijentacijom u vremenu, mestu ili prostoru, kao što su gubitak svesti o trenutnom datumu, mestu ili nedostatak prepoznavanja poznatih mesta?'),
-    ('KOGNITIVNA','Da li ste primetili poteškoće u donošenju odluka, planiranju ili organiziranju, kao što su poteškoće u obavljanju svakodnevnih zadataka ili rešavanju jednostavnih problema?'),
-    ('SVAKODNEVNICA','Da li ste primetili promene u vašem sposobnosti upravljanja finansijskim sredstvima, kao što su zaboravljanje plaćanja računa, problema s upravljanjem bankovnim računima ili promenama u finansijskim navikama?'),
-    ('SVAKODNEVNICA','Da li ste primetili promene u vašem ponašanju u vezi s higijenom, kao što su poteškoće u održavanju lične higijene, zaboravljanje održavanja čistoće doma ili promene u svakodnevnim rutinama nege tela?'),
-    ('SOCIJALNO_EMITVNO','Da li ste primetili promene u vašem ponašanju ili sposobnostima koje su uticale na vaše odnose s drugima, kao što su promene u socijalnom ponašanju, povlačenje iz društvenih aktivnosti ili poteškoće u održavanju socijalnih veza?');
+    (1,'KOGNITIVNA','Da li ste primetili promene u pamćenju ili sposobnosti za učenje?'),
+    (2,'KOGNITIVNA','Koliko dugo primećujete promene u pamćenju ili učenju? Da li ste primetili da se te promene pogoršavaju s vremenom?'),
+    (3,'SVAKODNEVNICA','Da li ste primetili poteškoće u svakodnevnim aktivnostima koje su pre bile rutinske za vas, kao što su obavljanje kućnih poslova, upravljanje finansijama ili vođenje dnevnih beleški?'),
+    (4,'SOCIJALNO_EMITVNO','Da li ste primetili promene u vašem ponašanju ili emocionalnom stanju, kao što su zaboravnost, dezorijentacija upoznatom okruženju, promene raspoloženja ili povlačenje iz društvenih aktivnosti?'),
+    (5,'SOCIJALNO_EMITVNO','Da li ste primetili probleme s verbalnim ili pismenim izražavanjem, kao što su poteškoće u traženju ili korištenju reči, gubitak sposobnosti pisanja ili govora, ili poteškoće u komunikaciji s drugima?'),
+    (6,'KOGNITIVNA','Da li ste primetili probleme s orijentacijom u vremenu, mestu ili prostoru, kao što su gubitak svesti o trenutnom datumu, mestu ili nedostatak prepoznavanja poznatih mesta?'),
+    (7,'KOGNITIVNA','Da li ste primetili poteškoće u donošenju odluka, planiranju ili organiziranju, kao što su poteškoće u obavljanju svakodnevnih zadataka ili rešavanju jednostavnih problema?'),
+    (8,'SVAKODNEVNICA','Da li ste primetili promene u vašem sposobnosti upravljanja finansijskim sredstvima, kao što su zaboravljanje plaćanja računa, problema s upravljanjem bankovnim računima ili promenama u finansijskim navikama?'),
+    (9,'SVAKODNEVNICA','Da li ste primetili promene u vašem ponašanju u vezi s higijenom, kao što su poteškoće u održavanju lične higijene, zaboravljanje održavanja čistoće doma ili promene u svakodnevnim rutinama nege tela?'),
+    (10,'SOCIJALNO_EMITVNO','Da li ste primetili promene u vašem ponašanju ili sposobnostima koje su uticale na vaše odnose s drugima, kao što su promene u socijalnom ponašanju, povlačenje iz društvenih aktivnosti ili poteškoće u održavanju socijalnih veza?');
 
-insert into nesanica_pitanja(pitanje)
+insert into nesanica_pitanja(redni_broj,pitanje)
 values
-    ('Koliko često imate problema sa spavanjem, kao što su poteškoće održavanja sna, ranog buđenja ili teškog uspavljivanja?'),
-    ('Koliko dugo traje vaša nesanica, tj. koliko dugo imate problema sa spavanjem?'),
-    ('Da li ste primetili da se problemi sa spavanjem javljaju samo u određenim situacijama, kao što su stresni periodi, promene u rasporedu spavanja, ili uzimanje određenih lekova?'),
-    ('Da li ste primetili da nakon noći s lošim snom imate osećaj umora, pospanosti ili lošeg raspoloženja tokom dana?'),
-    ('Da li ste primetili da vaša nesanica utiče na svakodnevnu funkcionalnost, kao što su radna učinkovitost, emocionalno stanje ili kvalitet života?'),
-    ('Da li ste pokušali da primenite različite tehnike za poboljšanje sna, kao što su promene u prehrambenim navikama, fizička aktivnost, promene u okruženju spavaće sobe ili korištenje sredstava za spavanje?'),
-    ('Da li ste primetili da postoje određeni okidači ili faktori koji mogu pogoršati vašu nesanicu, kao što su konzumacija kofeina, alkohola ili stresne situacije pre spavanja?'),
-    ('Koliko često koristite sredstva za spavanje ili druge lekove kako biste lakše zaspali ili održavali san?'),
-    ('Da li ste primetili da vaša nesanica utiče na vaše odnose s drugima, kao što su porodica, prijatelji ili kolege na poslu?'),
-    ('Da li ste primetili bilo kakve druge simptome koji se mogu povezati s nesanicom, kao što su noćne more, noćno znojenje, nemirne noge ili druge promene u ponašanju?');
+    (1,'Koliko često imate problema sa spavanjem, kao što su poteškoće održavanja sna, ranog buđenja ili teškog uspavljivanja?'),
+    (2,'Koliko dugo traje vaša nesanica, tj. koliko dugo imate problema sa spavanjem?'),
+    (3,'Da li ste primetili da se problemi sa spavanjem javljaju samo u određenim situacijama, kao što su stresni periodi, promene u rasporedu spavanja, ili uzimanje određenih lekova?'),
+    (4,'Da li ste primetili da nakon noći s lošim snom imate osećaj umora, pospanosti ili lošeg raspoloženja tokom dana?'),
+    (5,'Da li ste primetili da vaša nesanica utiče na svakodnevnu funkcionalnost, kao što su radna učinkovitost, emocionalno stanje ili kvalitet života?'),
+    (6,'Da li ste pokušali da primenite različite tehnike za poboljšanje sna, kao što su promene u prehrambenim navikama, fizička aktivnost, promene u okruženju spavaće sobe ili korištenje sredstava za spavanje?'),
+    (7,'Da li ste primetili da postoje određeni okidači ili faktori koji mogu pogoršati vašu nesanicu, kao što su konzumacija kofeina, alkohola ili stresne situacije pre spavanja?'),
+    (8,'Koliko često koristite sredstva za spavanje ili druge lekove kako biste lakše zaspali ili održavali san?'),
+    (9,'Da li ste primetili da vaša nesanica utiče na vaše odnose s drugima, kao što su porodica, prijatelji ili kolege na poslu?'),
+    (10,'Da li ste primetili bilo kakve druge simptome koji se mogu povezati s nesanicom, kao što su noćne more, noćno znojenje, nemirne noge ili druge promene u ponašanju?');
 
-insert into epilepsija_pitanja(kategorija, pitanje)
+insert into epilepsija_pitanja(redni_broj,kategorija, pitanje)
 values
-    ('SIMPTOMI_NAPADA','Da li ste ikada imali napade u kojima ste izgubili svest ili postali dezorijentisani?'),
-    ('UCESTALOST_NAPADA','Koliko često imate napade?'),
-    ('SIMPTOMI_NAPADA','Da li ste primetili da u toku vaših napada imate promene u ocećanjima ili promene u svesti?'),
-    ('OKIDACI_NAPADA','Da li ste primetili bilo kakve okidače koji prethode vašim napadima, kao što su manjak sna, emocionalni stres, alkohol, svetlost, zvukovi ili druge okolnosti?'),
-    ('SIMPTOMI_NAPADA','Da li ste primetili bilo kakve motoričke simptome, poput trzanja udova, gubitka ravnoteže ili slično, tokom vaših napada?'),
-    ('SIMPTOMI_NAPADA','Da li ste primetili bilo kakve senzorne simptome, poput promene vida, sluha, mirisa ili ukusa, tokom vaših napada?'),
-    ('SIMPTOMI_NAPADA','Da li ste primetili bilo kakve promene u svesti, kao što su dezorijentacija, promene u ponašanju, gubitak kontakta s okolinom ili promene u svesti tokom vaših napada?'),
-    ('FAKTORI_RIZIKA','Da li je neko u porodici imao epilepsiju ili druge neurološke bolesti?'),
-    ('FAKTORI_RIZIKA','Da li ste doživeli povrede mozga ili traume u prošlosti?'),
-    ('DODATNI_SIMPTOMI','Da li ste primetili bilo kakve druge simptome, kao što su glavobolje, promene raspoloženja, promene u kognitivnim funkcijama, promene u ponašanju ili emocionalnoj stabilnosti?');
+    (1,'SIMPTOMI_NAPADA','Da li ste ikada imali napade u kojima ste izgubili svest ili postali dezorijentisani?'),
+    (2,'UCESTALOST_NAPADA','Koliko često imate napade?'),
+    (3,'SIMPTOMI_NAPADA','Da li ste primetili da u toku vaših napada imate promene u ocećanjima ili promene u svesti?'),
+    (4,'OKIDACI_NAPADA','Da li ste primetili bilo kakve okidače koji prethode vašim napadima, kao što su manjak sna, emocionalni stres, alkohol, svetlost, zvukovi ili druge okolnosti?'),
+    (5,'SIMPTOMI_NAPADA','Da li ste primetili bilo kakve motoričke simptome, poput trzanja udova, gubitka ravnoteže ili slično, tokom vaših napada?'),
+    (6,'SIMPTOMI_NAPADA','Da li ste primetili bilo kakve senzorne simptome, poput promene vida, sluha, mirisa ili ukusa, tokom vaših napada?'),
+    (7,'SIMPTOMI_NAPADA','Da li ste primetili bilo kakve promene u svesti, kao što su dezorijentacija, promene u ponašanju, gubitak kontakta s okolinom ili promene u svesti tokom vaših napada?'),
+    (8,'FAKTORI_RIZIKA','Da li je neko u porodici imao epilepsiju ili druge neurološke bolesti?'),
+    (9,'FAKTORI_RIZIKA','Da li ste doživeli povrede mozga ili traume u prošlosti?'),
+    (10,'DODATNI_SIMPTOMI','Da li ste primetili bilo kakve druge simptome, kao što su glavobolje, promene raspoloženja, promene u kognitivnim funkcijama, promene u ponašanju ili emocionalnoj stabilnosti?');

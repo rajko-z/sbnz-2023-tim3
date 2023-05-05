@@ -23,6 +23,9 @@ public class AlchajmerPitanje {
     @Column(nullable = false)
     private String pitanje;
 
+    @Column(nullable = false)
+    private int redniBroj;
+
     @Enumerated(EnumType.STRING)
     private AlchajmerKategorijaPitanja kategorija;
 }

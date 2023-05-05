@@ -31,4 +31,8 @@ public class AlchajmerStavka {
         this.odgovor = odgovor;
         this.pitanje = pitanje;
     }
+
+    public double getVrednost() {
+        return odgovor.getValue() * pitanje.getKategorija().getValue();
+    }
 }
