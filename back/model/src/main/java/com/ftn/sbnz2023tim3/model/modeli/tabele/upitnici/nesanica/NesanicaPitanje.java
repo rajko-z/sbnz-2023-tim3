@@ -21,5 +21,8 @@ public class NesanicaPitanje {
     private Long id;
 
     @Column(nullable = false)
+    private int redniBroj;
+
+    @Column(nullable = false)
     private String pitanje;
 }

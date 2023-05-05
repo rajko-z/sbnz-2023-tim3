@@ -6,9 +6,10 @@ import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerPita
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerUpitnik;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.alchajmer.AlchajmerPitanjeRepozitorijum;
-import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.alchajmer.AlchajmerUpitnikRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,11 @@ import java.util.List;
 @AllArgsConstructor
 public class AlchajmerUpitnikServis {
 
-    private final AlchajmerUpitnikRepozitorijum alchajmerUpitnikRepozitorijum;
-    
     private final AlchajmerPitanjeRepozitorijum alchajmerPitanjeRepozitorijum;
 
     private final PregledServis pregledServis;
+
+    private final KieContainer kieContainer;
 
     @Transactional
     public void dodaj(PopunjenAlchajmerUpitnik alchajmerUpitnik, Pregled trenutniPregled) {
@@ -39,8 +40,16 @@ public class AlchajmerUpitnikServis {
         AlchajmerStavka deseta = new AlchajmerStavka(pitanja.get(9), alchajmerUpitnik.getOdgovor10());
 
         AlchajmerUpitnik upitnik = new AlchajmerUpitnik(prva, druga,treca,cetvrta,peta,sesta,sedma,osma,deveta,deseta);
+        upitnik.setPregled(trenutniPregled);
+
+        KieSession ksession = kieContainer.newKieSession("upitniciKS");
+        ksession.insert(trenutniPregled);
+        ksession.insert(upitnik);
+        ksession.fireAllRules();
+        ksession.dispose();
+
         trenutniPregled.setAlchajmerUpitnik(upitnik);
         pregledServis.sacuvaj(trenutniPregled);
-        alchajmerUpitnikRepozitorijum.save(upitnik);
     }
+
 }

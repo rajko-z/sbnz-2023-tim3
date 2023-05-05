@@ -1,5 +1,6 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer;
 
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,4 +62,7 @@ public class AlchajmerUpitnik {
         this.deveta = deveta;
         this.deseta = deseta;
     }
+
+    @Transient
+    private Pregled pregled;
 }

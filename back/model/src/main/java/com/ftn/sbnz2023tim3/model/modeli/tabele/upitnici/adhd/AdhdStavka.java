@@ -1,6 +1,7 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd;
 
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +26,15 @@ public class AdhdStavka {
     @Enumerated(EnumType.STRING)
     private VremenskiOdgovor odgovor;
 
+    @Transient
+    private Pregled pregled;
+
     public AdhdStavka(AdhdPitanje pitanje, VremenskiOdgovor odgovor) {
         this.pitanje = pitanje;
         this.odgovor = odgovor;
+    }
+
+    public double getVrednost() {
+        return odgovor.getValue() * pitanje.getKategorija().getValue();
     }
 }

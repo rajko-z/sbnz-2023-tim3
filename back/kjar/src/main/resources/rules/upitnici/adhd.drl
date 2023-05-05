@@ -1,0 +1,40 @@
+package rules.upitnici;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.kategorije.AdhdKategorijaPitanja
+
+rule "Obrada Adhd Upitnika"
+when
+    $hipeaktivnostStavka: AdhdStavka($pregled: pregled, pitanje.kategorija.name == "HIPERAKTIVNOST" )
+    $nePaznjaVrednost: Double (this >= 0) from accumulate (
+        $nS: AdhdStavka(
+            this != $hipeaktivnostStavka,
+            pregled == $pregled,
+            pitanje.kategorija.name == "NEPAZNJA",
+            $vrednost: getVrednost()
+        ),
+        sum($vrednost)
+    )
+    $impulsivnost: Double (this >= 0) from accumulate (
+        $nS: AdhdStavka(
+            this != $hipeaktivnostStavka,
+            pregled == $pregled,
+            pitanje.kategorija.name == "IMPULSIVNOST",
+            $vrednost: getVrednost()
+        ),
+        sum($vrednost)
+    )
+then
+    double maxNepaznja = AdhdKategorijaPitanja.NEPAZNJA.getValue() * VremenskiOdgovor.CESTO.getValue() * 7;
+    double maxHiperaktivnost = AdhdKategorijaPitanja.HIPERAKTIVNOST.getValue() * VremenskiOdgovor.CESTO.getValue() * 1;
+    double maxImpulsivnost = AdhdKategorijaPitanja.IMPULSIVNOST.getValue() * VremenskiOdgovor.CESTO.getValue() * 2;
+    double maxUkupno = maxNepaznja + maxHiperaktivnost + maxImpulsivnost;
+
+    double ukupno = $nePaznjaVrednost + $impulsivnost + $hipeaktivnostStavka.getVrednost();
+    double procenat = ukupno / maxUkupno;
+    modify($pregled){
+        setAdhdProcenat(procenat)
+    }
+    System.out.println("Set adhd procenat upitnika: " + procenat);
+end

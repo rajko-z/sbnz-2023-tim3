@@ -1,6 +1,7 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.nesanica;
 
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,7 @@ public class NesanicaVremenskaStavka {
         this.odgovor = odgovor;
         this.pitanje = pitanje;
     }
+
+    @Transient
+    private Pregled pregled;
 }

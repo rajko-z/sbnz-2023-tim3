@@ -1,0 +1,170 @@
+package rules.upitnici;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.nesanica.NesanicaVremenskaStavka;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.nesanica.NesanicaTrajanjeStavka;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.nesanica.NesanicaDaNeStavka;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
+
+declare NesanicaStavkaRezultata
+    pregledId: Long
+    vrednost: Double
+end
+
+rule "Nesanica stavka broj 1"
+when
+    $pregled: Pregled()
+    $n: NesanicaVremenskaStavka( pregled == $pregled, pitanje.redniBroj == 1 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NIKAD: vrednost = 0; break;
+        case RETKO: vrednost = 0.1;break;
+        case PONEKAD: vrednost = 0.3;break;
+        case CESTO: vrednost = 0.5;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+rule "Nesanica stavka broj 2"
+when
+    $pregled: Pregled()
+    $n: NesanicaTrajanjeStavka( pregled == $pregled, pitanje.redniBroj == 2 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case KRATKO: vrednost = 0; break;
+        case SREDNJE: vrednost = 0.2;break;
+        case DUGO: vrednost = 0.4;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+
+rule "Nesanica stavka broj 3"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 3 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = 0.2;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+
+rule "Nesanica stavka broj 4"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 4 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = 0.3;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+rule "Nesanica stavka broj 5"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 5 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = 0.4;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+rule "Nesanica stavka broj 6"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 6 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = -0.2;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+rule "Nesanica stavka broj 7"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 7 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = 0.3;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+
+rule "Nesanica stavka broj 8"
+when
+    $pregled: Pregled()
+    $n: NesanicaVremenskaStavka( pregled == $pregled, pitanje.redniBroj == 8 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NIKAD: vrednost = 0; break;
+        case RETKO: vrednost = 0.1;break;
+        case PONEKAD: vrednost = 0.3;break;
+        case CESTO: vrednost = 0.5;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+rule "Nesanica stavka broj 9"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 9 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = 0.3;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+
+rule "Nesanica stavka broj 10"
+when
+    $pregled: Pregled()
+    $n: NesanicaDaNeStavka( pregled == $pregled, pitanje.redniBroj == 10 )
+then
+    double vrednost = 0.0;
+    switch($n.getOdgovor()) {
+        case NE: vrednost = 0; break;
+        case DA: vrednost = 0.2;break;
+    }
+    insert(new NesanicaStavkaRezultata($pregled.getId(), vrednost));
+end
+
+rule "Obradi konacan upitnik za nesanicu"
+when
+    $pregled: Pregled()
+    $ukupno: Double (this >= 0) from accumulate (
+        $stavka: NesanicaStavkaRezultata(pregledId == $pregled.id, $vrednost: vrednost),
+        init( int brojac = 0; double suma = 0; ),
+        action( brojac++; suma += $vrednost; ),
+        reverse (brojac--; suma -= $vrednost; ),
+        result (brojac == 10 ? suma : -1)
+    )
+then
+    double maxUkupno = 0.5 + 0.4 + 0.2 + 0.3 + 0.4 + 0 + 0.3 + 0.5 + 0.3 + 0.2;
+    double procenat = $ukupno / maxUkupno;
+    modify($pregled){
+        setNesanicaProcenat(procenat)
+    }
+    System.out.println("Set nesanica procenat upitnika: " + procenat);
+end

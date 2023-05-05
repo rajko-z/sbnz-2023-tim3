@@ -6,27 +6,30 @@ import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdPitanje;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdUpitnik;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.adhd.AdhdPitanjeRepozitorijum;
-import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.adhd.AdhdUpitnikRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
 public class AdhdUpitnikServis {
 
-    private final AdhdUpitnikRepozitorijum adhdUpitnikRepozitorijum;
-
     private final AdhdPitanjeRepozitorijum adhdPitanjeRepozitorijum;
 
     private final PregledServis pregledServis;
 
+    private final KieContainer kieContainer;
+
     @Transactional
     public void dodaj(PopunjenAdhdUpitnik adhdUpitnik, Pregled trenutniPregled) {
-        List<AdhdPitanje> pitanja = adhdPitanjeRepozitorijum.findAll();
+        List<AdhdPitanje> pitanja = adhdPitanjeRepozitorijum.findAllByOrderByRedniBrojAsc();
         AdhdStavka prva = new AdhdStavka(pitanja.get(0), adhdUpitnik.getOdgovor1());
         AdhdStavka druga = new AdhdStavka(pitanja.get(1), adhdUpitnik.getOdgovor2());
         AdhdStavka treca = new AdhdStavka(pitanja.get(2), adhdUpitnik.getOdgovor3());
@@ -38,9 +41,18 @@ public class AdhdUpitnikServis {
         AdhdStavka deveta = new AdhdStavka(pitanja.get(8), adhdUpitnik.getOdgovor9());
         AdhdStavka deseta = new AdhdStavka(pitanja.get(9), adhdUpitnik.getOdgovor10());
 
+        List<AdhdStavka> stavke = Stream.of(prva, druga, treca, cetvrta, peta, sesta, sedma, osma, deveta, deseta).collect(Collectors.toList());
+        stavke.forEach(s -> s.setPregled(trenutniPregled));
+
+        KieSession ksession = kieContainer.newKieSession("upitniciKS");
+
+        stavke.forEach(ksession::insert);
+        ksession.insert(trenutniPregled);
+        ksession.fireAllRules();
+        ksession.dispose();
+
         AdhdUpitnik upitnik = new AdhdUpitnik(prva, druga,treca,cetvrta,peta,sesta,sedma,osma,deveta,deseta);
         trenutniPregled.setAdhdUpitnik(upitnik);
         pregledServis.sacuvaj(trenutniPregled);
-        adhdUpitnikRepozitorijum.save(upitnik);
     }
 }
