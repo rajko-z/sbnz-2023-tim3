@@ -1,0 +1,22 @@
+@import "src/style/global";
+
+.canvas {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)), url("../../assets/image/wallpaper1.jpg");
+  background-repeat: no-repeat;
+}
+
+.form {
+  width: 50vw;
+  height: 70vh;
+  background-color: $primary-color;
+  box-shadow: $secondary-color 0 7px 29px 0;
+  display: flex;
+  justify-content: center;
+  z-index: 9;
+  margin: 10vh 0 0 5vw;
+  border-radius: 5px;
+}

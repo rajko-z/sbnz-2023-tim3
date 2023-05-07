@@ -31,7 +31,7 @@ public class AutentifikacijaServis {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             Korisnik user = (Korisnik) authentication.getPrincipal();
-            String jwt = tokenUtils.generateToken(user.getUsername());
+            String jwt = tokenUtils.generateToken(user.getUsername(), user.getRola());
 
             return KorisnikDTOKonverter.konvertujSaTokenom(user, jwt);
         }

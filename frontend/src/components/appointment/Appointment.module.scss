@@ -1,0 +1,33 @@
+@import "src/style/global";
+
+.canvas {
+  margin: 5vh auto;
+}
+
+.header {
+  margin-left: 3vh;
+  color: $text-color;
+  display: flex;
+  flex-direction: row;
+
+  h3 {
+    margin: 10px 0;
+  }
+
+  .icon{
+    margin: 10px;
+    height: 30px;
+    width: 30px;
+  }
+}
+
+.button {
+  margin: 3vh 5vh;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1px solid $secondary-color;
+}

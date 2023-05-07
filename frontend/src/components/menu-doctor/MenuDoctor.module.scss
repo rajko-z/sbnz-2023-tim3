@@ -1,0 +1,60 @@
+@import "src/style/global";
+
+.menu {
+  width: 15vw;
+  height: 100vh;
+  background-color: $primary-color;
+  box-shadow: $secondary-color 0 2px 10px 0;
+}
+
+.logo {
+  display: flex;
+  border-bottom: 1px solid $tertiary-color;
+  justify-content: center;
+
+  .logoIcon {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+  }
+}
+
+.menuItems {
+  border-bottom: 1px solid $tertiary-color;
+}
+
+.menuItem {
+  display: flex;
+  margin: 35px 0.5vw;
+  cursor: pointer;
+
+  .icon {
+    width: 35px;
+    height: 35px;
+    color: $grey-color;
+  }
+
+  .itemTitle {
+    font-size: 16px;
+    color: $text-color;
+    margin: 10px 20px;
+  }
+}
+
+.logOut {
+  display: flex;
+  margin: 470px 2.5vw;
+  cursor: pointer;
+
+  .icon {
+    width: 35px;
+    height: 35px;
+    color: $grey-color;
+  }
+
+  .itemTitle {
+    font-size: 16px;
+    color: $text-color;
+    margin: 10px 20px;
+  }
+}
