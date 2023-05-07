@@ -1,14 +1,14 @@
 package com.ftn.sbnz2023tim3.service.servisi.upitnici;
 
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenAdhdUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.adhd.PopunjenAdhdUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdPitanje;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdUpitnik;
+import com.ftn.sbnz2023tim3.service.konfiguracija.DRoolsKonfiguracija;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.adhd.AdhdPitanjeRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +25,7 @@ public class AdhdUpitnikServis {
 
     private final PregledServis pregledServis;
 
-    private final KieContainer kieContainer;
+    private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
     @Transactional
     public void dodaj(PopunjenAdhdUpitnik adhdUpitnik, Pregled trenutniPregled) {
@@ -44,12 +44,12 @@ public class AdhdUpitnikServis {
         List<AdhdStavka> stavke = Stream.of(prva, druga, treca, cetvrta, peta, sesta, sedma, osma, deveta, deseta).collect(Collectors.toList());
         stavke.forEach(s -> s.setPregled(trenutniPregled));
 
-        KieSession ksession = kieContainer.newKieSession("upitniciKS");
+        KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("upitniciKS");
 
         stavke.forEach(ksession::insert);
         ksession.insert(trenutniPregled);
         ksession.fireAllRules();
-        ksession.dispose();
+        dRoolsKonfiguracija.clearKieSession(ksession);
 
         AdhdUpitnik upitnik = new AdhdUpitnik(prva, druga,treca,cetvrta,peta,sesta,sedma,osma,deveta,deseta);
         trenutniPregled.setAdhdUpitnik(upitnik);

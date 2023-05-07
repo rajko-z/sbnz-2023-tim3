@@ -1,4 +1,4 @@
-package com.ftn.sbnz2023tim3.model.modeli.dto.upitnici;
+package com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.nesanica;
 
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.DaNeOdgovor;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.TrajanjeOdgovor;

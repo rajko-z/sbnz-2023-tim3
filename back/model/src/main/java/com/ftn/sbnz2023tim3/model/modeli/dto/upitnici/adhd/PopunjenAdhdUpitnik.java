@@ -1,7 +1,5 @@
-package com.ftn.sbnz2023tim3.model.modeli.dto.upitnici;
+package com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.adhd;
 
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.DaNeOdgovor;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.UcestalostOdgovor;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
 import lombok.*;
 
@@ -12,12 +10,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Builder
-public class PopunjenEpilepsijaUpitnik {
-
+public class PopunjenAdhdUpitnik {
     @NotNull
-    private DaNeOdgovor odgovor1;
+    private VremenskiOdgovor odgovor1;
     @NotNull
-    private UcestalostOdgovor odgovor2;
+    private VremenskiOdgovor odgovor2;
     @NotNull
     private VremenskiOdgovor odgovor3;
     @NotNull
@@ -29,9 +26,9 @@ public class PopunjenEpilepsijaUpitnik {
     @NotNull
     private VremenskiOdgovor odgovor7;
     @NotNull
-    private DaNeOdgovor odgovor8;
+    private VremenskiOdgovor odgovor8;
     @NotNull
-    private DaNeOdgovor odgovor9;
+    private VremenskiOdgovor odgovor9;
     @NotNull
     private VremenskiOdgovor odgovor10;
 }

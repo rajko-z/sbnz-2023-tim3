@@ -1,10 +1,10 @@
 package com.ftn.sbnz2023tim3.service.kontroleri;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.TextResponse;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenAdhdUpitnik;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenAlchajmerUpitnik;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenEpilepsijaUpitnik;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenNesanicaUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.adhd.PopunjenAdhdUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.alchajmer.PopunjenAlchajmerUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.epilepsija.PopunjenEpilepsijaUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.nesanica.PopunjenNesanicaUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.service.izuzeci.BadRequestException;
 import com.ftn.sbnz2023tim3.service.servisi.korisnici.DoktorServis;

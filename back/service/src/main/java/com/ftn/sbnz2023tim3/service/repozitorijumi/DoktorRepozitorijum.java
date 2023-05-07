@@ -16,4 +16,9 @@ public interface DoktorRepozitorijum extends JpaRepository<Doktor, String> {
             " left join fetch p.epilepsijaUpitnik e" +
             " where d.email =? 1")
     Optional<Doktor> findByEmailWithPregledAndUpitnici(String email);
+
+    @Query("select d from Doktor d" +
+            " left join fetch d.trenutniPregled p" +
+            " where d.email =? 1")
+    Optional<Doktor> findByEmailWithPregled(String doktorEmail);
 }

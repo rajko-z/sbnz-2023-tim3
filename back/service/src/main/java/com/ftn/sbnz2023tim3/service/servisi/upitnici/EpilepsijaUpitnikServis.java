@@ -1,12 +1,12 @@
 package com.ftn.sbnz2023tim3.service.servisi.upitnici;
 
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenEpilepsijaUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.epilepsija.PopunjenEpilepsijaUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.epilepsija.*;
+import com.ftn.sbnz2023tim3.service.konfiguracija.DRoolsKonfiguracija;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.epilepsija.EpilepsijaPitanjeRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +21,13 @@ public class EpilepsijaUpitnikServis {
 
     private final PregledServis pregledServis;
 
-    private final KieContainer kieContainer;
+    private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
     @Transactional
     public void dodaj(PopunjenEpilepsijaUpitnik epilepsijaUpitnik, Pregled trenutniPregled) {
         List<EpilepsijaPitanje> pitanja = epilepsijaPitanjeRepozitorijum.findAll();
 
-        KieSession ksession = kieContainer.newKieSession("upitniciKS");
+        KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("upitniciKS");
         ksession.insert(trenutniPregled);
 
         EpilepsijaDaNeStavka prva = new EpilepsijaDaNeStavka(epilepsijaUpitnik.getOdgovor1(), pitanja.get(0));
@@ -71,7 +71,7 @@ public class EpilepsijaUpitnikServis {
         ksession.insert(deseta);
 
         ksession.fireAllRules();
-        ksession.dispose();
+        dRoolsKonfiguracija.clearKieSession(ksession);
 
         EpilepsijaUpitnik upitnik = new EpilepsijaUpitnik(prva, druga, treca, cetvrta, peta, sesta, sedma, osma, deveta, deseta);
         trenutniPregled.setEpilepsijaUpitnik(upitnik);

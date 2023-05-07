@@ -1,14 +1,14 @@
 package com.ftn.sbnz2023tim3.service.servisi.upitnici;
 
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.PopunjenAlchajmerUpitnik;
+import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.alchajmer.PopunjenAlchajmerUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerPitanje;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerStavka;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerUpitnik;
+import com.ftn.sbnz2023tim3.service.konfiguracija.DRoolsKonfiguracija;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.upitnici.alchajmer.AlchajmerPitanjeRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import lombok.AllArgsConstructor;
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +23,7 @@ public class AlchajmerUpitnikServis {
 
     private final PregledServis pregledServis;
 
-    private final KieContainer kieContainer;
+    private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
     @Transactional
     public void dodaj(PopunjenAlchajmerUpitnik alchajmerUpitnik, Pregled trenutniPregled) {
@@ -42,11 +42,11 @@ public class AlchajmerUpitnikServis {
         AlchajmerUpitnik upitnik = new AlchajmerUpitnik(prva, druga,treca,cetvrta,peta,sesta,sedma,osma,deveta,deseta);
         upitnik.setPregled(trenutniPregled);
 
-        KieSession ksession = kieContainer.newKieSession("upitniciKS");
+        KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("upitniciKS");
         ksession.insert(trenutniPregled);
         ksession.insert(upitnik);
         ksession.fireAllRules();
-        ksession.dispose();
+        dRoolsKonfiguracija.clearKieSession(ksession);
 
         trenutniPregled.setAlchajmerUpitnik(upitnik);
         pregledServis.sacuvaj(trenutniPregled);

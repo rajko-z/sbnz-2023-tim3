@@ -1,4 +1,4 @@
-package com.ftn.sbnz2023tim3.model.modeli.dto.upitnici;
+package com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.alchajmer;
 
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.odgovori.VremenskiOdgovor;
 import lombok.*;

@@ -1,5 +1,6 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele;
 
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.lekovi.IzdatLek;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerUpitnik;
@@ -54,10 +55,10 @@ public class Pregled {
     private String zakljucak;
 
     @Column
-    private LocalDateTime vremePocetka;
+    private LocalDateTime eegVremePocetka;
 
     @Column
-    private int trajanjeEEGanalizeUMinutima;
+    private LocalDateTime eegVremeZavrsetka;
 
     @Column(nullable = false)
     private boolean zavrsen;
@@ -73,4 +74,7 @@ public class Pregled {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private NesanicaUpitnik nesanicaUpitnik;
+
+    @Enumerated(EnumType.STRING)
+    private StanjeEEGPregleda stanjeEEGPregleda;
 }
