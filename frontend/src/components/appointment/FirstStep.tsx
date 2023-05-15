@@ -10,6 +10,7 @@ import {Disease} from "../../constants/questionnaire/constants";
 import {AlchajmerQuestions} from "../../assets/questions/AlchajmerQuestions";
 import {EpilepsijaQuestions} from "../../assets/questions/EpilepsijaQuestions";
 import {useQuestionnaires} from "../../hooks/useQuestionnaires";
+import {useNavigate} from "react-router-dom";
 
 const FirstStep = () => {
     const {
@@ -26,9 +27,10 @@ const FirstStep = () => {
         disableAlchajmer,
         disableNesanica
     } = useQuestionnaires();
+    const navigate = useNavigate();
 
     const handleSecondStep = () => {
-
+        navigate(`/doktor/eeg`);
     }
 
     return (
