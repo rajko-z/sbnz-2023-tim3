@@ -1,4 +1,4 @@
-import {Questions, VremenskiOdgovor} from "../../model/questions/questions";
+import {Questions, VremenskiOdgovor} from "../../model/questionnaire/questions";
 
 export const ADHDQuestions: Questions[] = [
     {

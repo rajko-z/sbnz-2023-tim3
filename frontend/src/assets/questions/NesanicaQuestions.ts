@@ -1,4 +1,4 @@
-import {DaNeOdgovor, Questions, TrajanjeOdgovor, VremenskiOdgovor} from "../../model/questions/questions";
+import {DaNeOdgovor, Questions, TrajanjeOdgovor, VremenskiOdgovor} from "../../model/questionnaire/questions";
 
 export const NesanicaQuestions: Questions[] = [
     {

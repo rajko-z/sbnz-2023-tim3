@@ -1,0 +1,57 @@
+@import "src/style/global";
+
+.canvas {
+  margin: 5vh auto;
+}
+
+.header {
+  margin: 5vh;
+  color: $text-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  h2 {
+    margin: 20px 10px;
+  }
+
+  .icon {
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+  }
+}
+
+.buttonItem {
+  margin: 3vh 5vh;
+  width: 20vw;
+  height: 20vh;
+  color: $secondary-color !important;
+  background-color: $tertiary-color !important;
+  font-size: 23px;
+  border-radius: 5px;
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.button:hover {
+  background-color: $grey-color !important;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.buttonSubmit {
+  display: flex;
+  justify-content: flex-end;
+
+  .button {
+    width: 5vw;
+    height: 5vh;
+    margin: 10vh 3vw;
+    color: $tertiary-color !important;
+    background-color: $secondary-color !important;
+  }
+}

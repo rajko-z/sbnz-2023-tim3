@@ -1,4 +1,4 @@
-import {DaNeOdgovor, Questions, UcestalostOdgovor, VremenskiOdgovor} from "../../model/questions/questions";
+import {DaNeOdgovor, Questions, UcestalostOdgovor, VremenskiOdgovor} from "../../model/questionnaire/questions";
 
 export const EpilepsijaQuestions:Questions[] = [
     {

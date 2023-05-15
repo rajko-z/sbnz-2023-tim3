@@ -10,6 +10,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PrivateRoute from "./guards/PrivateRoute";
 import HomePagePatient from "./pages/home-page-patient/HomePagePatient";
 import HomePageDoctor from "./pages/home-page-doctor/HomePageDoctor";
+import {ToastContainer} from "react-toastify";
+import QuestionnairesPage from "./pages/questionnaires-page/QuestionnairesPage";
 
 function App() {
     loadIcon();
@@ -19,30 +21,39 @@ function App() {
         redirectPath = path[role];
     }
     return (
-        <BrowserRouter>
-            <Routes>
-                {/*<Route path="/"*/}
-                {/*       element={<PublicRoute isAuthenticated={!!getUsernameFromToken()}*/}
-                {/*                             redirectPath={redirectPath}*/}
-                {/*                             component={HomePage}/>}/>*/}
-                <Route path="/"
-                       element={<PublicRoute isAuthenticated={!!getUsernameFromToken()}
-                                             redirectPath={redirectPath}
-                                             component={() => <LogInPage/>}/>}/>
-                <Route path="/pacijent"
-                       element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
-                                              role={getRoleFromToken()}
-                                              allowedRoles={[userRole.ROLE_PACIJENT]}
-                                              redirectPath={redirectPath}
-                                              component={HomePagePatient}/>}/>
-                <Route path="/doktor"
-                       element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
-                                              role={getRoleFromToken()}
-                                              allowedRoles={[userRole.ROLE_DOKTOR]}
-                                              redirectPath={redirectPath}
-                                              component={HomePageDoctor}/>}/>
-            </Routes>
-        </BrowserRouter>
+        <>
+            <BrowserRouter>
+                <Routes>
+                    {/*<Route path="/"*/}
+                    {/*       element={<PublicRoute isAuthenticated={!!getUsernameFromToken()}*/}
+                    {/*                             redirectPath={redirectPath}*/}
+                    {/*                             component={HomePage}/>}/>*/}
+                    <Route path="/"
+                           element={<PublicRoute isAuthenticated={!!getUsernameFromToken()}
+                                                 redirectPath={redirectPath}
+                                                 component={() => <LogInPage/>}/>}/>
+                    <Route path="/pacijent"
+                           element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
+                                                  role={getRoleFromToken()}
+                                                  allowedRoles={[userRole.ROLE_PACIJENT]}
+                                                  redirectPath={redirectPath}
+                                                  component={HomePagePatient}/>}/>
+                    <Route path="/doktor"
+                           element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
+                                                  role={getRoleFromToken()}
+                                                  allowedRoles={[userRole.ROLE_DOKTOR]}
+                                                  redirectPath={redirectPath}
+                                                  component={HomePageDoctor}/>}/>
+                    <Route path="/doktor/upitnici"
+                           element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
+                                                  role={getRoleFromToken()}
+                                                  allowedRoles={[userRole.ROLE_DOKTOR]}
+                                                  redirectPath={redirectPath}
+                                                  component={QuestionnairesPage}/>}/>
+                </Routes>
+            </BrowserRouter>
+            <ToastContainer theme="dark"/>
+        </>
     );
 }
 

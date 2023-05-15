@@ -7,7 +7,7 @@ export enum VremenskiOdgovor {
     NIKAD = "NIKAD",
     RETKO = "RETKO",
     PONEKAD = "PONEKAD",
-    CESTO = "ČESTO"
+    CESTO = "CESTO"
 }
 
 export enum TrajanjeOdgovor {
