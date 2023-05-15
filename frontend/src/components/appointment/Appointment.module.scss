@@ -1,0 +1,75 @@
+@import "src/style/global";
+
+.canvas {
+  margin: 5vh auto;
+}
+
+.paper {
+  width: 50vw;
+  height: 70vh;
+  background-color: $primary-color;
+  box-shadow: $secondary-color 1px 1px 5px 5px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  z-index: 9;
+  margin: 10vh auto;
+  border-radius: 5px;
+}
+
+.header {
+  margin: 5vh;
+  color: $text-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  h1 {
+    margin: 10px 10px;
+  }
+
+  .icon {
+    margin: 10px;
+    height: 50px;
+    width: 50px;
+  }
+}
+
+.input {
+  margin: 10vh 10vw;
+
+  h4 {
+    color: $text-color;
+    text-align: center;
+  }
+}
+
+.button {
+  margin: 3vh 5vh;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1px solid $secondary-color;
+}
+
+.input_field {
+  background-color: $tertiary-color !important;
+  color: $text-color !important;
+  border: solid thin $text-color !important;
+}
+
+.input_field:focus {
+  background-color: $tertiary-color !important;
+  color: $text-color !important;
+  border: solid thin $secondary-color !important;
+}
+
+.buttonSubmit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-right: 7vw;
+}

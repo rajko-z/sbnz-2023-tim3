@@ -1,6 +1,7 @@
 package com.ftn.sbnz2023tim3.service.pomocneKlase;
 
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Korisnik;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Role;
 import com.ftn.sbnz2023tim3.service.konfiguracija.JWTKonfiguracija;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,10 +24,11 @@ public class TokenUtils {
 
     private final JWTKonfiguracija jwtConfig;
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Role role) {
         return Jwts.builder()
                 .setIssuer(jwtConfig.appName())
                 .setSubject(username)
+                .claim("role", role)
                 .setAudience(AUDIENCE_WEB)
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())

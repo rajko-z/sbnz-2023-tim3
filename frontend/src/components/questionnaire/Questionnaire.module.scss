@@ -1,0 +1,92 @@
+@import "src/style/global";
+
+.canvas {
+  width: 50vw;
+  height: 60vh;
+}
+
+.header {
+  color: $text-color;
+  text-align: center;
+}
+
+.wrapperQuestion {
+  margin: 5vh;
+  color: $text-color;
+}
+
+.question {
+  font-size: 20px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  list-style: none;
+}
+
+.choice {
+  border: 1px solid $grey-color;
+  background-color: $tertiary-color;
+  border-radius: 10px;
+  text-align: center;
+  margin: 1vh;
+  width: 15vw;
+  height: 5vh;
+  text-transform: lowercase;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.choiceSelect {
+  border: 1px solid $grey-color;
+  border-radius: 10px;
+  text-align: center;
+  margin: 1vh;
+  width: 15vw;
+  height: 5vh;
+  text-transform: lowercase;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+  background-color: $grey-color;
+}
+
+.choice:hover {
+  background-color: $grey-color;
+}
+
+.choice:first-letter, .choiceSelect:first-letter {
+  text-transform: uppercase;
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1vh;
+  margin-right: 5vh;
+
+  .buttonNext {
+    background-color: $secondary-color !important;
+    color: $primary-color !important;
+    border-radius: 5px;
+    margin: 1px;
+    height: 40px;
+    text-decoration: none !important;
+    border: none !important;
+    font-weight: bold !important;
+  }
+
+  .buttonFinish{
+    background-color: $success-color !important;
+    color: $primary-color !important;
+    border-radius: 5px;
+    margin: 1px;
+    height: 40px;
+    text-decoration: none !important;
+    border: none !important;
+    font-weight: bold !important;
+  }
+}

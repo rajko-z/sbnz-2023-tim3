@@ -1,0 +1,7 @@
+@import "src/style/global";
+
+.background {
+  background-color: $background-color;
+  display: flex;
+  flex-direction: row;
+}

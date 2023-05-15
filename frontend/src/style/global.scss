@@ -1,0 +1,26 @@
+@import "src/style/constants";
+@import "src/style/mixins";
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.toast_message {
+  background: $tertiary-color;
+  color: $text-color;
+}
+
+.button {
+  background-color: $secondary-color !important;
+  color: $primary-color !important;
+  border-radius: 5px;
+  min-width: 200px;
+  height: 40px;
+  text-decoration: none !important;
+  border: none !important;
+  font-weight: bold !important;
+}
+
+.button:hover {
+  background-color: $secondary-color !important;
+}
