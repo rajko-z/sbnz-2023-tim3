@@ -1,0 +1,54 @@
+@import "src/style/global";
+
+.canvas {
+  width: 50vw;
+  height: 70vh;
+  background-color: $primary-color;
+  box-shadow: $secondary-color 1px 1px 5px 5px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  z-index: 9;
+  margin: 10vh auto;
+  border-radius: 5px;
+}
+
+.header {
+  color: $text-color;
+  margin: 5vh 0 ;
+  text-align: center;
+}
+
+.label {
+  color: $text-color;
+  margin: 5px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 24vw;
+  justify-self: center;
+  align-self: center;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.input_field {
+  background-color: $tertiary-color !important;
+  color: $text-color !important;
+  border: solid thin $text-color !important;
+}
+
+.input_field:focus {
+  background-color: $tertiary-color !important;
+  color: $text-color !important;
+  border: solid thin $secondary-color !important;
+}
+
+.buttonSubmit {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}

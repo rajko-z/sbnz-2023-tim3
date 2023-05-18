@@ -1,0 +1,10 @@
+import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka
+
+rule "signal_rule0"
+when
+    $s: Signal(frekvencija <= 15, frekvencija >= 5, amplituda <= 60, amplituda >= 40, predeoMozga in POTILJACNI, stanjePacijenta = OPUSTENO_STANJE)
+then
+    modify($s){ setTipSignala("ALFA");}
+end
+
+

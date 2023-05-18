@@ -1,13 +1,11 @@
 package com.ftn.sbnz2023tim3.service.servisi.signali;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.Uzrast;
+import com.ftn.sbnz2023tim3.model.modeli.dto.SignalDTO;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.*;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
-import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.alchajmer.AlchajmerUpitnik;
 import com.ftn.sbnz2023tim3.service.izuzeci.BadRequestException;
 import com.ftn.sbnz2023tim3.service.konfiguracija.DRoolsKonfiguracija;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
@@ -20,10 +18,14 @@ import com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.maven.shared.invoker.*;
+import org.drools.template.ObjectDataCompiler;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,7 +39,10 @@ public class SignalServis {
 
     private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
-    public GenerisanSignal generisiEegSignal() {
+    public GenerisanSignal generisiEegSignal() throws MavenInvocationException, IOException {
+        //5,15,40,60,"potiljacniRezanj, temeniRezanj, frontalniRezanj", "opustenoStanje", alfa
+        SignalDTO signalDTO = new SignalDTO(5,15,40,60, DeoMozga.POTILJACNI, StanjePacijenta.OPUSTENO_STANJE, TipSignala.ALFA);
+        generisiPravilaIzTemplejta(signalDTO);
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIUpitnicima();
         if (doktor.getTrenutniPregled() == null) {
             throw new BadRequestException("Nemate trenutni pregled");
@@ -60,6 +65,38 @@ public class SignalServis {
         GenerisanSignal generisanSignal = generisiRandomSignalNaOsnovuProcenataUpitnika(pregled, generisiNesanicu);
         insertIntoKSession(generisanSignal);
         return generisanSignal;
+    }
+
+    public void generisiPravilaIzTemplejta(SignalDTO dto) throws IOException, MavenInvocationException {
+        InputStream template = new FileInputStream(
+                "kjar/src/main/resources/rules/signali/templates/signal.drt");
+
+        List<SignalDTO> arguments = new ArrayList<>();
+        arguments.add(new SignalDTO(dto.getDonjaFrekvencija(), dto.getGornjaFrekvencija(), dto.getDonjaAmplituda(), dto.getGornjaAmplituda(), dto.getPredeliMozga(), dto.getStanjePacijenta(), dto.getTipSignala()));
+        ObjectDataCompiler compiler = new ObjectDataCompiler();
+        String drl = compiler.compile(arguments, template);
+
+        FileOutputStream drlFile = new FileOutputStream(new File("kjar/src/main/resources/rules/signali/signal.drl"), false);
+        drlFile.write(drl.getBytes());
+        drlFile.close();
+
+        invoke();
+    }
+
+    private void invoke() throws MavenInvocationException {
+        InvocationRequest request = new DefaultInvocationRequest();
+        request.setPomFile(new File("kjar/pom.xml"));
+        request.setGoals(Arrays.asList("clean", "install"));
+
+        Invoker invoker = new DefaultInvoker();
+        invoker.setMavenHome(new File(System.getenv("M2_HOME")));
+        invoker.execute(request);
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void insertIntoKSession(GenerisanSignal generisanSignal) {

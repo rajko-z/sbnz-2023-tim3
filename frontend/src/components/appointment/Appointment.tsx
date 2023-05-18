@@ -7,6 +7,7 @@ import {getAllPatient} from "../../services/patient/patient";
 import {Patient} from "../../model/patient/patient";
 import {useNavigate} from "react-router-dom";
 import {startAppointment} from "../../services/appointment/appointment";
+import {Response} from "../../model/auth/auth";
 
 const Appointment = () => {
     const [patients, setPatients] = useState<Patient[]>();
@@ -17,18 +18,19 @@ const Appointment = () => {
         (async () => {
             const data = await getAllPatient() as unknown as Patient[];
             setPatients(data);
-            if(data.length > 0){
+            if (data.length > 0) {
                 // @ts-ignore
                 setSelectedPatient(data?.at(0).email);
             }
         })();
     }, [])
 
-    const handleFirstStep = async() => {
-        //zapocni pregled
-        if(selectedPatient){
-            await startAppointment(selectedPatient);
-            navigate(`/doktor/upitnici`);
+    const handleFirstStep = async () => {
+        if (selectedPatient) {
+            const success = await startAppointment(selectedPatient);
+            if (success === Response.SUCCESS) {
+                navigate(`/doktor/upitnici`);
+            }
         }
     }
 

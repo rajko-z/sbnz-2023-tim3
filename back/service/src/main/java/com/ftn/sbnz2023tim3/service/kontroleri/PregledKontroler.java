@@ -5,11 +5,14 @@ import com.ftn.sbnz2023tim3.model.modeli.dto.TextResponse;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import com.ftn.sbnz2023tim3.service.servisi.signali.SignalServis;
 import lombok.AllArgsConstructor;
+import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
@@ -36,7 +39,7 @@ public class PregledKontroler {
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
     @GetMapping("/generisi-signal")
-    public ResponseEntity<GenerisanSignal> generisiSignal() {
+    public ResponseEntity<GenerisanSignal> generisiSignal() throws MavenInvocationException, IOException {
         GenerisanSignal signal = signalServis.generisiEegSignal();
         return new ResponseEntity<>(signal, HttpStatus.OK);
     }
