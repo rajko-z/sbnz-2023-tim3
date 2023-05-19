@@ -8,7 +8,9 @@ predeliMozga
 stanjePacijenta
 tipSignala
 
-import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka
+package signali;
+
+import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
 
 template "signal-template"
 
@@ -16,7 +18,7 @@ rule "signal_rule@{row.rowNumber}"
 when
     $s: Signal(frekvencija <= @{gornjaFrekvencija}, frekvencija >= @{donjaFrekvencija}, amplituda <= @{gornjaAmplituda}, amplituda >= @{donjaAmplituda}, predeoMozga in @{predeliMozga}, stanjePacijenta = @{stanjePacijenta})
 then
-    modify($s){ setTipSignala("${tipSignala}");}
+    modify($s){ setTipSignala(@{tipSignala});}
 end
 
 end template

@@ -39,3 +39,12 @@ export const startEEGAppointment = () => {
             return Response.ERROR;
         });
 }
+
+export const getSignal = () => {
+    return api
+        .get('pregledi/generisi-signal')
+        .then((res) => res.data)
+        .catch((err) => {
+            console.log(err);
+        });
+}

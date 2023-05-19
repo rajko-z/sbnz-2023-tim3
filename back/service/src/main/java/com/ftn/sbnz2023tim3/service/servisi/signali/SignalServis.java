@@ -39,10 +39,8 @@ public class SignalServis {
 
     private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
-    public GenerisanSignal generisiEegSignal() throws MavenInvocationException, IOException {
-        //5,15,40,60,"potiljacniRezanj, temeniRezanj, frontalniRezanj", "opustenoStanje", alfa
-        SignalDTO signalDTO = new SignalDTO(5,15,40,60, DeoMozga.POTILJACNI, StanjePacijenta.OPUSTENO_STANJE, TipSignala.ALFA);
-        generisiPravilaIzTemplejta(signalDTO);
+    public GenerisanSignal generisiEegSignal() {
+        //generisiPravilaIzTemplejta();
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIUpitnicima();
         if (doktor.getTrenutniPregled() == null) {
             throw new BadRequestException("Nemate trenutni pregled");
@@ -59,20 +57,24 @@ public class SignalServis {
             pregled.getNesanicaUpitnik() == null &&
             pregled.getEpilepsijaUpitnik() == null) {
             GenerisanSignal generisanSignal = generisiRavnomeranRandomSignal(generisiNesanicu);
-            insertIntoKSession(generisanSignal);
+            //insertIntoKSession(generisanSignal);
             return generisanSignal;
         }
         GenerisanSignal generisanSignal = generisiRandomSignalNaOsnovuProcenataUpitnika(pregled, generisiNesanicu);
-        insertIntoKSession(generisanSignal);
+        //insertIntoKSession(generisanSignal);
         return generisanSignal;
     }
 
-    public void generisiPravilaIzTemplejta(SignalDTO dto) throws IOException, MavenInvocationException {
+    public void generisiPravilaIzTemplejta() throws IOException, MavenInvocationException {
         InputStream template = new FileInputStream(
-                "kjar/src/main/resources/rules/signali/templates/signal.drt");
+                "kjar/src/main/resources/rules/templates/signalTemplate.drt");
 
         List<SignalDTO> arguments = new ArrayList<>();
-        arguments.add(new SignalDTO(dto.getDonjaFrekvencija(), dto.getGornjaFrekvencija(), dto.getDonjaAmplituda(), dto.getGornjaAmplituda(), dto.getPredeliMozga(), dto.getStanjePacijenta(), dto.getTipSignala()));
+        arguments.add(new SignalDTO(5,15,40,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI), StanjePacijenta.OPUSTENO_STANJE, TipSignala.ALFA));
+        arguments.add(new SignalDTO(10,35,10,30, Arrays.asList(DeoMozga.TEMENI, DeoMozga.FRONTALNI), StanjePacijenta.POJACANA_AKTIVNOST_MOZGA, TipSignala.BETA));
+        arguments.add(new SignalDTO(20,120,0,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.TEMPORALNI), StanjePacijenta.VISOKO_PROCESIRANJE_PODATAKA, TipSignala.GAMA));
+        arguments.add(new SignalDTO(0,6,50,110, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.TEMPORALNI), StanjePacijenta.SAN, TipSignala.DELTA));
+        arguments.add(new SignalDTO(2,10,60,80, Arrays.asList(DeoMozga.TEMENI, DeoMozga.TEMPORALNI), StanjePacijenta.NAPETOST, TipSignala.TETA));
         ObjectDataCompiler compiler = new ObjectDataCompiler();
         String drl = compiler.compile(arguments, template);
 
@@ -89,7 +91,7 @@ public class SignalServis {
         request.setGoals(Arrays.asList("clean", "install"));
 
         Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File(System.getenv("M2_HOME")));
+        invoker.setMavenHome(new File("/opt/homebrew/Cellar/maven/3.9.1/libexec"));
         invoker.execute(request);
 
         try {

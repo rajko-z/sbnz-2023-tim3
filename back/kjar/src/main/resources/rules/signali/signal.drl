@@ -1,10 +1,39 @@
-import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdStavka
+package signali;
+import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
 
 rule "signal_rule0"
 when
-    $s: Signal(frekvencija <= 15, frekvencija >= 5, amplituda <= 60, amplituda >= 40, predeoMozga in POTILJACNI, stanjePacijenta = OPUSTENO_STANJE)
+    $s: Signal(frekvencija <= 15, frekvencija >= 5, amplituda <= 60, amplituda >= 40, predeoMozga in [POTILJACNI, TEMENI, FRONTALNI], stanjePacijenta = OPUSTENO_STANJE)
 then
-    modify($s){ setTipSignala("ALFA");}
+    modify($s){ setTipSignala(ALFA);}
+end
+
+rule "signal_rule1"
+when
+    $s: Signal(frekvencija <= 35, frekvencija >= 10, amplituda <= 30, amplituda >= 10, predeoMozga in [TEMENI, FRONTALNI], stanjePacijenta = POJACANA_AKTIVNOST_MOZGA)
+then
+    modify($s){ setTipSignala(BETA);}
+end
+
+rule "signal_rule2"
+when
+    $s: Signal(frekvencija <= 120, frekvencija >= 20, amplituda <= 60, amplituda >= 0, predeoMozga in [POTILJACNI, TEMENI, FRONTALNI, TEMPORALNI], stanjePacijenta = VISOKO_PROCESIRANJE_PODATAKA)
+then
+    modify($s){ setTipSignala(GAMA);}
+end
+
+rule "signal_rule3"
+when
+    $s: Signal(frekvencija <= 6, frekvencija >= 0, amplituda <= 110, amplituda >= 50, predeoMozga in [POTILJACNI, TEMENI, FRONTALNI, TEMPORALNI], stanjePacijenta = SAN)
+then
+    modify($s){ setTipSignala(DELTA);}
+end
+
+rule "signal_rule4"
+when
+    $s: Signal(frekvencija <= 10, frekvencija >= 2, amplituda <= 80, amplituda >= 60, predeoMozga in [TEMENI, TEMPORALNI], stanjePacijenta = NAPETOST)
+then
+    modify($s){ setTipSignala(TETA);}
 end
 
 

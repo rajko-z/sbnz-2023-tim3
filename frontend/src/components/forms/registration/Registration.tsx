@@ -1,14 +1,44 @@
 import {Button, Col, Form, Row} from "react-bootstrap";
 import Classes from "./Registration.module.scss";
 import {useState} from "react";
+import {Response} from "../../../model/auth/auth";
+import {toast} from "react-toastify";
+import {addPatient} from "../../../services/patient/patient";
 
 const Registration = () => {
     const [validated, setValidated] = useState(false);
+    const [email, setEmail] = useState('');
+    const [ime, setIme] = useState('');
+    const [prezime, setPrezime] = useState('');
+    const [brojTelefona, setBrojTelefona] = useState('');
+    const [adresa, setAdresa] = useState('');
+    const [datumRodjenja, setDatumRodjenja] = useState('');
+
 
     const handleOnSubmit = async (event: any) => {
         event.preventDefault();
         event.stopPropagation();
-
+        const success = await addPatient({
+            email: email,
+            ime: ime,
+            prezime: prezime,
+            adresa: adresa,
+            brojTelefona: brojTelefona,
+            datumRodjenja: datumRodjenja + " 00:00:00"
+        });
+        if (success === Response.SUCCESS) {
+            setIme('');
+            setAdresa('');
+            setEmail('');
+            setPrezime('');
+            setDatumRodjenja('');
+            setBrojTelefona('');
+        } else {
+            toast.error(success, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+        }
         setValidated(true)
     }
 
@@ -25,7 +55,7 @@ const Registration = () => {
                             className={Classes.input_field}
                             required
                             type="email"
-                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">Molimo vas unesite korisničko ime</Form.Control.Feedback>
                     </Form.Group>
@@ -37,7 +67,7 @@ const Registration = () => {
                             className={Classes.input_field}
                             required
                             type="text"
-                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setIme(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">Molimo vas unesite ime</Form.Control.Feedback>
                     </Form.Group>
@@ -47,7 +77,7 @@ const Registration = () => {
                             className={Classes.input_field}
                             required
                             type="text"
-                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setPrezime(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">Molimo vas unesite prezime</Form.Control.Feedback>
                     </Form.Group>
@@ -59,7 +89,7 @@ const Registration = () => {
                             className={Classes.input_field}
                             required
                             type="text"
-                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setBrojTelefona(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">Molimo vas unesite broj telefona</Form.Control.Feedback>
                     </Form.Group>
@@ -69,7 +99,7 @@ const Registration = () => {
                             className={Classes.input_field}
                             required
                             type="text"
-                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setAdresa(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">Molimo vas unesite adresu</Form.Control.Feedback>
                     </Form.Group>
@@ -81,7 +111,7 @@ const Registration = () => {
                             className={Classes.input_field}
                             required
                             type="date"
-                            // onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setDatumRodjenja(e.target.value)}
                         />
                         <Form.Control.Feedback type="invalid">Molimo vas unesite datum rođenja</Form.Control.Feedback>
                     </Form.Group>

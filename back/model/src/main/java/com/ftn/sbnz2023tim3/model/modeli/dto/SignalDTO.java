@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class SignalDTO {
     private int gornjaFrekvencija;
     private int donjaAmplituda;
     private int gornjaAmplituda;
-    private DeoMozga predeliMozga;
+    private List<DeoMozga> predeliMozga;
     private StanjePacijenta stanjePacijenta;
     private TipSignala tipSignala;
 }
