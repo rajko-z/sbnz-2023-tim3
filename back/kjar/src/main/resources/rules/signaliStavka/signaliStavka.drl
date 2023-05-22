@@ -333,13 +333,13 @@ then
     double procenatEpilepsije = ($rezultatBeta.getBrojPovisenih() + $rezultatGama.getBrojPovisenih())/2;
     double procenatNesanice = Collections.max(Arrays.asList(
             ($rezultatTeta.getBrojSmanjenih() + $rezultatDelta.getBrojSmanjenih())/2,
-            ($rezultatTeta.getBrojSmanjenih() + (100 - ukupanProcenatDelta))/2,
-            ($rezultatDelta.getBrojSmanjenih() + (100 - ukupanProcenatTeta))/2,
-            ((100 - ukupanProcenatDelta) + (100 - ukupanProcenatTeta))/2
+            ($rezultatTeta.getBrojSmanjenih() + (1 - ukupanProcenatDelta))/2,
+            ($rezultatDelta.getBrojSmanjenih() + (1 - ukupanProcenatTeta))/2,
+            ((1 - ukupanProcenatDelta) + (1 - ukupanProcenatTeta))/2
     ));
     double procenatAlchajmera = Collections.max(Arrays.asList(
             ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + $rezultatAlfa.getBrojSmanjenih())/3,
-            ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + (100 - ukupanProcenatAlfa))/3
+            ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + (1 - ukupanProcenatAlfa))/3
     ));
     double procenatADHD = ($rezultatBeta.getBrojPovisenih() + $rezultatAlfa.getBrojSmanjenih())/2;
     System.out.println("procenti, ep: " + procenatEpilepsije + " nesanica: "+ procenatNesanice + " alchajmer: " + procenatAlchajmera + " adhd: " + procenatADHD);
