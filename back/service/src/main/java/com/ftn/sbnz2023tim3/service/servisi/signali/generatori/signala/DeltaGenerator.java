@@ -6,6 +6,7 @@ import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import static com.ftn.sbnz2023tim3.service.servisi.signali.RandomUtils.generisiRandomBrojIzmedju;
@@ -18,7 +19,7 @@ public class DeltaGenerator {
     public static Signal generisiDeltaSignal(int frekDonja, int frekGornja, int ampDonja, int ampGornja) {
         return Signal.builder()
                 .deoMozga(izaberiDeoMozgaNasumicno(List.of(DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.POTILJACNI, DeoMozga.TEMPORALNI)))
-                .timestamp(LocalDateTime.now())
+                .timestamp(new Date())
                 .stanjePacijenta(StanjePacijenta.SAN)
                 .frekvencija(generisiRandomBrojIzmedju(0, 4))
                 .amplituda(generisiRandomBrojIzmedju(60,100))

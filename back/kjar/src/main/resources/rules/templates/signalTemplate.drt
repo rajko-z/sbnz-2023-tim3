@@ -11,14 +11,20 @@ tipSignala
 package signali;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
 
 template "signal-template"
 
 rule "signal_rule@{row.rowNumber}"
 when
-    $s: Signal(frekvencija <= @{gornjaFrekvencija}, frekvencija >= @{donjaFrekvencija}, amplituda <= @{gornjaAmplituda}, amplituda >= @{donjaAmplituda}, predeoMozga in @{predeliMozga}, stanjePacijenta = @{stanjePacijenta})
+    $s: Signal(frekvencija <= @{gornjaFrekvencija},
+        frekvencija >= @{donjaFrekvencija},
+        amplituda <= @{gornjaAmplituda},
+        amplituda >= @{donjaAmplituda},
+        stanjePacijenta == StanjePacijenta.@{stanjePacijenta})
 then
-    modify($s){ setTipSignala(@{tipSignala});}
+    modify($s){ setTip(TipSignala.@{tipSignala}) }
 end
 
 end template

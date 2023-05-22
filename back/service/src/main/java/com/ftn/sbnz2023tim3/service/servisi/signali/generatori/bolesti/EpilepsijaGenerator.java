@@ -2,6 +2,8 @@ package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.bolesti;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 
+import java.util.Arrays;
+
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.AlfaGenerator.generisiNormalanAlfaSignal;
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.BetaGenerator.generisiPovisenBetaSignal;
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.DeltaGenerator.generisiNormalanDeltaSignal;
@@ -14,11 +16,13 @@ public class EpilepsijaGenerator {
 
     public static GenerisanSignal generisiEpilepsija() {
         return GenerisanSignal.builder()
-                .alfaSignal(generisiNormalanAlfaSignal())
-                .betaSignal(generisiPovisenBetaSignal())
-                .gamaSignal(generisiPovisenGamaSignal())
-                .deltaSignal(generisiNormalanDeltaSignal())
-                .tetaSignal(generisiNormalanTetaSignal())
+                .signals(Arrays.asList(
+                        generisiNormalanAlfaSignal(),
+                        generisiPovisenBetaSignal(),
+                        generisiPovisenGamaSignal(),
+                        generisiNormalanDeltaSignal(),
+                        generisiNormalanTetaSignal()
+                ))
                 .build();
     }
 }

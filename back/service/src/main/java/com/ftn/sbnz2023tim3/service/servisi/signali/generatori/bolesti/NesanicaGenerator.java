@@ -2,6 +2,8 @@ package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.bolesti;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 
+import java.util.Arrays;
+
 import static com.ftn.sbnz2023tim3.service.servisi.signali.RandomUtils.generisiRandomBrojIzmedju;
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.AlfaGenerator.generisiNormalanAlfaSignal;
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.BetaGenerator.generisiNormalanBetaSignal;
@@ -26,38 +28,42 @@ public class NesanicaGenerator {
 
     private static GenerisanSignal generisiNesanicaTetaIDeltaSmanjeno() {
         return GenerisanSignal.builder()
-                .alfaSignal(generisiNormalanAlfaSignal())
-                .betaSignal(generisiNormalanBetaSignal())
-                .gamaSignal(generisiNormalanGamaSignal())
-                .deltaSignal(generisiSnizenDeltaSignal())
-                .tetaSignal(generisiSnizenTetaSignal())
+                .signals(Arrays.asList(
+                        generisiNormalanAlfaSignal(),
+                        generisiNormalanBetaSignal(),
+                        generisiNormalanGamaSignal(),
+                        generisiSnizenDeltaSignal(),
+                        generisiSnizenTetaSignal()
+                ))
                 .build();
     }
     private static GenerisanSignal generisiNesanicaTetaIDeltaOdsutno() {
         return GenerisanSignal.builder()
-                .alfaSignal(generisiNormalanAlfaSignal())
-                .betaSignal(generisiNormalanBetaSignal())
-                .gamaSignal(generisiNormalanGamaSignal())
-                .deltaSignal(null)
-                .tetaSignal(null)
+                .signals(Arrays.asList(
+                        generisiNormalanAlfaSignal(),
+                        generisiNormalanBetaSignal(),
+                        generisiNormalanGamaSignal()
+                ))
                 .build();
     }
     private static GenerisanSignal generisiNesanicaTetaSmanjenoIDeltaOdsutno() {
         return GenerisanSignal.builder()
-                .alfaSignal(generisiNormalanAlfaSignal())
-                .betaSignal(generisiNormalanBetaSignal())
-                .gamaSignal(generisiNormalanGamaSignal())
-                .deltaSignal(null)
-                .tetaSignal(generisiSnizenTetaSignal())
+                .signals(Arrays.asList(
+                        generisiNormalanAlfaSignal(),
+                        generisiNormalanBetaSignal(),
+                        generisiNormalanGamaSignal(),
+                        generisiSnizenTetaSignal()
+                ))
                 .build();
     }
     private static GenerisanSignal generisiNesanicaTetaOdsutnoIDeltaSmanjeno() {
         return GenerisanSignal.builder()
-                .alfaSignal(generisiNormalanAlfaSignal())
-                .betaSignal(generisiNormalanBetaSignal())
-                .gamaSignal(generisiNormalanGamaSignal())
-                .deltaSignal(generisiSnizenDeltaSignal())
-                .tetaSignal(null)
+                .signals(Arrays.asList(
+                        generisiNormalanAlfaSignal(),
+                        generisiNormalanBetaSignal(),
+                        generisiNormalanGamaSignal(),
+                        generisiSnizenDeltaSignal()
+                ))
                 .build();
     }
 }

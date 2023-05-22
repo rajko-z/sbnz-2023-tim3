@@ -1,7 +1,7 @@
 package com.ftn.sbnz2023tim3.model.modeli.dto;
 
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.VisinaSignala;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.VisinaSignala;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Timestamp("timestamp")
 public class StavkaRezultataSignala {
 
-    private LocalDateTime timestamp;
+    private Date timestamp;
 
     private VisinaSignala stanje;
 

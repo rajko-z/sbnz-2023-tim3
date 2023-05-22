@@ -34,14 +34,20 @@ public class PregledKontroler {
     @PutMapping("/zapocni-eeg")
     public ResponseEntity<TextResponse> zapocniEeg() {
         pregledServis.zapocniEEG();
-        return new ResponseEntity<>(new TextResponse("Uspesno zapocet eeg pregled"), HttpStatus.OK);
+        return new ResponseEntity<>(new TextResponse("Uspesno zapocet EEG pregled"), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
     @GetMapping("/generisi-signal")
-    public ResponseEntity<GenerisanSignal> generisiSignal() throws MavenInvocationException, IOException {
+    public ResponseEntity<GenerisanSignal> generisiSignal() {
         GenerisanSignal signal = signalServis.generisiEegSignal();
         return new ResponseEntity<>(signal, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
+    @PutMapping("zavrsi-eeg")
+    public ResponseEntity<TextResponse> zavrsiEeg() {
+        pregledServis.zavrsiEEG();
+        return new ResponseEntity<>(new TextResponse("Uspesno je zavrsen EEG pregled"), HttpStatus.OK);
+    }
 }

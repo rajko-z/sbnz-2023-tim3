@@ -40,7 +40,6 @@ public class SignalServis {
     private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
     public GenerisanSignal generisiEegSignal() {
-        //generisiPravilaIzTemplejta();
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIUpitnicima();
         if (doktor.getTrenutniPregled() == null) {
             throw new BadRequestException("Nemate trenutni pregled");
@@ -57,11 +56,13 @@ public class SignalServis {
             pregled.getNesanicaUpitnik() == null &&
             pregled.getEpilepsijaUpitnik() == null) {
             GenerisanSignal generisanSignal = generisiRavnomeranRandomSignal(generisiNesanicu);
-            //insertIntoKSession(generisanSignal);
+            generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
+            insertIntoKSession(generisanSignal, pregled);
             return generisanSignal;
         }
         GenerisanSignal generisanSignal = generisiRandomSignalNaOsnovuProcenataUpitnika(pregled, generisiNesanicu);
-        //insertIntoKSession(generisanSignal);
+        generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
+        insertIntoKSession(generisanSignal, pregled);
         return generisanSignal;
     }
 
@@ -70,7 +71,7 @@ public class SignalServis {
                 "kjar/src/main/resources/rules/templates/signalTemplate.drt");
 
         List<SignalDTO> arguments = new ArrayList<>();
-        arguments.add(new SignalDTO(5,15,40,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI), StanjePacijenta.OPUSTENO_STANJE, TipSignala.ALFA));
+        arguments.add(new SignalDTO(5,15,40,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI,  DeoMozga.FRONTALNI), StanjePacijenta.OPUSTENO_STANJE, TipSignala.ALFA));
         arguments.add(new SignalDTO(10,35,10,30, Arrays.asList(DeoMozga.TEMENI, DeoMozga.FRONTALNI), StanjePacijenta.POJACANA_AKTIVNOST_MOZGA, TipSignala.BETA));
         arguments.add(new SignalDTO(20,120,0,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.TEMPORALNI), StanjePacijenta.VISOKO_PROCESIRANJE_PODATAKA, TipSignala.GAMA));
         arguments.add(new SignalDTO(0,6,50,110, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.TEMPORALNI), StanjePacijenta.SAN, TipSignala.DELTA));
@@ -101,14 +102,16 @@ public class SignalServis {
         }
     }
 
-    private void insertIntoKSession(GenerisanSignal generisanSignal) {
+    private void insertIntoKSession(GenerisanSignal generisanSignal, Pregled pregled) {
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliKS");
-        ksession.insert(generisanSignal.getAlfaSignal());
-        ksession.insert(generisanSignal.getBetaSignal());
-        ksession.insert(generisanSignal.getTetaSignal());
-        ksession.insert(generisanSignal.getDeltaSignal());
-        ksession.insert(generisanSignal.getGamaSignal());
+        generisanSignal.getSignals().forEach(ksession::insert);
+
         ksession.fireAllRules();
+        KieSession ksessionStavka = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
+        generisanSignal.getSignals().forEach(ksessionStavka::insert);
+        System.out.println(generisanSignal.getSignals().size());
+
+        ksessionStavka.fireAllRules();
     }
 
     private GenerisanSignal generisiRandomSignalNaOsnovuProcenataUpitnika(Pregled pregled, boolean generisiNesanicu) {
@@ -173,11 +176,13 @@ public class SignalServis {
 
     private GenerisanSignal generisiZdravSignal() {
         return GenerisanSignal.builder()
-                .alfaSignal(AlfaGenerator.generisiNormalanAlfaSignal())
-                .betaSignal(BetaGenerator.generisiNormalanBetaSignal())
-                .gamaSignal(GamaGenerator.generisiNormalanGamaSignal())
-                .deltaSignal(DeltaGenerator.generisiNormalanDeltaSignal())
-                .tetaSignal(TetaGenerator.generisiNormalanTetaSignal())
+                .signals(Arrays.asList(
+                        AlfaGenerator.generisiNormalanAlfaSignal(),
+                        BetaGenerator.generisiNormalanBetaSignal(),
+                        GamaGenerator.generisiNormalanGamaSignal(),
+                        DeltaGenerator.generisiNormalanDeltaSignal(),
+                        TetaGenerator.generisiNormalanTetaSignal()
+                ))
                 .build();
     }
 

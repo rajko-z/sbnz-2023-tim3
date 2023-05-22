@@ -2,6 +2,11 @@ package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.bolesti;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import static com.ftn.sbnz2023tim3.service.servisi.signali.RandomUtils.generisiRandomBrojIzmedju;
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.AlfaGenerator.generisiSnizenAlfaSignal;
 import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.BetaGenerator.generisiNormalanBetaSignal;
@@ -11,11 +16,12 @@ import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.Te
 
 public class AlchajmerGenerator {
 
-    private AlchajmerGenerator() {}
+    private AlchajmerGenerator() {
+    }
 
 
     public static GenerisanSignal generisiAlchajmer() {
-        int randomBroj = generisiRandomBrojIzmedju(1,2);
+        int randomBroj = generisiRandomBrojIzmedju(1, 2);
         if (randomBroj == 1)
             return generisiAlfaSmanjenoTetaIDeltaPoviseno();
         return generisiAlfaOdsutnoTetaIDeltaPoviseno();
@@ -23,21 +29,22 @@ public class AlchajmerGenerator {
 
     private static GenerisanSignal generisiAlfaSmanjenoTetaIDeltaPoviseno() {
         return GenerisanSignal.builder()
-                .alfaSignal(generisiSnizenAlfaSignal())
-                .betaSignal(generisiNormalanBetaSignal())
-                .gamaSignal(generisiNormalanGamaSignal())
-                .deltaSignal(generisiPovisenDeltaSignal())
-                .tetaSignal(generisiPovisenTetaSignal())
+                .signals(Arrays.asList(
+                        generisiSnizenAlfaSignal(),
+                        generisiNormalanBetaSignal(),
+                        generisiNormalanGamaSignal(),
+                        generisiPovisenDeltaSignal(),
+                        generisiPovisenTetaSignal()))
                 .build();
     }
 
     private static GenerisanSignal generisiAlfaOdsutnoTetaIDeltaPoviseno() {
         return GenerisanSignal.builder()
-                .alfaSignal(null)
-                .betaSignal(generisiNormalanBetaSignal())
-                .gamaSignal(generisiNormalanGamaSignal())
-                .deltaSignal(generisiPovisenDeltaSignal())
-                .tetaSignal(generisiPovisenTetaSignal())
+                .signals(Arrays.asList(
+                        generisiNormalanBetaSignal(),
+                        generisiNormalanGamaSignal(),
+                        generisiPovisenDeltaSignal(),
+                        generisiPovisenTetaSignal()))
                 .build();
     }
 }

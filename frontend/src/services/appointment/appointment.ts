@@ -48,3 +48,23 @@ export const getSignal = () => {
             console.log(err);
         });
 }
+
+export const finishEEGAppointment = () => {
+    return api
+        .put('/pregledi/zavrsi-eeg')
+        .then((res) => {
+            toast.success(res.data.text, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            })
+            return Response.SUCCESS;
+        })
+        .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data.poruka, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+            return Response.ERROR;
+        });
+}
