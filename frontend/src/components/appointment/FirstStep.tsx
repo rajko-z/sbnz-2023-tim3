@@ -11,6 +11,8 @@ import {AlchajmerQuestions} from "../../assets/questions/AlchajmerQuestions";
 import {EpilepsijaQuestions} from "../../assets/questions/EpilepsijaQuestions";
 import {useQuestionnaires} from "../../hooks/useQuestionnaires";
 import {useNavigate} from "react-router-dom";
+import {startEEGAppointment} from "../../services/appointment/appointment";
+import {Response} from "../../model/auth/auth";
 
 const FirstStep = () => {
     const {
@@ -29,8 +31,11 @@ const FirstStep = () => {
     } = useQuestionnaires();
     const navigate = useNavigate();
 
-    const handleSecondStep = () => {
-        navigate(`/doktor/eeg`);
+    const handleSecondStep = async () => {
+        const success = await startEEGAppointment();
+        if (success === Response.SUCCESS) {
+            navigate(`/doktor/eeg`);
+        }
     }
 
     return (

@@ -1,0 +1,347 @@
+package signaliStavka;
+import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.VisinaSignala;
+import com.ftn.sbnz2023tim3.model.modeli.dto.StavkaRezultataSignala;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
+import com.ftn.sbnz2023tim3.model.modeli.dto.RezultatSignala;
+import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Arrays;
+
+//declare RezultatSignala
+//    pregledId: Long
+//    tip: TipSignala
+//    brojPovisenih: Number
+//    brojSmanjenih: Number
+//    brojNormalnih: Number
+//    ukupanBroj: Number
+//end
+
+declare RezultatPregleda
+    procenatEpilepsije: Number
+    procenatNesanice: Number
+    procenatAlchajmera: Number
+    procenatADHD: Number
+end
+
+rule "alfa povisena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija > 12, amplituda > 55, tip == TipSignala.ALFA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.VISOKA, TipSignala.ALFA, $pregled));
+end
+
+rule "alfa smanjena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija < 8, amplituda < 45, tip == TipSignala.ALFA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NISKA, TipSignala.ALFA, $pregled));
+end
+
+rule "alfa normalana vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija >= 8 && frekvencija <= 12, amplituda >= 45 && amplituda <= 55, tip == TipSignala.ALFA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NORMALNA, TipSignala.ALFA, $pregled));
+end
+
+
+rule "beta povisena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija > 30, amplituda > 25, tip == TipSignala.BETA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.VISOKA, TipSignala.BETA, $pregled));
+end
+
+rule "beta smanjena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija < 12, amplituda < 15, tip == TipSignala.BETA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NISKA, TipSignala.BETA, $pregled));
+end
+
+rule "beta normalana vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija >= 12 && frekvencija <= 30, amplituda >= 15 && amplituda <= 25, tip == TipSignala.BETA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NORMALNA, TipSignala.BETA, $pregled));
+end
+
+
+rule "gama povisena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija > 100, amplituda > 50, tip == TipSignala.GAMA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.VISOKA, TipSignala.GAMA, $pregled));
+end
+
+rule "gama smanjena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija < 30, amplituda < 10, tip == TipSignala.GAMA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NISKA, TipSignala.GAMA, $pregled));
+end
+
+rule "gama normalana vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija >= 30 && frekvencija <= 100, amplituda >= 10 && amplituda <= 50, tip == TipSignala.GAMA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NORMALNA, TipSignala.GAMA, $pregled));
+end
+
+
+rule "delta povisena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija > 4, amplituda > 100, tip == TipSignala.DELTA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.VISOKA, TipSignala.DELTA, $pregled));
+end
+
+rule "delta smanjena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, amplituda < 60, tip == TipSignala.DELTA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NISKA, TipSignala.DELTA, $pregled));
+end
+
+rule "delta normalana vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija >= 0 && frekvencija <= 4, amplituda >= 60 && amplituda <= 100, tip == TipSignala.DELTA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NORMALNA, TipSignala.DELTA, $pregled));
+end
+
+
+rule "teta povisena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija > 8, amplituda > 75, tip == TipSignala.TETA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.VISOKA, TipSignala.TETA, $pregled));
+end
+
+rule "teta smanjena vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija < 4, amplituda < 65, tip == TipSignala.TETA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NISKA, TipSignala.TETA, $pregled));
+end
+
+rule "teta normalana vrednost"
+lock-on-active true
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.U_TOKU)
+    $s: Signal(pregled.id == $pregled.id, frekvencija >= 4 && frekvencija <= 8, amplituda >= 65 && amplituda <= 75, tip == TipSignala.TETA)
+then
+    insert(new StavkaRezultataSignala(new Date(), VisinaSignala.NORMALNA, TipSignala.TETA, $pregled));
+end
+
+
+rule "sumiranje svih alfa signala"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $brPovisenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.ALFA, pregled.id == $pregled.id, stanje == VisinaSignala.VISOKA),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brSmanjenih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.ALFA, stanje == VisinaSignala.NISKA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brNormalnih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.ALFA, stanje == VisinaSignala.NORMALNA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $ukupanBr:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.ALFA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    System.out.println("ALFA ----- Br povisenih: " + $brPovisenih + " br snizenih: " + $brSmanjenih + " br normalnih: " + $brNormalnih + " ukupan broj: "+$ukupanBr);
+    insert(new RezultatSignala($pregled.getId(), TipSignala.ALFA, $brPovisenih.doubleValue(), $brSmanjenih.doubleValue(), $brNormalnih.doubleValue(), $ukupanBr.doubleValue()));
+end
+
+
+rule "sumiranje svih beta signala"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $brPovisenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.BETA, pregled.id == $pregled.id, stanje == VisinaSignala.VISOKA),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brSmanjenih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.BETA, stanje == VisinaSignala.NISKA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brNormalnih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.BETA, stanje == VisinaSignala.NORMALNA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $ukupanBr:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.BETA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    System.out.println("BETA ----- Br povisenih: " + $brPovisenih + " br snizenih: " + $brSmanjenih + " br normalnih: " + $brNormalnih + " ukupan broj: "+$ukupanBr);
+    insert(new RezultatSignala($pregled.getId(), TipSignala.BETA, $brPovisenih.doubleValue(), $brSmanjenih.doubleValue(), $brNormalnih.doubleValue(), $ukupanBr.doubleValue()));
+end
+
+
+rule "sumiranje svih gama signala"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $brPovisenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.GAMA, pregled.id == $pregled.id, stanje == VisinaSignala.VISOKA),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brSmanjenih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.GAMA, stanje == VisinaSignala.NISKA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brNormalnih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.GAMA, stanje == VisinaSignala.NORMALNA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $ukupanBr:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.GAMA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    System.out.println("GAMA ----- Br povisenih: " + $brPovisenih + " br snizenih: " + $brSmanjenih + " br normalnih: " + $brNormalnih + " ukupan broj: "+$ukupanBr);
+    insert(new RezultatSignala($pregled.getId(), TipSignala.GAMA, $brPovisenih.doubleValue(), $brSmanjenih.doubleValue(), $brNormalnih.doubleValue(), $ukupanBr.doubleValue()));
+end
+
+
+rule "sumiranje svih delta signala"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $brPovisenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.DELTA, pregled.id == $pregled.id, stanje == VisinaSignala.VISOKA),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brSmanjenih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.DELTA, stanje == VisinaSignala.NISKA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brNormalnih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.DELTA, stanje == VisinaSignala.NORMALNA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $ukupanBr:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.DELTA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    System.out.println("DELTA ----- Br povisenih: " + $brPovisenih + " br snizenih: " + $brSmanjenih + " br normalnih: " + $brNormalnih + " ukupan broj: "+$ukupanBr);
+    insert(new RezultatSignala($pregled.getId(), TipSignala.DELTA, $brPovisenih.doubleValue(), $brSmanjenih.doubleValue(), $brNormalnih.doubleValue(), $ukupanBr.doubleValue()));
+end
+
+
+rule "sumiranje svih teta signala"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $brPovisenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.TETA, pregled.id == $pregled.id, stanje == VisinaSignala.VISOKA),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brSmanjenih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.TETA, stanje == VisinaSignala.NISKA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $brNormalnih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.TETA, stanje == VisinaSignala.NORMALNA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+    $ukupanBr:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.TETA, pregled.id == $pregled.id),
+//                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    System.out.println("TETA ----- Br povisenih: " + $brPovisenih + " br snizenih: " + $brSmanjenih + " br normalnih: " + $brNormalnih + " ukupan broj: "+$ukupanBr);
+    insert(new RezultatSignala($pregled.getId(), TipSignala.TETA, $brPovisenih.doubleValue(), $brSmanjenih.doubleValue(), $brNormalnih.doubleValue(), $ukupanBr.doubleValue()));
+end
+
+
+rule "sumiranje rezultata EEG pregleda"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+
+    $rezultatAlfa: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.ALFA)
+    $rezultatBeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.BETA)
+    $rezultatGama: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.GAMA)
+    $rezultatDelta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.DELTA)
+    $rezultatTeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.TETA)
+then
+    double ukupanBrojSignala = $rezultatAlfa.getUkupanBroj() + $rezultatBeta.getUkupanBroj() + $rezultatGama.getUkupanBroj() + $rezultatDelta.getUkupanBroj() + $rezultatTeta.getUkupanBroj();
+
+    double ukupanProcenatAlfa =  $rezultatAlfa.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatBeta = $rezultatBeta.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatGama = $rezultatGama.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatDelta = $rezultatDelta.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatTeta = $rezultatTeta.getUkupanBroj() / ukupanBrojSignala;
+
+    double procenatEpilepsije = ($rezultatBeta.getBrojPovisenih() + $rezultatGama.getBrojPovisenih())/2;
+    double procenatNesanice = Collections.max(Arrays.asList(
+            ($rezultatTeta.getBrojSmanjenih() + $rezultatDelta.getBrojSmanjenih())/2,
+            ($rezultatTeta.getBrojSmanjenih() + (100 - ukupanProcenatDelta))/2,
+            ($rezultatDelta.getBrojSmanjenih() + (100 - ukupanProcenatTeta))/2,
+            ((100 - ukupanProcenatDelta) + (100 - ukupanProcenatTeta))/2
+    ));
+    double procenatAlchajmera = Collections.max(Arrays.asList(
+            ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + $rezultatAlfa.getBrojSmanjenih())/3,
+            ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + (100 - ukupanProcenatAlfa))/3
+    ));
+    double procenatADHD = ($rezultatBeta.getBrojPovisenih() + $rezultatAlfa.getBrojSmanjenih())/2;
+    System.out.println("procenti, ep: " + procenatEpilepsije + " nesanica: "+ procenatNesanice + " alchajmer: " + procenatAlchajmera + " adhd: " + procenatADHD);
+    insert(new RezultatPregleda(procenatEpilepsije, procenatNesanice, procenatAlchajmera, procenatADHD));
+end

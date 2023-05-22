@@ -12,18 +12,26 @@ const MenuDoctor = () => {
         navigate('/');
         navigate(0);
     }
-//istorija pregleda, registracija pacijenta, nov pregled
+
+    const handleOnClickAppointment = () => {
+        navigate('/doktor');
+    }
+
+    const handleOnClickRegistration = () => {
+        navigate('/doktor/registracija');
+    }
+
     return (
         <div className={Classes.menu}>
             <div className={Classes.logo}>
                 <img className={Classes.logoIcon} src={require('../../assets/image/logo.jpeg')} alt="logo"/>
             </div>
             <ul className={Classes.menuItems}>
-                <li className={Classes.menuItem}>
+                <li className={Classes.menuItem} onClick={() => handleOnClickAppointment()}>
                     <FontAwesomeIcon className={Classes.icon} icon={solid('brain')}/>
                     <p className={Classes.itemTitle}>Pregled</p>
                 </li>
-                <li className={Classes.menuItem}>
+                <li className={Classes.menuItem} onClick={() => handleOnClickRegistration()}>
                     <FontAwesomeIcon className={Classes.icon} icon={solid('plus')}/>
                     <p className={Classes.itemTitle}>Registruj pacijenta</p>
                 </li>

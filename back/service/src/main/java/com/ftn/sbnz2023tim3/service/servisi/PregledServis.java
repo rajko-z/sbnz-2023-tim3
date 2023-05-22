@@ -1,19 +1,13 @@
 package com.ftn.sbnz2023tim3.service.servisi;
 
-import com.ftn.sbnz2023tim3.model.modeli.dto.KorisnikDTO;
-import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.IzdatLekDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.adhd.PopunjenAdhdUpitnik;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.alchajmer.PopunjenAlchajmerUpitnik;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.epilepsija.PopunjenEpilepsijaUpitnik;
-import com.ftn.sbnz2023tim3.model.modeli.dto.upitnici.nesanica.PopunjenNesanicaUpitnik;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
-import com.ftn.sbnz2023tim3.model.modeli.tabele.lekovi.IzdatLek;
 import com.ftn.sbnz2023tim3.service.izuzeci.BadRequestException;
 import com.ftn.sbnz2023tim3.service.izuzeci.NotFoundException;
+import com.ftn.sbnz2023tim3.service.konfiguracija.DRoolsKonfiguracija;
 import com.ftn.sbnz2023tim3.service.konverteri.KorisnikDTOKonverter;
 import com.ftn.sbnz2023tim3.service.konverteri.LekoviDTOKonverter;
 import com.ftn.sbnz2023tim3.service.konverteri.UpitniciDTOKonverter;
@@ -21,11 +15,11 @@ import com.ftn.sbnz2023tim3.service.repozitorijumi.PregledRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.korisnici.DoktorServis;
 import com.ftn.sbnz2023tim3.service.servisi.korisnici.PacijentServis;
 import lombok.AllArgsConstructor;
+import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +33,8 @@ public class PregledServis {
     private final DoktorServis doktorServis;
 
     private final LekoviServis lekoviServis;
+
+    private final DRoolsKonfiguracija dRoolsKonfiguracija;
 
     @Transactional
     public void zapocniPregledZaPacijenta(String pacijentEmail) {
@@ -82,6 +78,28 @@ public class PregledServis {
         pregled.setStanjeEEGPregleda(StanjeEEGPregleda.U_TOKU);
         pregled.setEegVremePocetka(LocalDateTime.now());
         sacuvaj(pregled);
+
+        KieSession ksessionStavka = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
+        ksessionStavka.insert(pregled);
+    }
+
+    public void zavrsiEEG(){
+        Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledom();
+        if (doktor.getTrenutniPregled() == null) {
+            throw new BadRequestException("Doktor nema trenutni pregled");
+        }
+
+        Pregled pregled = doktor.getTrenutniPregled();
+        pregled.setStanjeEEGPregleda(StanjeEEGPregleda.ZAVRSEN);
+        pregled.setEegVremeZavrsetka(LocalDateTime.now());
+        sacuvaj(pregled);
+
+        KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
+        ksession.insert(pregled);
+        ksession.fireAllRules();
+
+        doktor.setTrenutniPregled(null);
+        doktorServis.sacuvaj(doktor);
     }
 
     public PregledDTO getPregledDTOById(Long id) {

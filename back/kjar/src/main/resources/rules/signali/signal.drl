@@ -1,0 +1,61 @@
+package signali;
+import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
+
+rule "signal_rule0"
+when
+    $s: Signal(frekvencija <= 15,
+        frekvencija >= 5,
+        amplituda <= 60,
+        amplituda >= 40,
+        stanjePacijenta == StanjePacijenta.OPUSTENO_STANJE)
+then
+    modify($s){ setTip(TipSignala.ALFA) }
+end
+
+rule "signal_rule1"
+when
+    $s: Signal(frekvencija <= 35,
+        frekvencija >= 10,
+        amplituda <= 30,
+        amplituda >= 10,
+        stanjePacijenta == StanjePacijenta.POJACANA_AKTIVNOST_MOZGA)
+then
+    modify($s){ setTip(TipSignala.BETA) }
+end
+
+rule "signal_rule2"
+when
+    $s: Signal(frekvencija <= 120,
+        frekvencija >= 20,
+        amplituda <= 60,
+        amplituda >= 0,
+        stanjePacijenta == StanjePacijenta.VISOKO_PROCESIRANJE_PODATAKA)
+then
+    modify($s){ setTip(TipSignala.GAMA) }
+end
+
+rule "signal_rule3"
+when
+    $s: Signal(frekvencija <= 6,
+        frekvencija >= 0,
+        amplituda <= 110,
+        amplituda >= 50,
+        stanjePacijenta == StanjePacijenta.SAN)
+then
+    modify($s){ setTip(TipSignala.DELTA) }
+end
+
+rule "signal_rule4"
+when
+    $s: Signal(frekvencija <= 10,
+        frekvencija >= 2,
+        amplituda <= 80,
+        amplituda >= 60,
+        stanjePacijenta == StanjePacijenta.NAPETOST)
+then
+    modify($s){ setTip(TipSignala.TETA) }
+end
+
+

@@ -5,11 +5,14 @@ import com.ftn.sbnz2023tim3.model.modeli.dto.TextResponse;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import com.ftn.sbnz2023tim3.service.servisi.signali.SignalServis;
 import lombok.AllArgsConstructor;
+import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
@@ -31,7 +34,7 @@ public class PregledKontroler {
     @PutMapping("/zapocni-eeg")
     public ResponseEntity<TextResponse> zapocniEeg() {
         pregledServis.zapocniEEG();
-        return new ResponseEntity<>(new TextResponse("Uspesno zapocet eeg pregled"), HttpStatus.OK);
+        return new ResponseEntity<>(new TextResponse("Uspesno zapocet EEG pregled"), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
@@ -41,4 +44,10 @@ public class PregledKontroler {
         return new ResponseEntity<>(signal, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
+    @PutMapping("zavrsi-eeg")
+    public ResponseEntity<TextResponse> zavrsiEeg() {
+        pregledServis.zavrsiEEG();
+        return new ResponseEntity<>(new TextResponse("Uspesno je zavrsen EEG pregled"), HttpStatus.OK);
+    }
 }
