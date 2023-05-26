@@ -1,0 +1,36 @@
+@import "src/style/global";
+
+.table {
+  //background-color: $background-color;
+  width: 50vw;
+}
+
+.responsiveTable {
+  margin: 10vh auto;
+  width: 80vw;
+
+  li {
+    border-radius: 3px;
+    padding: 25px 5px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+  }
+
+  .tableHeader {
+    background-color: $primary-color;
+    color: $text-color;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+
+    p {
+      margin: 0 20px;
+    }
+  }
+}
+
+h4 {
+  color: $text-color;
+  margin: 2vh auto;
+}

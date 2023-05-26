@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,7 +85,7 @@ public class PregledServis {
         ksessionStavka.insert(pregled);
     }
 
-    public void zavrsiEEG(){
+    public void zavrsiEEG() {
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledom();
         if (doktor.getTrenutniPregled() == null) {
             throw new BadRequestException("Doktor nema trenutni pregled");
@@ -104,8 +106,36 @@ public class PregledServis {
 
     public PregledDTO getPregledDTOById(Long id) {
         Pregled pregled = pregledRepozitorijum.findByIdSaSvimPoljimaSemLekova(id);
+        return konvertujPregledToPregledDTO(pregled);
+    }
+
+    public Pacijent getPacijentPregleda(Long pregledId) {
+        return this.pregledRepozitorijum.getPregledSaPacijentom(pregledId).getPacijent();
+    }
+
+    public List<PregledDTO> getPreglediByDoktor() {
+        Doktor doktor = doktorServis.getTrenutnoUlogovanDoktor();
+        ArrayList<Pregled> pregledi = pregledRepozitorijum.findAllByDoktorEmail(doktor.getEmail());
+        ArrayList<PregledDTO> pregledDTOS = new ArrayList<>();
+        for (Pregled pregled : pregledi) {
+            pregledDTOS.add(konvertujPregledToPregledDTO(pregled));
+        }
+        return pregledDTOS;
+    }
+
+    public List<PregledDTO> getPreglediByPacijent() {
+        Pacijent pacijent = pacijentServis.getTrenutnoUlogovaniPacijent();
+        ArrayList<Pregled> pregledi = pregledRepozitorijum.findAllByPacijentEmail(pacijent.getEmail());
+        ArrayList<PregledDTO> pregledDTOS = new ArrayList<>();
+        for (Pregled pregled : pregledi) {
+            pregledDTOS.add(konvertujPregledToPregledDTO(pregled));
+        }
+        return pregledDTOS;
+    }
+
+    private PregledDTO konvertujPregledToPregledDTO(Pregled pregled){
         return PregledDTO.builder()
-                .id(id)
+                .id(pregled.getId())
                 .pacijent(KorisnikDTOKonverter.konvertuj(pregled.getPacijent()))
                 .doktor(KorisnikDTOKonverter.konvertuj(pregled.getDoktor()))
                 .adhdUpitnik(UpitniciDTOKonverter.konvertujAdhdUpitnik(pregled.getAdhdUpitnik()))
@@ -124,9 +154,5 @@ public class PregledServis {
                 .eegVremeZavrsetka(pregled.getEegVremeZavrsetka())
                 .stanjeEEGPregleda(pregled.getStanjeEEGPregleda())
                 .build();
-    }
-
-    public Pacijent getPacijentPregleda(Long pregledId) {
-        return this.pregledRepozitorijum.getPregledSaPacijentom(pregledId).getPacijent();
     }
 }

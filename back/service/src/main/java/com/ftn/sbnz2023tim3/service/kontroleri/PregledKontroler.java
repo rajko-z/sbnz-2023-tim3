@@ -2,6 +2,7 @@ package com.ftn.sbnz2023tim3.service.kontroleri;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 import com.ftn.sbnz2023tim3.model.modeli.dto.TextResponse;
+import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import com.ftn.sbnz2023tim3.service.servisi.signali.SignalServis;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -49,5 +52,19 @@ public class PregledKontroler {
     public ResponseEntity<TextResponse> zavrsiEeg() {
         pregledServis.zavrsiEEG();
         return new ResponseEntity<>(new TextResponse("Uspesno je zavrsen EEG pregled"), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
+    @GetMapping("/doktor")
+    public ResponseEntity<List<PregledDTO>> getPreglediByDoktor(){
+        List<PregledDTO> pregledi = pregledServis.getPreglediByDoktor();
+        return new ResponseEntity<>(pregledi, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_PACIJENT')")
+    @GetMapping("/pacijent")
+    public ResponseEntity<List<PregledDTO>> getPreglediByPacijent(){
+        List<PregledDTO> pregledi = pregledServis.getPreglediByPacijent();
+        return new ResponseEntity<>(pregledi, HttpStatus.OK);
     }
 }

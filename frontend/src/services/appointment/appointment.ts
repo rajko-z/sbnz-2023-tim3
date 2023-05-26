@@ -68,3 +68,17 @@ export const finishEEGAppointment = () => {
             return Response.ERROR;
         });
 }
+
+export const getAllAppointments = (isDoctor: boolean) => {
+    const path = isDoctor ? "/pregledi/doktor": "/pregledi/pacijent";
+    return api
+        .get(path)
+        .then((res) => res.data)
+        .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data.poruka, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+        });
+}

@@ -63,7 +63,7 @@ const EEGAppointment = () => {
     }
 
     const renderLineChart = (param: string) => (
-        <LineChart width={500} height={300} data={signalsGraph}>
+        <LineChart width={450} height={300} data={signalsGraph}>
             <Line type="linear" dataKey={param} stroke="#6A8FD0" isAnimationActive={false} dot={false}/>
             <XAxis dataKey="name">
                 <Label>{label[param]}</Label>

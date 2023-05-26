@@ -5,11 +5,13 @@ import com.ftn.sbnz2023tim3.model.modeli.dto.NoviPacijentDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.PrijavaDTO;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
 import com.ftn.sbnz2023tim3.service.izuzeci.BadRequestException;
+import com.ftn.sbnz2023tim3.service.izuzeci.NotFoundException;
 import com.ftn.sbnz2023tim3.service.konverteri.KorisnikDTOKonverter;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.PacijentRepozitorijum;
 import com.ftn.sbnz2023tim3.service.repozitorijumi.RolaRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.EmailServis;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +77,11 @@ public class PacijentServis {
 
     public void sacuvaj(Pacijent pacijent) {
         this.pacijentRepozitorijum.save(pacijent);
+    }
+
+    public Pacijent getTrenutnoUlogovaniPacijent(){
+        String pacijentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return pacijentRepozitorijum.findById(pacijentEmail)
+                .orElseThrow(() -> new NotFoundException("Korisnik sa mejlom nije poznat: " + pacijentEmail));
     }
 }

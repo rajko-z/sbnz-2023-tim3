@@ -57,6 +57,7 @@ public class UpitniciKontroler {
     }
 
     @PostMapping("/dodaj-alchajmer")
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
     public ResponseEntity<TextResponse> dodajAlchajmerUpitnik(@RequestBody @Valid PopunjenAlchajmerUpitnik alchajmerUpitnik) {
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIUpitnicima();
         if (doktor.getTrenutniPregled() == null) {
@@ -70,6 +71,7 @@ public class UpitniciKontroler {
     }
 
     @PostMapping("/dodaj-nesanica")
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
     public ResponseEntity<TextResponse> dodajNesanicaUpitnik(@RequestBody @Valid PopunjenNesanicaUpitnik nesanicaUpitnik) {
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIUpitnicima();
         if (doktor.getTrenutniPregled() == null) {
@@ -83,6 +85,7 @@ public class UpitniciKontroler {
     }
 
     @PostMapping("/dodaj-epilepsija")
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
     public ResponseEntity<TextResponse> dodajEpilepsijaUpitnik(@RequestBody @Valid PopunjenEpilepsijaUpitnik epilepsijaUpitnik) {
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIUpitnicima();
         if (doktor.getTrenutniPregled() == null) {

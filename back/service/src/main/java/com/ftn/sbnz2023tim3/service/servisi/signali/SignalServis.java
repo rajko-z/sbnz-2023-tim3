@@ -57,12 +57,12 @@ public class SignalServis {
             pregled.getEpilepsijaUpitnik() == null) {
             GenerisanSignal generisanSignal = generisiRavnomeranRandomSignal(generisiNesanicu);
             generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
-            insertIntoKSession(generisanSignal, pregled);
+            insertIntoKSession(generisanSignal);
             return generisanSignal;
         }
         GenerisanSignal generisanSignal = generisiRandomSignalNaOsnovuProcenataUpitnika(pregled, generisiNesanicu);
         generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
-        insertIntoKSession(generisanSignal, pregled);
+        insertIntoKSession(generisanSignal);
         return generisanSignal;
     }
 
@@ -102,14 +102,13 @@ public class SignalServis {
         }
     }
 
-    private void insertIntoKSession(GenerisanSignal generisanSignal, Pregled pregled) {
+    private void insertIntoKSession(GenerisanSignal generisanSignal) {
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliKS");
         generisanSignal.getSignals().forEach(ksession::insert);
 
         ksession.fireAllRules();
         KieSession ksessionStavka = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         generisanSignal.getSignals().forEach(ksessionStavka::insert);
-        System.out.println(generisanSignal.getSignals().size());
 
         ksessionStavka.fireAllRules();
     }

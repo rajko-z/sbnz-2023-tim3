@@ -13,13 +13,17 @@ const MenuPatient = () => {
         navigate(0);
     }
 
+    const handleOnClickAppointmentHistory = () => {
+        navigate('/pacijent/istorija-pregleda');
+    }
+
     return (
         <div className={Classes.menu}>
             <div className={Classes.logo}>
                 <img className={Classes.logoIcon} src={require('../../assets/image/logo.jpeg')} alt="logo"/>
             </div>
             <ul className={Classes.menuItems}>
-                <li className={Classes.menuItem}>
+                <li className={Classes.menuItem} onClick={() => handleOnClickAppointmentHistory()}>
                     <FontAwesomeIcon className={Classes.icon} icon={solid('history')}/>
                     <p className={Classes.itemTitle}>Istorija pregleda</p>
                 </li>

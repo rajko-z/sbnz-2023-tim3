@@ -1,0 +1,44 @@
+@import "src/style/global";
+
+.accordion {
+  width: 70vw;
+
+  .tableRow {
+    background-color: $primary-color;
+    color: $text-color;
+    text-decoration: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 25px 5px;
+    border-radius: 3px;
+    width: 78vw;
+
+    p {
+      margin: 0 20px;
+    }
+
+    .showData {
+      cursor: pointer;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .show {
+    background-color: $tertiary-color;
+    color: $text-color;
+    width: 78vw;
+    height: 50vh;
+    border-radius: 3px;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .information {
+    border-bottom: 1px solid $grey-color;
+  }
+}

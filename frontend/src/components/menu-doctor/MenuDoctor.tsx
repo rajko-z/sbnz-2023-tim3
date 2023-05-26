@@ -21,6 +21,10 @@ const MenuDoctor = () => {
         navigate('/doktor/registracija');
     }
 
+    const handleOnClickAppointmentHistory = () => {
+        navigate('/doktor/istorija-pregleda');
+    }
+
     return (
         <div className={Classes.menu}>
             <div className={Classes.logo}>
@@ -35,7 +39,7 @@ const MenuDoctor = () => {
                     <FontAwesomeIcon className={Classes.icon} icon={solid('plus')}/>
                     <p className={Classes.itemTitle}>Registruj pacijenta</p>
                 </li>
-                <li className={Classes.menuItem}>
+                <li className={Classes.menuItem} onClick={() => handleOnClickAppointmentHistory()}>
                     <FontAwesomeIcon className={Classes.icon} icon={solid('history')}/>
                     <p className={Classes.itemTitle}>Istorija pregleda</p>
                 </li>
