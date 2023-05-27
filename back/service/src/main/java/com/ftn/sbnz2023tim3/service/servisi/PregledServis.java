@@ -104,8 +104,6 @@ public class PregledServis {
         ksession.fireAllRules();
 
         pregledRepozitorijum.save(pregled);
-        doktor.setTrenutniPregled(null);
-        doktorServis.sacuvaj(doktor);
         return pregled;
     }
 

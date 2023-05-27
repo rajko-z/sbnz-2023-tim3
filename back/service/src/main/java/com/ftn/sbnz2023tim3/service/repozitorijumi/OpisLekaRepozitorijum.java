@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface OpisLekaRepozitorijum extends JpaRepository<OpisLeka, Long> {
 
-    @Query("select o from OpisLeka o left join fetch o.sastojci s where o.tipBolesti = ?1")
+    @Query("select distinct o from OpisLeka o left join fetch o.sastojci s where o.tipBolesti = ?1")
     List<OpisLeka> pronadjiOpiseLekovaPoTipuBolesti(TipBolesti tipBolesti);
 }
