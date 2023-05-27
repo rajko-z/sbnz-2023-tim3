@@ -1,0 +1,70 @@
+package signaliStavka;
+import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.VisinaSignala;
+import com.ftn.sbnz2023tim3.model.modeli.dto.StavkaRezultataSignala;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
+import com.ftn.sbnz2023tim3.model.modeli.dto.RezultatSignala;
+import com.ftn.sbnz2023tim3.model.modeli.dto.RezultatPregleda;
+import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Arrays;
+
+rule "sumiranje rezultata EEG pregleda"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+
+    $rezultatAlfa: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.ALFA)
+    $rezultatBeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.BETA)
+    $rezultatGama: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.GAMA)
+    $rezultatDelta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.DELTA)
+    $rezultatTeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.TETA)
+then
+    double ukupanBrojSignala = $rezultatAlfa.getUkupanBroj() + $rezultatBeta.getUkupanBroj() + $rezultatGama.getUkupanBroj() + $rezultatDelta.getUkupanBroj() + $rezultatTeta.getUkupanBroj();
+
+    double ukupanProcenatAlfa =  $rezultatAlfa.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatBeta = $rezultatBeta.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatGama = $rezultatGama.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatDelta = $rezultatDelta.getUkupanBroj() / ukupanBrojSignala;
+    double ukupanProcenatTeta = $rezultatTeta.getUkupanBroj() / ukupanBrojSignala;
+
+    double procenatEpilepsije = ($rezultatBeta.getBrojPovisenih() + $rezultatGama.getBrojPovisenih())/2;
+
+    double procenatNesanice = Collections.max(Arrays.asList(
+            ($rezultatTeta.getBrojSmanjenih() + $rezultatDelta.getBrojSmanjenih())/2,
+            ($rezultatTeta.getBrojSmanjenih() + (1 - ukupanProcenatDelta))/2,
+            ($rezultatDelta.getBrojSmanjenih() + (1 - ukupanProcenatTeta))/2,
+            ((1 - ukupanProcenatDelta) + (1 - ukupanProcenatTeta))/2
+    ));
+
+    double procenatAlchajmera = Collections.max(Arrays.asList(
+            ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + $rezultatAlfa.getBrojSmanjenih())/3,
+            ($rezultatTeta.getBrojPovisenih() + $rezultatDelta.getBrojPovisenih() + (1 - ukupanProcenatAlfa))/3
+    ));
+
+    double procenatADHD = ($rezultatBeta.getBrojPovisenih() + $rezultatAlfa.getBrojSmanjenih())/2;
+
+    System.out.println("procenti, ep: " + procenatEpilepsije + " nesanica: "+ procenatNesanice + " alchajmer: " + procenatAlchajmera + " adhd: " + procenatADHD);
+    insert(new RezultatPregleda(procenatEpilepsije, procenatNesanice, procenatAlchajmera, procenatADHD, $pregled));
+end
+
+
+rule "Postavi konacne procente pregleda"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $rezultat: RezultatPregleda(pregled.id == $pregled.id)
+then
+    double noviAdhdProcenat = ($pregled.getAdhdProcenat() + $rezultat.getProcenatADHD()) / 2;
+    double noviAlchajmerProcenat = ($pregled.getAlchajmerProcenat() + $rezultat.getProcenatAlchajmera()) / 2;
+    double noviEpilepsijaProcenat = ($pregled.getEpilepsijaProcenat() + $rezultat.getProcenatEpilepsije()) / 2;
+    double noviNesanicaProcenat = ($pregled.getNesanicaProcenat() + $rezultat.getProcenatNesanice()) / 2;
+
+    modify($pregled){
+        setAdhdProcenat(noviAdhdProcenat),
+        setNesanicaProcenat(noviNesanicaProcenat),
+        setEpilepsijaProcenat(noviEpilepsijaProcenat),
+        setAlchajmerProcenat(noviAlchajmerProcenat)
+    }
+end

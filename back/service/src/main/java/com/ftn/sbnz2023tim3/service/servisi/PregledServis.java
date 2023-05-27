@@ -1,7 +1,10 @@
 package com.ftn.sbnz2023tim3.service.servisi;
 
+import com.ftn.sbnz2023tim3.model.modeli.dto.PronadjenaBolest;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
+import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.RezultatPregledaDTO;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
@@ -85,7 +88,7 @@ public class PregledServis {
         ksessionStavka.insert(pregled);
     }
 
-    public void zavrsiEEG() {
+    public Pregled zavrsiEEG() {
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledom();
         if (doktor.getTrenutniPregled() == null) {
             throw new BadRequestException("Doktor nema trenutni pregled");
@@ -100,8 +103,10 @@ public class PregledServis {
         ksession.insert(pregled);
         ksession.fireAllRules();
 
+        pregledRepozitorijum.save(pregled);
         doktor.setTrenutniPregled(null);
         doktorServis.sacuvaj(doktor);
+        return pregled;
     }
 
     public PregledDTO getPregledDTOById(Long id) {
@@ -155,4 +160,45 @@ public class PregledServis {
                 .stanjeEEGPregleda(pregled.getStanjeEEGPregleda())
                 .build();
     }
+
+    public RezultatPregledaDTO vratiPregledSaSastojcima(Pregled pregled) {
+        PronadjenaBolest pronadjenaBolest = pronadjiBolest(pregled);
+        List<String> sastojci = new ArrayList<>();
+        if (pronadjenaBolest.getTipBolesti() != null) {
+            sastojci = lekoviServis.getSastojciZaTipBolesti(pronadjenaBolest.getTipBolesti());
+        }
+
+        return RezultatPregledaDTO.builder()
+                .adhdProcenat(pregled.getAdhdProcenat())
+                .alchajmerProcenat(pregled.getAlchajmerProcenat())
+                .epilepsijaProcenat(pregled.getEpilepsijaProcenat())
+                .nesanicaProcenat(pregled.getNesanicaProcenat())
+                .procenatPronadjeneBolesti(pronadjenaBolest.getProcenat())
+                .tipBolesti(pronadjenaBolest.getTipBolesti())
+                .sastojci(sastojci)
+                .build();
+    }
+
+    private PronadjenaBolest pronadjiBolest(Pregled pregled) {
+        PronadjenaBolest pronadjenaBolest = new PronadjenaBolest();
+        if (pregled.getAdhdProcenat() > 0.5 && pregled.getAdhdProcenat() > pronadjenaBolest.getProcenat()) {
+            pronadjenaBolest.setProcenat(pregled.getAdhdProcenat());
+            pronadjenaBolest.setTipBolesti(TipBolesti.ADHD);
+        }
+        if (pregled.getAlchajmerProcenat() > 0.5 && pregled.getAlchajmerProcenat() > pronadjenaBolest.getProcenat()) {
+            pronadjenaBolest.setProcenat(pregled.getAlchajmerProcenat());
+            pronadjenaBolest.setTipBolesti(TipBolesti.ALCHAJMER);
+        }
+        if (pregled.getNesanicaProcenat() > 0.5 && pregled.getNesanicaProcenat() > pronadjenaBolest.getProcenat()) {
+            pronadjenaBolest.setProcenat(pregled.getNesanicaProcenat());
+            pronadjenaBolest.setTipBolesti(TipBolesti.NESANICA);
+        }
+        if (pregled.getEpilepsijaProcenat() > 0.5 && pregled.getEpilepsijaProcenat() > pronadjenaBolest.getProcenat()) {
+            pronadjenaBolest.setProcenat(pregled.getEpilepsijaProcenat());
+            pronadjenaBolest.setTipBolesti(TipBolesti.EPILEPSIJA);
+        }
+        return pronadjenaBolest;
+    }
+
+
 }

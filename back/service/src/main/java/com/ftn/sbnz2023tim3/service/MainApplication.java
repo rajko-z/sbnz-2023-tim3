@@ -25,7 +25,7 @@ public class MainApplication {
 
 	@PostConstruct
 	private void init() throws MavenInvocationException, IOException {
-		signalServis.generisiPravilaIzTemplejta();
+	//	signalServis.generisiPravilaIzTemplejta();
 	}
 
 }

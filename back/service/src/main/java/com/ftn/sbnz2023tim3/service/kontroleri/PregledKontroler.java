@@ -3,6 +3,8 @@ package com.ftn.sbnz2023tim3.service.kontroleri;
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 import com.ftn.sbnz2023tim3.model.modeli.dto.TextResponse;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
+import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.RezultatPregledaDTO;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
 import com.ftn.sbnz2023tim3.service.servisi.signali.SignalServis;
 import lombok.AllArgsConstructor;
@@ -49,9 +51,10 @@ public class PregledKontroler {
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
     @PutMapping("zavrsi-eeg")
-    public ResponseEntity<TextResponse> zavrsiEeg() {
-        pregledServis.zavrsiEEG();
-        return new ResponseEntity<>(new TextResponse("Uspesno je zavrsen EEG pregled"), HttpStatus.OK);
+    public ResponseEntity<RezultatPregledaDTO> zavrsiEeg() {
+        Pregled pregled = pregledServis.zavrsiEEG();
+        RezultatPregledaDTO retVal = pregledServis.vratiPregledSaSastojcima(pregled);
+        return new ResponseEntity<>(retVal, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")

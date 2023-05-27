@@ -19,4 +19,7 @@ public class Pacijent extends Korisnik {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Pregled trenutniPregled;
+
+    @Transient
+    private List<String> alergije;
 }

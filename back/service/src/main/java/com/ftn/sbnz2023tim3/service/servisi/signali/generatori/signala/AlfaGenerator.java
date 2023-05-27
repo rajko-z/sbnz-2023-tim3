@@ -3,9 +3,7 @@ package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala;
 import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.DeoMozga;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 

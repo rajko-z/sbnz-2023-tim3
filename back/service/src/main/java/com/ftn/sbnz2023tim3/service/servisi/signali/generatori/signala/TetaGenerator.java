@@ -3,9 +3,7 @@ package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala;
 import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.DeoMozga;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,8 +19,8 @@ public class TetaGenerator {
                 .deoMozga(izaberiDeoMozgaNasumicno(List.of(DeoMozga.TEMENI, DeoMozga.TEMPORALNI)))
                 .timestamp(new Date())
                 .stanjePacijenta(StanjePacijenta.NAPETOST)
-                .frekvencija(generisiRandomBrojIzmedju(4, 8))
-                .amplituda(generisiRandomBrojIzmedju(65,75))
+                .frekvencija(generisiRandomBrojIzmedju(frekDonja, frekGornja))
+                .amplituda(generisiRandomBrojIzmedju(ampDonja,ampGornja))
                 .build();
     }
     public static Signal generisiNormalanTetaSignal() {
