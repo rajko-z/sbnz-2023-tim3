@@ -6,7 +6,7 @@ export interface Patient {
     ime: string;
     prezime: string;
     brojTelefona: string;
-    datumRodjenja: Date;
+    brojGodina: number;
     adresa: string;
     rola: userRole;
     datumPoslednjePromeneSifre: Date;

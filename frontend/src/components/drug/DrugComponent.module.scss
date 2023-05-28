@@ -1,0 +1,35 @@
+@import "src/style/global";
+
+.canvas {
+  width: 50vw;
+  height: 50vh;
+  background-color: $primary-color;
+  box-shadow: $secondary-color 1px 1px 5px 5px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  z-index: 9;
+  margin-top: 7vh;
+  border-radius: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+h2 {
+  color: $text-color;
+  text-align: left;
+  padding: 2vh;
+}
+
+h4 {
+  color: $secondary-color;
+}
+
+.drug {
+  margin: 2vh;
+  border-bottom: 1px solid $grey-color;
+}
+
+.components {
+  color: $text-color;
+}

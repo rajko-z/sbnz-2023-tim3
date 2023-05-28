@@ -31,7 +31,6 @@ export const startEEGAppointment = () => {
             return Response.SUCCESS;
         })
         .catch((err) => {
-            console.log(err);
             toast.error(err.response.data.poruka, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 1500,
@@ -60,7 +59,6 @@ export const finishEEGAppointment = () => {
             return Response.SUCCESS;
         })
         .catch((err) => {
-            console.log(err);
             toast.error(err.response.data.poruka, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 1500,
@@ -70,15 +68,56 @@ export const finishEEGAppointment = () => {
 }
 
 export const getAllAppointments = (isDoctor: boolean) => {
-    const path = isDoctor ? "/pregledi/doktor": "/pregledi/pacijent";
+    const path = isDoctor ? "/pregledi/doktor" : "/pregledi/pacijent";
     return api
         .get(path)
         .then((res) => res.data)
         .catch((err) => {
-            console.log(err);
             toast.error(err.response.data.poruka, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: 1500,
             });
         });
 }
+
+export const getRezultatiPregleda = () => {
+    return api
+        .get("/pregledi/rezultati")
+        .then((res) => res.data)
+        .catch((err) => {
+            toast.error(err.response.data.poruka, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+        });
+}
+
+export const sendAllergy = (allegry: string[]) => {
+    return api
+        .put("/pregledi/predlozi-lekove", {"alergije": allegry})
+        .then((res) => res.data)
+        .catch((err) => {
+            toast.error(err.response.data.poruka, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+        });
+}
+
+export const finishAppointment = () => {
+    return api
+        .put("/pregledi/zavrsi-pregled")
+        .then((res) => {
+            toast.success(res.data.text, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+            return Response.SUCCESS;
+        })
+        .catch((err) => {
+                toast.error(err.response.data.poruka, {
+                    position: toast.POSITION.BOTTOM_RIGHT,
+                    autoClose: 1500,
+                });
+            });
+        }

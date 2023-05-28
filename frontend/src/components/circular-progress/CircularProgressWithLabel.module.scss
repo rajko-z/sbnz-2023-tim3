@@ -1,0 +1,25 @@
+@import "src/style/global";
+
+.box {
+  display: flex;
+  flex-direction: column !important;
+}
+
+.title {
+  color: $text-color !important;
+  font-size: 30px !important;
+  margin-bottom: 10vh !important;
+}
+
+.persentage {
+  color: $text-color !important;
+  font-size: 30px !important;
+  position: relative;
+  right: 2.5vw !important;
+  //left: 3vw !important;
+}
+
+.spinner {
+  color: $secondary-color !important;
+  width: 150px !important;
+}

@@ -24,7 +24,6 @@ export const sendQuestionnaire = (data: Answers, type: string) => {
             return Response.SUCCESS;
         })
         .catch((err) => {
-            console.log(err);
             return Response.ERROR;
         });
 }

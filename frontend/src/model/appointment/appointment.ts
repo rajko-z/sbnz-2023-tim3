@@ -10,21 +10,9 @@ export interface Appointment {
     epilepsijaProcenat: number;
     beleske: string;
     zakljucak: string;
-    eegVremePocetka: Date;
+    eegVremePocetka: string;
     eegVremeZavrsetka: Date;
     zavrsen: boolean;
-
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private AdhdUpitnik adhdUpitnik;
-    //
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private AlchajmerUpitnik alchajmerUpitnik;
-    //
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private EpilepsijaUpitnik epilepsijaUpitnik;
-    //
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private NesanicaUpitnik nesanicaUpitnik;
     stanjeEEGPregleda: EEGState;
 }
 
@@ -46,9 +34,10 @@ export interface DrugDescription {
     zaBlaguBolest: boolean;
     zaSrednjuBolest: boolean;
     zaTeskuBolest: boolean;
-    dozvoljeniUzrasti : Uzrast[];
-    sastojci: SastojakLeka[];
+    dozvoljeniUzrasti: Uzrast[];
+    sastojci: string[];
     tipBolesti: TipBolesti;
+    opisDoze: string;
 }
 
 export enum Uzrast {
@@ -63,7 +52,17 @@ export interface SastojakLeka {
 
 export enum TipBolesti {
     ADHD = "ADHD",
-    ALCHAJMER ="ALCHAJMER",
+    ALCHAJMER = "ALCHAJMER",
     NESANICA = "NESANICA",
-    EPILEPSIJA ="EPILEPSIJA"
+    EPILEPSIJA = "EPILEPSIJA"
+}
+
+export interface AppointmentDTO {
+    adhdProcenat: number;
+    alchajmerProcenat: number;
+    nesanicaProcenat: number;
+    epilepsijaProcenat: number;
+    tipBolesti: TipBolesti |null;
+    procenatPronadjeneBolesti: number;
+    sastojci: string[];
 }

@@ -24,7 +24,7 @@ then
                         .collect(Collectors.toList());
 
     List<Lek> lekovi = sortiraniFiltrirani.stream().map(st -> st.getLek()).collect(Collectors.toList());
-    modify($pregled){
+    modify($pregled)
         setPredlozeniLekovi(lekovi)
     }
 end

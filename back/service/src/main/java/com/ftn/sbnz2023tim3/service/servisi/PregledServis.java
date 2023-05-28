@@ -97,15 +97,23 @@ public class PregledServis {
         Pregled pregled = doktor.getTrenutniPregled();
         pregled.setStanjeEEGPregleda(StanjeEEGPregleda.ZAVRSEN);
         pregled.setEegVremeZavrsetka(LocalDateTime.now());
-        sacuvaj(pregled);
 
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         ksession.insert(pregled);
         ksession.fireAllRules();
         dRoolsKonfiguracija.clearKieSession(ksession);
 
-        pregledRepozitorijum.save(pregled);
+        sacuvaj(pregled);
         return pregled;
+    }
+
+    public Pregled getTrenutniPregled(){
+        Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledom();
+        if (doktor.getTrenutniPregled() == null) {
+            throw new BadRequestException("Doktor nema trenutni pregled");
+        }
+
+        return doktor.getTrenutniPregled();
     }
 
     public PregledDTO getPregledDTOById(Long id) {
@@ -198,7 +206,6 @@ public class PregledServis {
         }
         return pronadjenaBolest;
     }
-
 
     @Transactional
     public void zavrsiPregled() {

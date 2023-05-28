@@ -1,0 +1,33 @@
+@import "src/style/global";
+
+h2 {
+  color: $text-color;
+  text-align: left;
+}
+
+.buttonSubmit {
+  display: flex;
+  justify-content: flex-end;
+
+  .button {
+    width: 5vw;
+    height: 5vh;
+    color: $tertiary-color !important;
+    background-color: $secondary-color !important;
+  }
+}
+
+.checkBox {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 3vh 4vw;
+
+  .label {
+    color: $text-color;
+  }
+
+  .box {
+    color: $text-color !important;
+  }
+}

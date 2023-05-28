@@ -1,5 +1,10 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.Uzrast;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,8 +47,11 @@ public abstract class Korisnik implements UserDetails {
     @Column
     private String brojTelefona;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @Column(nullable = false)
-    private LocalDate datumRodjenja;
+    private LocalDateTime datumRodjenja;
 
     @Column
     private String adresa;
@@ -55,7 +63,7 @@ public abstract class Korisnik implements UserDetails {
     private Date datumPoslednjePromeneSifre;
 
     public int getBrojGodina() {
-        return (int) ChronoUnit.YEARS.between(datumRodjenja, LocalDate.now());
+        return (int) ChronoUnit.YEARS.between(datumRodjenja, LocalDateTime.now());
     }
 
     public Uzrast getUzrast() {

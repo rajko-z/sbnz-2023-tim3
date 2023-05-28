@@ -16,6 +16,8 @@ import EEGPage from "./pages/eeg-page/EEGPage";
 import 'react-toastify/dist/ReactToastify.css';
 import RegistrationPage from "./pages/registration-page/RegistrationPage";
 import AppointmentHistoryPage from "./pages/appointment-history-page/AppointmentHistoryPage";
+import ResultPage from "./pages/result-page/ResultPage";
+import DrugPage from "./pages/drug-page/DrugPage";
 
 function App() {
     loadIcon();
@@ -78,6 +80,18 @@ function App() {
                                                   allowedRoles={[userRole.ROLE_PACIJENT]}
                                                   redirectPath={redirectPath}
                                                   component={() => <AppointmentHistoryPage isDoctor={false}/>}/>}/>
+                    <Route path="/doktor/rezultati"
+                           element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
+                                                  role={getRoleFromToken()}
+                                                  allowedRoles={[userRole.ROLE_DOKTOR]}
+                                                  redirectPath={redirectPath}
+                                                  component={ResultPage}/>}/>
+                    <Route path="/doktor/preporuceni-lekovi"
+                           element={<PrivateRoute isAuthenticated={!!getUsernameFromToken()}
+                                                  role={getRoleFromToken()}
+                                                  allowedRoles={[userRole.ROLE_DOKTOR]}
+                                                  redirectPath={redirectPath}
+                                                  component={DrugPage}/>}/>
                 </Routes>
             </BrowserRouter>
             <ToastContainer theme="dark"/>

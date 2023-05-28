@@ -18,19 +18,3 @@ export const logIn = (data: LoginRequest) => {
             return err.response.data.message;
         });
 }
-
-// export const logOut = () => {
-//     return api
-//         .post("/auth/logout")
-//         .then((res) => {
-//             sessionStorage.removeItem("user");
-//             return Response.SUCCESS;
-//         })
-//         .catch((err) => {
-//             toast.error(err.response.data, {
-//                 position: toast.POSITION.BOTTOM_RIGHT,
-//                 autoClose: 1500,
-//             });
-//             return Response.ERROR;
-//         });
-// }

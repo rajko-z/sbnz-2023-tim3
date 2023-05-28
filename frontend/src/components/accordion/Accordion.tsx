@@ -11,6 +11,7 @@ interface IAccordion {
 }
 
 const Accordion = ({appointment, isDoctor}: IAccordion) => {
+    console.log(appointment)
     const [show, setShow] = useState(false);
     const icon = show ? solid('chevron-up') : solid('chevron-down');
 
@@ -21,9 +22,8 @@ const Accordion = ({appointment, isDoctor}: IAccordion) => {
                 <p>Email: {user.email}</p>
                 <p>Ime: {user.ime}</p>
                 <p>Prezime: {user.prezime}</p>
-                <p>Datum rođenja: {user.datumRodjenja?.getDay() + "." + user.datumRodjenja?.getMonth()
-                    + "." + user.datumRodjenja?.getFullYear() + "."}
-                </p>
+                <p>Broj godina: {user.brojGodina}</p>
+                <p>Broj telefona: {user.brojTelefona}</p>
             </div>
         );
     }
@@ -44,15 +44,7 @@ const Accordion = ({appointment, isDoctor}: IAccordion) => {
             <div className={Classes.tableRow}>
                 <p>{appointment.pacijent.email}</p>
                 <p>{appointment.doktor.email}</p>
-                {/*<p>{appointment.eegVremePocetka.toDateString()}</p>*/}
-                <p>{appointment.zakljucak}</p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
-                <p></p>
+                <p>{appointment.eegVremePocetka}</p>
                 <p onClick={() => setShow(!show)} className={Classes.showData}><FontAwesomeIcon icon={icon}/></p>
             </div>
             <div className={show ? Classes.show : Classes.hidden}>
@@ -60,10 +52,6 @@ const Accordion = ({appointment, isDoctor}: IAccordion) => {
                 {isDoctor ? userInformation(appointment.pacijent) : userInformation(appointment.doktor)}
                 <h4>Informacije o pregledu</h4>
                 {appointmentInformation()}
-                <h4>Beleške doktora</h4>
-                <div className={Classes.information}>
-                    <p>{appointment.beleske ? appointment.beleske: "Trenutno ne postoje beleške za izabrani pregled..."}</p>
-                </div>
                 <h4>Preporučeni lekovi</h4>
                 {appointment.izdatiLekovi.length === 0 ? "Za izabrani pregled ne postoje preporučeni lekovi..." :
                     appointment.izdatiLekovi?.map((lek) => {
