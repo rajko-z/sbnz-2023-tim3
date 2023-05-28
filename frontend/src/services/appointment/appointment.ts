@@ -82,3 +82,16 @@ export const getAllAppointments = (isDoctor: boolean) => {
             });
         });
 }
+
+export const getRezultatiPregleda = () => {
+    return api
+        .get("/pregledi/rezultati")
+        .then((res) => res.data)
+        .catch((err) => {
+            console.log(err);
+            toast.error(err.response.data.poruka, {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: 1500,
+            });
+        });
+}

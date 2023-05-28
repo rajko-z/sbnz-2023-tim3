@@ -108,6 +108,15 @@ public class PregledServis {
         return pregled;
     }
 
+    public Pregled getTrenutniPregled(){
+        Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledom();
+        if (doktor.getTrenutniPregled() == null) {
+            throw new BadRequestException("Doktor nema trenutni pregled");
+        }
+
+        return doktor.getTrenutniPregled();
+    }
+
     public PregledDTO getPregledDTOById(Long id) {
         Pregled pregled = pregledRepozitorijum.findByIdSaSvimPoljimaSemLekova(id);
         return konvertujPregledToPregledDTO(pregled);

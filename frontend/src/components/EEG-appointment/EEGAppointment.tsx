@@ -58,7 +58,7 @@ const EEGAppointment = () => {
     const handleOnZavrsiPregled = async () =>{
         const success = await finishEEGAppointment();
         if(success === Response.SUCCESS){
-            navigate("/doktor");
+            navigate("/doktor/rezultati");
         }
     }
 

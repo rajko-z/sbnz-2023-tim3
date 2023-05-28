@@ -46,7 +46,7 @@ export interface DrugDescription {
     zaBlaguBolest: boolean;
     zaSrednjuBolest: boolean;
     zaTeskuBolest: boolean;
-    dozvoljeniUzrasti : Uzrast[];
+    dozvoljeniUzrasti: Uzrast[];
     sastojci: SastojakLeka[];
     tipBolesti: TipBolesti;
 }
@@ -63,7 +63,17 @@ export interface SastojakLeka {
 
 export enum TipBolesti {
     ADHD = "ADHD",
-    ALCHAJMER ="ALCHAJMER",
+    ALCHAJMER = "ALCHAJMER",
     NESANICA = "NESANICA",
-    EPILEPSIJA ="EPILEPSIJA"
+    EPILEPSIJA = "EPILEPSIJA"
+}
+
+export interface AppointmentDTO {
+    adhdProcenat: number;
+    alchajmerProcenat: number;
+    nesanicaProcenat: number;
+    epilepsijaProcenat: number;
+    tipBolesti: TipBolesti |null;
+    procenatPronadjeneBolesti: number;
+    sastojci: string[];
 }
