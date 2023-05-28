@@ -27,9 +27,6 @@ const AppointmentHistory = ({isDoctor}: IAppointmentHistory) => {
                         <p>Email doktora</p>
                         <p>Datum pregleda</p>
                         <p></p>
-                        <p></p>
-                        <p></p>
-                        <p></p>
                     </li>
                     {appointments?.map((appointment) => <Accordion appointment={appointment} isDoctor={isDoctor}/>)}
                 </ul>

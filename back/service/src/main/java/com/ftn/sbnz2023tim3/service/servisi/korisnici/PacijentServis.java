@@ -54,7 +54,7 @@ public class PacijentServis {
         p.setEmail(pacijent.getEmail());
         p.setIme(pacijent.getIme());
         p.setPrezime(pacijent.getPrezime());
-        p.setDatumRodjenja(pacijent.getDatumRodjenja().toLocalDate());
+        p.setDatumRodjenja(pacijent.getDatumRodjenja());
         p.setBrojTelefona(pacijent.getBrojTelefona());
         p.setAdresa(pacijent.getAdresa());
         p.setRola(rolaRepozitorijum.findByNaziv("ROLE_PACIJENT").get(0));

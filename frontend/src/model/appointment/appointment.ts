@@ -10,7 +10,7 @@ export interface Appointment {
     epilepsijaProcenat: number;
     beleske: string;
     zakljucak: string;
-    eegVremePocetka: Date;
+    eegVremePocetka: string;
     eegVremeZavrsetka: Date;
     zavrsen: boolean;
     stanjeEEGPregleda: EEGState;
