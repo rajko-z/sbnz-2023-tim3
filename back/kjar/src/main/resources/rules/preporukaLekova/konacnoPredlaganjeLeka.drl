@@ -1,0 +1,30 @@
+package rules.preporukaLekova;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.Uzrast;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.FiltriranLek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.SignalZaKonacanIzborLekova;
+
+import java.util.List
+import java.util.stream.Collectors
+import java.util.Comparator;
+
+rule "Predlozi Lekove"
+when
+    $pregled: Pregled()
+    $pacijent: Pacijent(this == $pregled.getPacijent())
+    $signalZaIzborLeka: SignalZaKonacanIzborLekova()
+    $filtriraniLekovi: List() from collect (FiltriranLek(pregled == $pregled))
+then
+    System.out.println("Ulazim u kanacno");
+    List<FiltriranLek> filtriraniLekovi = (List<FiltriranLek>) $filtriraniLekovi;
+    List<FiltriranLek> sortiraniFiltrirani = filtriraniLekovi.stream()
+                        .sorted((o1, o2) -> Integer.compare(o2.getLek().getPrioritet(),o1.getLek().getPrioritet()))
+                        .collect(Collectors.toList());
+
+    List<Lek> lekovi = sortiraniFiltrirani.stream().map(st -> st.getLek()).collect(Collectors.toList());
+    modify($pregled){
+        setPredlozeniLekovi(lekovi)
+    }
+end

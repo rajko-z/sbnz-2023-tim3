@@ -1,0 +1,173 @@
+package rules.preporukaLekova;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.FiltriranLek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.LekNakonTestaAlergije;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
+
+
+rule "PrioritizujADHDLekoveBlagaBolest"
+no-loop
+when
+    $pregled: Pregled(adhdProcenat > 0.5, adhdProcenat <= 0.6)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.ADHD, zaBlaguBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija blaga:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujADHDLekoveSrednjaBolest"
+no-loop
+when
+    $pregled: Pregled(adhdProcenat > 0.6, adhdProcenat <= 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.ADHD, zaSrednjuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija srednja:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujADHDLekoveTeskaBolest"
+no-loop
+when
+    $pregled: Pregled(adhdProcenat > 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.ADHD, zaTeskuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija teska:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+////////////////////////////////////////////////////////////////////////
+
+
+rule "PrioritizujAlchajmerLekoveBlagaBolest"
+no-loop
+when
+    $pregled: Pregled(alchajmerProcenat > 0.5, alchajmerProcenat <= 0.6)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.ALCHAJMER, zaBlaguBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija blaga:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujAlchajmerLekoveSrednjaBolest"
+no-loop
+when
+    $pregled: Pregled(alchajmerProcenat > 0.6, alchajmerProcenat <= 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.ALCHAJMER, zaSrednjuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija srednja:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujAlchajmerLekoveTeskaBolest"
+no-loop
+when
+    $pregled: Pregled(alchajmerProcenat > 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.ALCHAJMER, zaTeskuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija teska:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+rule "PrioritizujEpilepsijaLekoveBlagaBolest"
+no-loop
+when
+    $pregled: Pregled(epilepsijaProcenat > 0.5, epilepsijaProcenat <= 0.6)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.EPILEPSIJA, zaBlaguBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija blaga:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujEpilepsijaLekoveSrednjaBolest"
+no-loop
+when
+    $pregled: Pregled(epilepsijaProcenat > 0.6, epilepsijaProcenat <= 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.EPILEPSIJA, zaSrednjuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija srednja:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujEpilepsijaLekoveTeskaBolest"
+no-loop
+when
+    $pregled: Pregled(epilepsijaProcenat > 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.EPILEPSIJA, zaTeskuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija teska:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+
+///////////////////////////////////////////////////////////////////////////
+
+rule "PrioritizujNesanicaLekoveBlagaBolest"
+no-loop
+when
+    $pregled: Pregled(nesanicaProcenat > 0.5, nesanicaProcenat <= 0.6)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.NESANICA, zaBlaguBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija blaga:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujNesanicaLekoveSrednjaBolest"
+no-loop
+when
+    $pregled: Pregled(nesanicaProcenat > 0.6, nesanicaProcenat <= 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.NESANICA, zaSrednjuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija srednja:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end
+
+rule "PrioritizujNesanicaLekoveTeskaBolest"
+no-loop
+when
+    $pregled: Pregled(nesanicaProcenat > 0.8)
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), tipBolesti == TipBolesti.NESANICA, zaTeskuBolest == true, prioritet == 0)
+then
+    System.out.println("Prioritiazacija teska:" + $lek.getNaziv());
+    modify($lek){
+        setPrioritet(1)
+    }
+end

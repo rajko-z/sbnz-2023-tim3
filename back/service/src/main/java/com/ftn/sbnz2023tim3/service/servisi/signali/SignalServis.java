@@ -1,8 +1,9 @@
 package com.ftn.sbnz2023tim3.service.servisi.signali;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
-import com.ftn.sbnz2023tim3.model.modeli.dto.SignalDTO;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.*;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.Uzrast;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
@@ -18,12 +19,9 @@ import com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.*;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.maven.shared.invoker.*;
-import org.drools.template.ObjectDataCompiler;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -49,67 +47,32 @@ public class SignalServis {
             throw new BadRequestException("EEG pregled nije zapocet");
         }
         Pacijent pacijent = pregledServis.getPacijentPregleda(pregled.getId());
-        boolean generisiNesanicu = !pacijent.getUzrast().equals(Uzrast.DETE);
-
-        if (pregled.getAdhdUpitnik() == null &&
-            pregled.getAlchajmerUpitnik() == null &&
-            pregled.getNesanicaUpitnik() == null &&
-            pregled.getEpilepsijaUpitnik() == null) {
-            GenerisanSignal generisanSignal = generisiRavnomeranRandomSignal(generisiNesanicu);
-            generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
-            insertIntoKSession(generisanSignal);
-            return generisanSignal;
-        }
-        GenerisanSignal generisanSignal = generisiRandomSignalNaOsnovuProcenataUpitnika(pregled, generisiNesanicu);
-        generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
+        GenerisanSignal generisanSignal = getGenerisanSignal(pregled, pacijent);
         insertIntoKSession(generisanSignal);
         return generisanSignal;
     }
 
-    public void generisiPravilaIzTemplejta() throws IOException, MavenInvocationException {
-        InputStream template = new FileInputStream(
-                "kjar/src/main/resources/rules/templates/signalTemplate.drt");
+    private GenerisanSignal getGenerisanSignal(Pregled pregled, Pacijent pacijent) {
+        boolean uzmiUObzirINesanicu = !pacijent.getUzrast().equals(Uzrast.DETE);
+        GenerisanSignal generisanSignal;
 
-        List<SignalDTO> arguments = new ArrayList<>();
-        arguments.add(new SignalDTO(5,15,40,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI,  DeoMozga.FRONTALNI), StanjePacijenta.OPUSTENO_STANJE, TipSignala.ALFA));
-        arguments.add(new SignalDTO(10,35,10,30, Arrays.asList(DeoMozga.TEMENI, DeoMozga.FRONTALNI), StanjePacijenta.POJACANA_AKTIVNOST_MOZGA, TipSignala.BETA));
-        arguments.add(new SignalDTO(20,120,0,60, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.TEMPORALNI), StanjePacijenta.VISOKO_PROCESIRANJE_PODATAKA, TipSignala.GAMA));
-        arguments.add(new SignalDTO(0,6,50,110, Arrays.asList(DeoMozga.POTILJACNI, DeoMozga.TEMENI, DeoMozga.FRONTALNI, DeoMozga.TEMPORALNI), StanjePacijenta.SAN, TipSignala.DELTA));
-        arguments.add(new SignalDTO(2,10,60,80, Arrays.asList(DeoMozga.TEMENI, DeoMozga.TEMPORALNI), StanjePacijenta.NAPETOST, TipSignala.TETA));
-        ObjectDataCompiler compiler = new ObjectDataCompiler();
-        String drl = compiler.compile(arguments, template);
-
-        FileOutputStream drlFile = new FileOutputStream(new File("kjar/src/main/resources/rules/signali/signal.drl"), false);
-        drlFile.write(drl.getBytes());
-        drlFile.close();
-
-        invoke();
-    }
-
-    private void invoke() throws MavenInvocationException {
-        InvocationRequest request = new DefaultInvocationRequest();
-        request.setPomFile(new File("kjar/pom.xml"));
-        request.setGoals(Arrays.asList("clean", "install"));
-
-        Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File("/opt/homebrew/Cellar/maven/3.9.1/libexec"));
-        invoker.execute(request);
-
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (pregled.getAdhdUpitnik() == null && pregled.getAlchajmerUpitnik() == null && pregled.getNesanicaUpitnik() == null && pregled.getEpilepsijaUpitnik() == null) {
+            generisanSignal = generisiRavnomeranRandomSignal(uzmiUObzirINesanicu);
+        } else {
+            generisanSignal = generisiRandomSignalNaOsnovuProcenataUpitnika(pregled, uzmiUObzirINesanicu);
         }
+
+        generisanSignal.getSignals().forEach(s -> s.setPregled(pregled));
+        return generisanSignal;
     }
 
     private void insertIntoKSession(GenerisanSignal generisanSignal) {
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliKS");
         generisanSignal.getSignals().forEach(ksession::insert);
-
         ksession.fireAllRules();
+
         KieSession ksessionStavka = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         generisanSignal.getSignals().forEach(ksessionStavka::insert);
-
         ksessionStavka.fireAllRules();
     }
 

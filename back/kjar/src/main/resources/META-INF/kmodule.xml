@@ -9,4 +9,7 @@
     <kbase name="signaliStavkaKB" packages="signaliStavka">
         <ksession name="signaliStavkaKS"/>
     </kbase>
+    <kbase name="predlogLekovaKB" packages="preporukaLekova">
+        <ksession name="predlogLekovaKS"/>
+    </kbase>
 </kmodule>

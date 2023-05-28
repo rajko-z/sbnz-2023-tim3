@@ -3,6 +3,7 @@ package com.ftn.sbnz2023tim3.service.servisi.korisnici;
 import com.ftn.sbnz2023tim3.model.modeli.dto.KorisnikDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.NoviPacijentDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.PrijavaDTO;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
 import com.ftn.sbnz2023tim3.service.izuzeci.BadRequestException;
 import com.ftn.sbnz2023tim3.service.izuzeci.NotFoundException;
@@ -83,5 +84,10 @@ public class PacijentServis {
         String pacijentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         return pacijentRepozitorijum.findById(pacijentEmail)
                 .orElseThrow(() -> new NotFoundException("Korisnik sa mejlom nije poznat: " + pacijentEmail));
+    }
+
+    public Pacijent getPacijentSaPregledomIIstorijomPregleda(String email) {
+        return pacijentRepozitorijum.findByEmailWithPregledAndPregledHistory(email)
+                .orElseThrow(() -> new NotFoundException("Korisnik sa mejlom nije poznat: " + email));
     }
 }

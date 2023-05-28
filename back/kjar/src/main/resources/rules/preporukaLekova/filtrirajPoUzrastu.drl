@@ -1,0 +1,18 @@
+package rules.preporukaLekova;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.FiltriranLek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.LekNakonTestaAlergije;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
+
+
+rule "Filtriraj po uzrastu"
+when
+    $pregled: Pregled()
+    $lekNakonAlergije: LekNakonTestaAlergije(pregled == $pregled, $lek: lek)
+    eval($lek.getDozvoljeniUzrasti().contains($pregled.getPacijent().getUzrast()))
+then
+    System.out.println("Prolazi uzrast test: " + $lek.getNaziv());
+    insert(new FiltriranLek($pregled, $lek));
+end

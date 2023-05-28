@@ -1,6 +1,6 @@
 package com.ftn.sbnz2023tim3.service;
 
-import com.ftn.sbnz2023tim3.service.servisi.signali.SignalServis;
+import com.ftn.sbnz2023tim3.service.servisi.TemplateServis;
 import org.apache.maven.shared.invoker.MavenInvocationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +17,7 @@ import java.io.IOException;
 public class MainApplication {
 
 	@Autowired
-	private SignalServis signalServis;
+	private TemplateServis templateServis;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MainApplication.class, args);
@@ -25,7 +25,8 @@ public class MainApplication {
 
 	@PostConstruct
 	private void init() throws MavenInvocationException, IOException {
-	//	signalServis.generisiPravilaIzTemplejta();
+		//templateServis.generisiPravilaZaOdredjivanjeTipaSignala();
+		//templateServis.generisiPravilaZaOdredjivanjeDozeLeka();
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.ftn.sbnz2023tim3.model.modeli.tabele;
 
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.lekovi.IzdatLek;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.upitnici.adhd.AdhdUpitnik;
@@ -77,4 +78,11 @@ public class Pregled {
 
     @Enumerated(EnumType.STRING)
     private StanjeEEGPregleda stanjeEEGPregleda;
+
+    @Transient
+    private List<Lek> predlozeniLekovi = new ArrayList<>();
+
+    public boolean zdravRezultat() {
+        return adhdProcenat <= 0.5 && alchajmerProcenat <= 0.5 && epilepsijaProcenat <= 0.5 && nesanicaProcenat <= 0.5;
+    }
 }

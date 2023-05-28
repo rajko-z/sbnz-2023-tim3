@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class Pacijent extends Korisnik {
 
-    @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Pregled> pregledi = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -29,7 +29,4 @@ public class IzdatLek {
     @Column
     private String opisDoze;
 
-    private boolean odgovaraPacijentu;
-
-    private int prioritet;
 }

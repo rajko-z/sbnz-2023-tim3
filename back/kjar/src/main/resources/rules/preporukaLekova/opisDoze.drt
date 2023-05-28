@@ -1,0 +1,30 @@
+template header
+
+naziv
+uzrast
+opisDoze
+
+package rules.preporukaLekova;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.Uzrast;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.FiltriranLek;
+
+template "opis-doze-template"
+
+rule "opis_doze_rule@{row.rowNumber}"
+no-loop
+when
+    $pregled: Pregled()
+    $pacijent: Pacijent(this == $pregled.getPacijent(), uzrast == Uzrast.@{uzrast})
+    $filtriranLek: FiltriranLek(pregled == $pregled)
+    $lek: Lek(this == $filtriranLek.getLek(), naziv == "@{naziv}", opisDoze == null)
+then
+    modify($lek){
+        setOpisDoze("@{opisDoze}")
+    }
+end
+
+end template

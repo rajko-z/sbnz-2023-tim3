@@ -37,6 +37,13 @@ public class DoktorServis {
                 .orElseThrow(() -> new NotFoundException("Korisnik sa mejlom nije poznat: " + doktorEmail));
     }
 
+    public Doktor getTrenutnoUlogovanDoktorSaPregledomIIstorijomPregleda() {
+        String doktorEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return doktorRepozitorijum.findByEmailWithPregledAndPregledHistory(doktorEmail)
+                .orElseThrow(() -> new NotFoundException("Korisnik sa mejlom nije poznat: " + doktorEmail));
+    }
+
+
     public void sacuvaj(Doktor doktor) {
         this.doktorRepozitorijum.save(doktor);
     }

@@ -102,6 +102,7 @@ public class PregledServis {
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         ksession.insert(pregled);
         ksession.fireAllRules();
+        dRoolsKonfiguracija.clearKieSession(ksession);
 
         pregledRepozitorijum.save(pregled);
         return pregled;
@@ -177,7 +178,7 @@ public class PregledServis {
                 .build();
     }
 
-    private PronadjenaBolest pronadjiBolest(Pregled pregled) {
+    public PronadjenaBolest pronadjiBolest(Pregled pregled) {
         PronadjenaBolest pronadjenaBolest = new PronadjenaBolest();
         if (pregled.getAdhdProcenat() > 0.5 && pregled.getAdhdProcenat() > pronadjenaBolest.getProcenat()) {
             pronadjenaBolest.setProcenat(pregled.getAdhdProcenat());
@@ -199,4 +200,22 @@ public class PregledServis {
     }
 
 
+    @Transactional
+    public void zavrsiPregled() {
+        Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledomIIstorijomPregleda();
+        Pacijent pacijent = pacijentServis.getPacijentSaPregledomIIstorijomPregleda(doktor.getTrenutniPregled().getPacijent().getEmail());
+
+        Pregled pregled = doktor.getTrenutniPregled();
+        pregled.setZavrsen(true);
+
+        doktor.getPregledi().add(pregled);
+        pacijent.getPregledi().add(pregled);
+
+        doktor.setTrenutniPregled(null);
+        pacijent.setTrenutniPregled(null);
+
+        pregledRepozitorijum.save(pregled);
+        doktorServis.sacuvaj(doktor);
+        pacijentServis.sacuvaj(pacijent);
+    }
 }

@@ -1,0 +1,18 @@
+package rules.preporukaLekova;
+
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.FiltriranLek;
+import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.LekNakonTestaAlergije;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
+
+
+rule "Filtriraj po alergiji"
+when
+    $pregled: Pregled()
+    $lek: Lek(pregled == $pregled, opisDoze == null, prioritet == 0)
+    not (String(this memberOf $pregled.pacijent.alergije) from $lek.sastojci)
+then
+   System.out.println("Prolazi alergiju test: " + $lek.getNaziv());
+   insert(new LekNakonTestaAlergije($pregled, $lek));
+end
