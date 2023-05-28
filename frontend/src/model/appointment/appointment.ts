@@ -13,18 +13,6 @@ export interface Appointment {
     eegVremePocetka: Date;
     eegVremeZavrsetka: Date;
     zavrsen: boolean;
-
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private AdhdUpitnik adhdUpitnik;
-    //
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private AlchajmerUpitnik alchajmerUpitnik;
-    //
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private EpilepsijaUpitnik epilepsijaUpitnik;
-    //
-    // @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // private NesanicaUpitnik nesanicaUpitnik;
     stanjeEEGPregleda: EEGState;
 }
 
@@ -47,8 +35,9 @@ export interface DrugDescription {
     zaSrednjuBolest: boolean;
     zaTeskuBolest: boolean;
     dozvoljeniUzrasti: Uzrast[];
-    sastojci: SastojakLeka[];
+    sastojci: string[];
     tipBolesti: TipBolesti;
+    opisDoze: string;
 }
 
 export enum Uzrast {

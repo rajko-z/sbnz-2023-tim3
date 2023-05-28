@@ -52,7 +52,6 @@ const EEGAppointment = () => {
                 t: newData?.signals.filter((signal: Signal) => signal.tip === SignalType.TETA).length !== 0 ?
                     newData?.signals.filter((signal: Signal) => signal.tip === SignalType.TETA)[0]?.amplituda : 0,
             }]);
-        console.log(signalsGraph);
     }
 
     const handleOnZavrsiPregled = async () =>{

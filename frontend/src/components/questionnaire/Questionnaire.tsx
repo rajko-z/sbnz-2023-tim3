@@ -66,7 +66,6 @@ const Questionnaire = ({questions, disease, setShowModal}: IQuestionnaire) => {
         });
         setResult(newResult);
         setSelectedAnswer(answer);
-        console.log(result);
     }
 
     return (

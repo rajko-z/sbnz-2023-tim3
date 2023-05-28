@@ -77,7 +77,6 @@ public class LekoviServis {
         dRoolsKonfiguracija.clearKieSession(ksession);
 
         setujIzdateLekoveZaPregled(pregled);
-        pregledServis.zavrsiPregled();
 
         return pregled.getPredlozeniLekovi();
     }

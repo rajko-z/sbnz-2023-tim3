@@ -7,7 +7,6 @@ export const getAllPatient = () => {
         .then((res) => res.data)
         .catch((err) => {
             console.log(err);
-            // return Response.ERROR;
         });
 }
 

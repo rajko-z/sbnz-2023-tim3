@@ -1,17 +1,15 @@
 import CircularProgressWithLabel from "../circular-progress/CircularProgressWithLabel";
 import Classes from "./ResultComponent.module.scss";
 import {useEffect, useState} from "react";
-import {getRezultatiPregleda} from "../../services/appointment/appointment";
+import {finishAppointment, getRezultatiPregleda} from "../../services/appointment/appointment";
 import {AppointmentDTO} from "../../model/appointment/appointment";
 import {Button} from "react-bootstrap";
-import Modal from "../modal/Modal";
-import AllergyCheck from "../allergy-check/AllergyCheck";
-
-const components = ["paracetamol", "brufen", "lala", "midlkq", "diqwwq"];
+import {useNavigate} from "react-router-dom";
+import {Response} from "../../model/auth/auth";
 
 const ResultComponent = () => {
     const [appointment, setAppointment] = useState<AppointmentDTO>();
-    const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -22,7 +20,14 @@ const ResultComponent = () => {
 
 
     const handleOnDrug = () => {
-        setShowModal(true);
+        navigate("/doktor/preporuceni-lekovi");
+    }
+
+    const handleOnFinish = async () => {
+        const success = await finishAppointment();
+        if(success === Response.SUCCESS){
+            navigate("/doktor");
+        }
     }
 
     const renderPatientIsOk = () => {
@@ -50,23 +55,31 @@ const ResultComponent = () => {
 
     return (
         <div className={Classes.page}>
-            {!appointment?.tipBolesti ? renderPatientIsNotOk() : renderPatientIsOk()}
+            {appointment?.tipBolesti ? renderPatientIsNotOk() : renderPatientIsOk()}
             <div className={Classes.canvas}>
-                <CircularProgressWithLabel value={appointment?.alchajmerProcenat || 50} title={"Alchajmerova bolest"}/>
-                <CircularProgressWithLabel value={appointment?.adhdProcenat || 60} title={"ADHD"}/>
-                <CircularProgressWithLabel value={appointment?.epilepsijaProcenat || 10} title={"Epilepsija"}/>
-                <CircularProgressWithLabel value={appointment?.nesanicaProcenat || 20} title={"Nesanica"}/>
+                <CircularProgressWithLabel
+                    value={appointment?.alchajmerProcenat ? appointment?.alchajmerProcenat * 100 : 0}
+                    title={"Alchajmerova bolest"}/>
+                <CircularProgressWithLabel value={appointment?.adhdProcenat ? appointment?.adhdProcenat * 100 : 0}
+                                           title={"ADHD"}/>
+                <CircularProgressWithLabel
+                    value={appointment?.epilepsijaProcenat ? appointment?.epilepsijaProcenat * 100 : 0}
+                    title={"Epilepsija"}/>
+                <CircularProgressWithLabel
+                    value={appointment?.nesanicaProcenat ? appointment?.nesanicaProcenat * 100 : 0} title={"Nesanica"}/>
             </div>
-            {!appointment?.tipBolesti &&
-                <div className={Classes.buttonSubmit}>
+            {appointment?.tipBolesti ?
+                (<div className={Classes.buttonSubmit}>
                     <Button type="submit" className={Classes.button} onClick={handleOnDrug}>
                         Preporuci lekove
                     </Button>
-                </div>
+                </div>) :
+                (<div className={Classes.buttonSubmit}>
+                    <Button type="submit" className={Classes.button} onClick={handleOnFinish}>
+                        Zavrsi pregled
+                    </Button>
+                </div>)
             }
-            <Modal show={showModal}>
-                <AllergyCheck setShowModal={setShowModal} components={components}/>
-            </Modal>
         </div>
     );
 }

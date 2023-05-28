@@ -97,14 +97,13 @@ public class PregledServis {
         Pregled pregled = doktor.getTrenutniPregled();
         pregled.setStanjeEEGPregleda(StanjeEEGPregleda.ZAVRSEN);
         pregled.setEegVremeZavrsetka(LocalDateTime.now());
-        sacuvaj(pregled);
 
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         ksession.insert(pregled);
         ksession.fireAllRules();
         dRoolsKonfiguracija.clearKieSession(ksession);
 
-        pregledRepozitorijum.save(pregled);
+        sacuvaj(pregled);
         return pregled;
     }
 
@@ -207,7 +206,6 @@ public class PregledServis {
         }
         return pronadjenaBolest;
     }
-
 
     @Transactional
     public void zavrsiPregled() {

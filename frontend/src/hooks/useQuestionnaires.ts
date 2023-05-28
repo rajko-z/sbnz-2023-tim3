@@ -22,7 +22,6 @@ export const useQuestionnaires = () => {
     function setAlchajmer(prop: boolean){
         setShowAlchajmer(prop);
         setDisableAlchajmer(prop);
-        console.log(prop);
     }
     function setNesanica(prop: boolean){
         setShowNesanica(prop);

@@ -2,7 +2,7 @@
 
 h2 {
   color: $text-color;
-  text-align: center;
+  text-align: left;
 }
 
 .buttonSubmit {
@@ -12,7 +12,6 @@ h2 {
   .button {
     width: 5vw;
     height: 5vh;
-    margin: 0 3vw;
     color: $tertiary-color !important;
     background-color: $secondary-color !important;
   }
@@ -22,7 +21,7 @@ h2 {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  margin: 10vh 4vw;
+  margin: 3vh 4vw;
 
   .label {
     color: $text-color;

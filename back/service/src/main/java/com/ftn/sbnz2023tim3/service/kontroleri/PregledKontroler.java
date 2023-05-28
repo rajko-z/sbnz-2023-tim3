@@ -64,10 +64,14 @@ public class PregledKontroler {
     public ResponseEntity<RezultatPregledaDTO> getRezultatiPregleda() {
         Pregled pregled = pregledServis.getTrenutniPregled();
         RezultatPregledaDTO retVal = pregledServis.vratiPregledSaSastojcima(pregled);
-        if (retVal.getTipBolesti() == null) {
-            pregledServis.zavrsiPregled();
-        }
         return new ResponseEntity<>(retVal, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_DOKTOR')")
+    @PutMapping("zavrsi-pregled")
+    public ResponseEntity<TextResponse> zavrsiPregled() {
+        pregledServis.zavrsiPregled();
+        return new ResponseEntity<>(new TextResponse("Uspesno je zavrsen pregled"), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")

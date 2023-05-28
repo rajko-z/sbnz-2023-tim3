@@ -2,23 +2,14 @@ import Classes from "./AllergyCheck.module.scss";
 import {Button} from "react-bootstrap";
 import {Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
 
 interface IAllergyCheck {
-    setShowModal: (show: boolean) => void;
     components: string[];
+    handleOnClickButton: (selected: string[]) => void;
 }
 
-const AllergyCheck = ({setShowModal, components}: IAllergyCheck) => {
+const AllergyCheck = ({components, handleOnClickButton}: IAllergyCheck) => {
     const [selected, setSelected] = useState<string[]>();
-    const navigate = useNavigate();
-
-    const handleOnCloseModal = () => {
-        //redirekt na drugu stranicu
-        //poziv ka beku da se sacuvaju alergije
-        setShowModal(false);
-        // navigate("doktor/preporuceni-lekovi");
-    }
 
     const handleChange = (value: any) => {
         const foundComponent = selected?.find((component) => component === value);
@@ -50,8 +41,8 @@ const AllergyCheck = ({setShowModal, components}: IAllergyCheck) => {
                 />)}
             </FormGroup>
             <div className={Classes.buttonSubmit}>
-                <Button type="submit" className={Classes.button} onClick={handleOnCloseModal}>
-                    Završi
+                <Button type="submit" className={Classes.button} onClick={() => handleOnClickButton(selected || [])}>
+                    Preporuči
                 </Button>
             </div>
         </div>
