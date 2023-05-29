@@ -12,6 +12,7 @@ import {useNavigate} from "react-router-dom";
 const EEGPage = () => {
     const [appointment, setAppointment] = useState<AppointmentDTO>();
     const [drugs, setDrugs] = useState<DrugDescription[]>();
+    const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,9 +20,10 @@ const EEGPage = () => {
             const data = await getRezultatiPregleda() as unknown as AppointmentDTO;
             setAppointment(data);
         })();
-    }, []);
+    }, [disable]);
 
     const handleOnClickButton = async (selected: string[]) => {
+        setDisable(true);
         const drugs = await sendAllergy(selected);
         setDrugs(drugs);
     }
@@ -37,7 +39,7 @@ const EEGPage = () => {
         <div className={Classes.background}>
             <MenuDoctor/>
             <div className={Classes.canvas}>
-                <AllergyCheck components={appointment?.sastojci || []} handleOnClickButton={handleOnClickButton}/>
+                <AllergyCheck components={appointment?.sastojci || []} handleOnClickButton={handleOnClickButton} disable={disable}/>
                 <DrugComponent drugs={drugs || []}/>
                 <div className={Classes.buttonSubmit}>
                     <Button type="submit" className={Classes.button} onClick={handleOnFinish}>

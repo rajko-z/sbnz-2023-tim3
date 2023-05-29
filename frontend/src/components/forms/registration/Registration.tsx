@@ -2,8 +2,8 @@ import {Button, Col, Form, Row} from "react-bootstrap";
 import Classes from "./Registration.module.scss";
 import {useState} from "react";
 import {Response} from "../../../model/auth/auth";
-import {toast} from "react-toastify";
 import {addPatient} from "../../../services/patient/patient";
+import {useNavigate} from "react-router-dom";
 
 const Registration = () => {
     const [validated, setValidated] = useState(false);
@@ -13,6 +13,7 @@ const Registration = () => {
     const [brojTelefona, setBrojTelefona] = useState('');
     const [adresa, setAdresa] = useState('');
     const [datumRodjenja, setDatumRodjenja] = useState('');
+    const navigate = useNavigate();
 
 
     const handleOnSubmit = async (event: any) => {
@@ -27,17 +28,7 @@ const Registration = () => {
             datumRodjenja: datumRodjenja + " 00:00:00"
         });
         if (success === Response.SUCCESS) {
-            setIme('');
-            setAdresa('');
-            setEmail('');
-            setPrezime('');
-            setDatumRodjenja('');
-            setBrojTelefona('');
-        } else {
-            toast.error(success, {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                autoClose: 1500,
-            });
+            navigate("/doktor");
         }
         setValidated(true)
     }
