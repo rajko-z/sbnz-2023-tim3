@@ -6,9 +6,10 @@ import {useState} from "react";
 interface IAllergyCheck {
     components: string[];
     handleOnClickButton: (selected: string[]) => void;
+    disable: boolean;
 }
 
-const AllergyCheck = ({components, handleOnClickButton}: IAllergyCheck) => {
+const AllergyCheck = ({components, handleOnClickButton, disable}: IAllergyCheck) => {
     const [selected, setSelected] = useState<string[]>();
 
     const handleChange = (value: any) => {
@@ -41,7 +42,7 @@ const AllergyCheck = ({components, handleOnClickButton}: IAllergyCheck) => {
                 />)}
             </FormGroup>
             <div className={Classes.buttonSubmit}>
-                <Button type="submit" className={Classes.button} onClick={() => handleOnClickButton(selected || [])}>
+                <Button type="submit" disabled={disable} className={!disable ? Classes.button: Classes.buttonDisable} onClick={() => handleOnClickButton(selected || [])}>
                     Preporuči
                 </Button>
             </div>
