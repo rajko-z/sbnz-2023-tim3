@@ -1,6 +1,7 @@
 package com.ftn.sbnz2023tim3.service.servisi;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.SignalDTO;
+import com.ftn.sbnz2023tim3.model.modeli.dto.TipSignalaWrapper;
 import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.OpisLekaTemplateDTO;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.DeoMozga;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
@@ -38,6 +39,24 @@ public class TemplateServis {
         drlFile.close();
 
         invoke();
+    }
+
+    public void generisiPravilaSumiranjaPoSignalima() throws IOException {
+        InputStream template = new FileInputStream(
+                "kjar/src/main/resources/rules/signaliStavka/sumiranjePoSignalimaTemplate.drt");
+
+        List<TipSignalaWrapper> arguments = new ArrayList<>();
+        arguments.add(new TipSignalaWrapper(TipSignala.ALFA));
+        arguments.add(new TipSignalaWrapper(TipSignala.BETA));
+        arguments.add(new TipSignalaWrapper(TipSignala.GAMA));
+        arguments.add(new TipSignalaWrapper(TipSignala.DELTA));
+        arguments.add(new TipSignalaWrapper(TipSignala.TETA));
+        ObjectDataCompiler compiler = new ObjectDataCompiler();
+        String drl = compiler.compile(arguments, template);
+
+        FileOutputStream drlFile = new FileOutputStream("kjar/src/main/resources/rules/signaliStavka/sumiranjePoSignalimaGen.drl", false);
+        drlFile.write(drl.getBytes());
+        drlFile.close();
     }
 
     public void generisiPravilaZaOdredjivanjeDozeLeka() throws IOException, MavenInvocationException {

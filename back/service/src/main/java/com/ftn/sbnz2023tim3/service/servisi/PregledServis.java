@@ -1,10 +1,12 @@
 package com.ftn.sbnz2023tim3.service.servisi;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.PronadjenaBolest;
+import com.ftn.sbnz2023tim3.model.modeli.dto.RezultatSignala;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.RezultatPregledaDTO;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,11 +103,25 @@ public class PregledServis {
 
         KieSession ksession = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         ksession.insert(pregled);
+        insertPocenteRezultateSignala(ksession, pregled);
         ksession.fireAllRules();
         dRoolsKonfiguracija.clearKieSession(ksession);
 
         sacuvaj(pregled);
         return pregled;
+    }
+
+    private void insertPocenteRezultateSignala(KieSession kieSession, Pregled pregled) {
+        RezultatSignala rezultatSignalaAlfa = new RezultatSignala(new Date(), pregled.getId(), TipSignala.ALFA, -1,-1,-1,-1);
+        RezultatSignala rezultatSignalaBeta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.BETA, -1,-1,-1,-1);
+        RezultatSignala rezultatSignalaGama = new RezultatSignala(new Date(), pregled.getId(), TipSignala.GAMA, -1,-1,-1,-1);
+        RezultatSignala rezultatSignalaDelta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.DELTA, -1,-1,-1,-1);
+        RezultatSignala rezultatSignalaTeta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.TETA, -1,-1,-1,-1);
+        kieSession.insert(rezultatSignalaAlfa);
+        kieSession.insert(rezultatSignalaBeta);
+        kieSession.insert(rezultatSignalaGama);
+        kieSession.insert(rezultatSignalaDelta);
+        kieSession.insert(rezultatSignalaTeta);
     }
 
     public Pregled getTrenutniPregled(){

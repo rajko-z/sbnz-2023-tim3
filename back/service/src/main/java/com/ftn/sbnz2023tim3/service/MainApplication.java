@@ -27,6 +27,7 @@ public class MainApplication {
 	private void init() throws MavenInvocationException, IOException {
 		//templateServis.generisiPravilaZaOdredjivanjeTipaSignala();
 		//templateServis.generisiPravilaZaOdredjivanjeDozeLeka();
+		//templateServis.generisiPravilaSumiranjaPoSignalima();
 	}
 
 }

@@ -16,11 +16,11 @@ rule "sumiranje rezultata EEG pregleda"
 when
     $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
 
-    $rezultatAlfa: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.ALFA)
-    $rezultatBeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.BETA)
-    $rezultatGama: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.GAMA)
-    $rezultatDelta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.DELTA)
-    $rezultatTeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.TETA)
+    $rezultatAlfa: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.ALFA, ukupanBroj != -1, brojNormalnih != -1, brojPovisenih != -1, brojSmanjenih != -1)
+    $rezultatBeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.BETA, ukupanBroj != -1, brojNormalnih != -1, brojPovisenih != -1, brojSmanjenih != -1)
+    $rezultatGama: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.GAMA, ukupanBroj != -1, brojNormalnih != -1, brojPovisenih != -1, brojSmanjenih != -1)
+    $rezultatDelta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.DELTA, ukupanBroj != -1, brojNormalnih != -1, brojPovisenih != -1, brojSmanjenih != -1)
+    $rezultatTeta: RezultatSignala(pregledId == $pregled.id, tip == TipSignala.TETA, ukupanBroj != -1, brojNormalnih != -1, brojPovisenih != -1, brojSmanjenih != -1)
 then
     double ukupanBrojSignala = Collections.max(Arrays.asList(
                                 $rezultatAlfa.getUkupanBroj(),

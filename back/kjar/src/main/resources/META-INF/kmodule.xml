@@ -3,10 +3,10 @@
     <kbase name="upitniciKB" packages="upitnici">
         <ksession name="upitniciKS"/>
     </kbase>
-    <kbase name="signaliKB" packages="signali">
+    <kbase name="signaliKB" packages="signali" eventProcessingMode="stream">
         <ksession name="signaliKS"/>
     </kbase>
-    <kbase name="signaliStavkaKB" packages="signaliStavka">
+    <kbase name="signaliStavkaKB" packages="signaliStavka" eventProcessingMode="stream">
         <ksession name="signaliStavkaKS"/>
     </kbase>
     <kbase name="predlogLekovaKB" packages="preporukaLekova">

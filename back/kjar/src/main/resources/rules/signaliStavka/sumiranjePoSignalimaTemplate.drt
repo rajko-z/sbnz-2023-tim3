@@ -1,0 +1,81 @@
+template header
+
+signal
+
+package signaliStavka;
+
+import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.VisinaSignala;
+import com.ftn.sbnz2023tim3.model.modeli.dto.StavkaRezultataSignala;
+import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
+import com.ftn.sbnz2023tim3.model.modeli.dto.RezultatSignala;
+import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Arrays;
+
+template "sumiranje-po-signalima-template"
+
+rule "sumiranje svih povisenih signala@{row.rowNumber}"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $resultatSignala : RezultatSignala(tip == TipSignala.@{signal}, pregledId == $pregled.id)
+    $brPovisenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.@{signal}, pregled.id == $pregled.id, stanje == VisinaSignala.VISOKA)
+                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    modify($resultatSignala){
+        setBrojPovisenih($brPovisenih.doubleValue())
+    }
+end
+
+rule "sumiranje svih snizenih signala@{row.rowNumber}"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $resultatSignala : RezultatSignala(tip == TipSignala.@{signal}, pregledId == $pregled.id)
+    $brSmanjenih: Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.@{signal}, stanje == VisinaSignala.NISKA, pregled.id == $pregled.id)
+                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    modify($resultatSignala){
+        setBrojSmanjenih($brSmanjenih.doubleValue())
+    }
+end
+
+rule "sumiranje svih normalnih signala@{row.rowNumber}"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $resultatSignala : RezultatSignala(tip == TipSignala.@{signal}, pregledId == $pregled.id)
+    $brNormalnih:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.@{signal}, stanje == VisinaSignala.NORMALNA, pregled.id == $pregled.id)
+                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    modify($resultatSignala){
+        setBrojNormalnih($brNormalnih.doubleValue())
+    }
+end
+
+rule "sumiranje svih signala@{row.rowNumber}"
+when
+    $pregled: Pregled(stanjeEEGPregleda == StanjeEEGPregleda.ZAVRSEN)
+    $resultatSignala : RezultatSignala(tip == TipSignala.@{signal}, pregledId == $pregled.id)
+    $ukupanBr:Number(intValue >= 0) from accumulate (
+                         $stavka: StavkaRezultataSignala(tip == TipSignala.@{signal}, pregled.id == $pregled.id)
+                         over window: time(30m),
+                         count($stavka)
+                     )
+then
+    modify($resultatSignala){
+        setUkupanBroj($ukupanBr.doubleValue())
+    }
+end
+
+end template
