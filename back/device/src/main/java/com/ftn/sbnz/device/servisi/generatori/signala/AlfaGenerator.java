@@ -1,14 +1,14 @@
-package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala;
+package com.ftn.sbnz.device.servisi.generatori.signala;
 
-import com.ftn.sbnz2023tim3.model.modeli.dto.Signal;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.DeoMozga;
-import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjePacijenta;
+import com.ftn.sbnz.device.model.enumeracije.DeoMozga;
+import com.ftn.sbnz.device.model.Signal;
+import com.ftn.sbnz.device.model.enumeracije.StanjePacijenta;
 
 import java.util.Date;
 import java.util.List;
 
-import static com.ftn.sbnz2023tim3.service.servisi.signali.RandomUtils.generisiRandomBrojIzmedju;
-import static com.ftn.sbnz2023tim3.service.servisi.signali.RandomUtils.izaberiDeoMozgaNasumicno;
+import static com.ftn.sbnz.device.servisi.RandomUtils.generisiRandomBrojIzmedju;
+import static com.ftn.sbnz.device.servisi.RandomUtils.izaberiDeoMozgaNasumicno;
 
 
 public class AlfaGenerator {

@@ -1,15 +1,15 @@
-package com.ftn.sbnz2023tim3.service.servisi.signali.generatori.bolesti;
+package com.ftn.sbnz.device.servisi.generatori.bolesti;
 
-import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
+import com.ftn.sbnz.device.model.GenerisanSignal;
 
 import java.util.Arrays;
 
-import static com.ftn.sbnz2023tim3.service.servisi.signali.RandomUtils.generisiRandomBrojIzmedju;
-import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.AlfaGenerator.generisiNormalanAlfaSignal;
-import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.BetaGenerator.generisiNormalanBetaSignal;
-import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.DeltaGenerator.generisiSnizenDeltaSignal;
-import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.GamaGenerator.generisiNormalanGamaSignal;
-import static com.ftn.sbnz2023tim3.service.servisi.signali.generatori.signala.TetaGenerator.generisiSnizenTetaSignal;
+import static com.ftn.sbnz.device.servisi.RandomUtils.generisiRandomBrojIzmedju;
+import static com.ftn.sbnz.device.servisi.generatori.signala.AlfaGenerator.generisiNormalanAlfaSignal;
+import static com.ftn.sbnz.device.servisi.generatori.signala.BetaGenerator.generisiNormalanBetaSignal;
+import static com.ftn.sbnz.device.servisi.generatori.signala.DeltaGenerator.generisiSnizenDeltaSignal;
+import static com.ftn.sbnz.device.servisi.generatori.signala.GamaGenerator.generisiNormalanGamaSignal;
+import static com.ftn.sbnz.device.servisi.generatori.signala.TetaGenerator.generisiSnizenTetaSignal;
 
 public class NesanicaGenerator {
 
