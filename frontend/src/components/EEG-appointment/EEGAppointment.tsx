@@ -1,12 +1,14 @@
 import {Label, Line, LineChart, XAxis, YAxis} from 'recharts';
 import {useEffect, useState} from "react";
-import {finishEEGAppointment, getSignal} from "../../services/appointment/appointment";
+import {finishEEGAppointment} from "../../services/appointment/appointment";
 import Classes from "./EEGAppointment.module.scss";
 import {Button} from "react-bootstrap";
 import {SignalType} from "../../model/signals/signalType";
 import {Signal} from "../../model/signals/signal";
 import {Response} from "../../model/auth/auth";
 import {useNavigate} from "react-router-dom";
+import {Client} from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 interface SignalGraph {
     name: Date;
@@ -30,29 +32,46 @@ const EEGAppointment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const interval = setInterval(() => updateData(), 1000);
+        const client = new Client({
+            reconnectDelay: 5000,
+            heartbeatIncoming: 4000,
+            heartbeatOutgoing: 4000,
+            webSocketFactory: () => {
+                return new SockJS("http://localhost:8085/sbnz2023tim3/ws");
+            },
+        });
+
+        client.onConnect = (frame) => {
+            client.subscribe('/notifikacija', (message: any) => {
+                handleWebSocketMessage(JSON.parse(message.body));
+            });
+        }
+
+        client.activate()
+
         return () => {
-            clearInterval(interval);
+            client.deactivate()
         };
     }, [signalsGraph]);
 
-    const updateData = async () => {
-        const newData = await getSignal();
-        setSignalsGraph([...signalsGraph,
-            {
-                name: new Date(),
-                a: newData?.signals.filter((signal: Signal) => signal.tip === SignalType.ALFA).length !== 0 ?
-                    newData?.signals.filter((signal: Signal) => signal.tip === SignalType.ALFA)[0]?.amplituda : 0,
-                b: newData?.signals.filter((signal: Signal) => signal.tip === SignalType.BETA).length !== 0 ?
-                    newData?.signals.filter((signal: Signal) => signal.tip === SignalType.BETA)[0]?.amplituda : 0,
-                g: newData?.signals.filter((signal: Signal) => signal.tip === SignalType.GAMA).length !== 0 ?
-                    newData?.signals.filter((signal: Signal) => signal.tip === SignalType.GAMA)[0]?.amplituda : 0,
-                d: newData?.signals.filter((signal: Signal) => signal.tip === SignalType.DELTA).length !== 0 ?
-                    newData?.signals.filter((signal: Signal) => signal.tip === SignalType.DELTA)[0]?.amplituda : 0,
-                t: newData?.signals.filter((signal: Signal) => signal.tip === SignalType.TETA).length !== 0 ?
-                    newData?.signals.filter((signal: Signal) => signal.tip === SignalType.TETA)[0]?.amplituda : 0,
-            }]);
-    }
+    const handleWebSocketMessage = (message: any) => {
+        if(message?.signals){
+            setSignalsGraph([...signalsGraph,
+                {
+                    name: new Date(),
+                    a: message?.signals.filter((signal: Signal) => signal.tip === SignalType.ALFA).length !== 0 ?
+                        message?.signals.filter((signal: Signal) => signal.tip === SignalType.ALFA)[0]?.amplituda : 0,
+                    b: message?.signals.filter((signal: Signal) => signal.tip === SignalType.BETA).length !== 0 ?
+                        message?.signals.filter((signal: Signal) => signal.tip === SignalType.BETA)[0]?.amplituda : 0,
+                    g: message?.signals.filter((signal: Signal) => signal.tip === SignalType.GAMA).length !== 0 ?
+                        message?.signals.filter((signal: Signal) => signal.tip === SignalType.GAMA)[0]?.amplituda : 0,
+                    d: message?.signals.filter((signal: Signal) => signal.tip === SignalType.DELTA).length !== 0 ?
+                        message?.signals.filter((signal: Signal) => signal.tip === SignalType.DELTA)[0]?.amplituda : 0,
+                    t: message?.signals.filter((signal: Signal) => signal.tip === SignalType.TETA).length !== 0 ?
+                        message?.signals.filter((signal: Signal) => signal.tip === SignalType.TETA)[0]?.amplituda : 0,
+                }]);
+        }
+    };
 
     const handleOnZavrsiPregled = async () =>{
         const success = await finishEEGAppointment();

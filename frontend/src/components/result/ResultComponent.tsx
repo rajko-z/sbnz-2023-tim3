@@ -52,6 +52,7 @@ const ResultComponent = () => {
             </div>
         );
     }
+    console.log(appointment)
 
     return (
         <div className={Classes.page}>
