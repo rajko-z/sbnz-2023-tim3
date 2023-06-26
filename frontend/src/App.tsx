@@ -26,14 +26,11 @@ function App() {
     if (role) {
         redirectPath = path[role];
     }
+
     return (
         <>
             <BrowserRouter>
                 <Routes>
-                    {/*<Route path="/"*/}
-                    {/*       element={<PublicRoute isAuthenticated={!!getUsernameFromToken()}*/}
-                    {/*                             redirectPath={redirectPath}*/}
-                    {/*                             component={HomePage}/>}/>*/}
                     <Route path="/"
                            element={<PublicRoute isAuthenticated={!!getUsernameFromToken()}
                                                  redirectPath={redirectPath}

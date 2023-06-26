@@ -17,7 +17,6 @@ when
     $signalZaIzborLeka: SignalZaKonacanIzborLekova()
     $filtriraniLekovi: List() from collect (FiltriranLek(pregled == $pregled))
 then
-    System.out.println("Ulazim u kanacno");
     List<FiltriranLek> filtriraniLekovi = (List<FiltriranLek>) $filtriraniLekovi;
     List<FiltriranLek> sortiraniFiltrirani = filtriraniLekovi.stream()
                         .sorted((o1, o2) -> Integer.compare(o2.getLek().getPrioritet(),o1.getLek().getPrioritet()))

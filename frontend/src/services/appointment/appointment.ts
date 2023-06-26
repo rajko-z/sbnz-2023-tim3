@@ -39,15 +39,6 @@ export const startEEGAppointment = () => {
         });
 }
 
-export const getSignal = () => {
-    return api
-        .get('pregledi/generisi-signal')
-        .then((res) => res.data)
-        .catch((err) => {
-            console.log(err);
-        });
-}
-
 export const finishEEGAppointment = () => {
     return api
         .put('/pregledi/zavrsi-eeg')

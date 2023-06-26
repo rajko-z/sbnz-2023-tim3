@@ -1,5 +1,6 @@
 package com.ftn.sbnz2023tim3.service.servisi;
 
+import com.ftn.sbnz2023tim3.model.modeli.dto.InfoZaGenerisanSignal;
 import com.ftn.sbnz2023tim3.model.modeli.dto.PronadjenaBolest;
 import com.ftn.sbnz2023tim3.model.modeli.dto.RezultatSignala;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
@@ -7,6 +8,7 @@ import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.RezultatPregledaDTO;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.StanjeEEGPregleda;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipBolesti;
 import com.ftn.sbnz2023tim3.model.modeli.enumeracije.TipSignala;
+import com.ftn.sbnz2023tim3.model.modeli.enumeracije.Uzrast;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Doktor;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.korisnici.Pacijent;
@@ -20,7 +22,10 @@ import com.ftn.sbnz2023tim3.service.repozitorijumi.PregledRepozitorijum;
 import com.ftn.sbnz2023tim3.service.servisi.korisnici.DoktorServis;
 import com.ftn.sbnz2023tim3.service.servisi.korisnici.PacijentServis;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.kie.api.runtime.KieSession;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +48,8 @@ public class PregledServis {
     private final LekoviServis lekoviServis;
 
     private final DRoolsKonfiguracija dRoolsKonfiguracija;
+
+    private final DeviceIntegracijaServis deviceIntegracijaServis;
 
     @Transactional
     public void zapocniPregledZaPacijenta(String pacijentEmail) {
@@ -89,6 +96,7 @@ public class PregledServis {
 
         KieSession ksessionStavka = dRoolsKonfiguracija.getOrCreateKieSession("signaliStavkaKS");
         ksessionStavka.insert(pregled);
+        pokreniEEGAparat(pregled, pregled.getPacijent());
     }
 
     public Pregled zavrsiEEG() {
@@ -108,15 +116,41 @@ public class PregledServis {
         dRoolsKonfiguracija.clearKieSession(ksession);
 
         sacuvaj(pregled);
+
+        deviceIntegracijaServis.sendToDeviceApp(null, "/signali/kraj", HttpMethod.PUT);
         return pregled;
     }
 
+    private void pokreniEEGAparat(Pregled pregled, Pacijent pacijent) {
+        boolean uzmiUObzirINesanicu = !pacijent.getUzrast().equals(Uzrast.DETE);
+        if (pregled.getAdhdUpitnik() == null && pregled.getAlchajmerUpitnik() == null && pregled.getNesanicaUpitnik() == null && pregled.getEpilepsijaUpitnik() == null) {
+            deviceIntegracijaServis.sendToDeviceApp(
+                    new InfoZaGenerisanSignal(uzmiUObzirINesanicu, false, new ArrayList<>(), pregled.getId()),
+                    "/signali/pocetak", HttpMethod.POST);
+        } else {
+            deviceIntegracijaServis.sendToDeviceApp(
+                    new InfoZaGenerisanSignal(uzmiUObzirINesanicu, true, getProcentiUpitnikaIzPregleda(pregled, uzmiUObzirINesanicu), pregled.getId()),
+                    "/signali/pocetak", HttpMethod.POST);
+        }
+    }
+
+    private List<Pair<TipBolesti, Double>> getProcentiUpitnikaIzPregleda(Pregled pregled, boolean generisiNesanicu) {
+        List<Pair<TipBolesti, Double>> procenti = new ArrayList<>();
+        procenti.add(new ImmutablePair<>(TipBolesti.ADHD, pregled.getAdhdProcenat()));
+        procenti.add(new ImmutablePair<>(TipBolesti.ALCHAJMER, pregled.getAlchajmerProcenat()));
+        procenti.add(new ImmutablePair<>(TipBolesti.EPILEPSIJA, pregled.getEpilepsijaProcenat()));
+        if (generisiNesanicu) {
+            procenti.add(new ImmutablePair<>(TipBolesti.NESANICA, pregled.getNesanicaProcenat()));
+        }
+        return procenti;
+    }
+
     private void insertPocenteRezultateSignala(KieSession kieSession, Pregled pregled) {
-        RezultatSignala rezultatSignalaAlfa = new RezultatSignala(new Date(), pregled.getId(), TipSignala.ALFA, -1,-1,-1,-1);
-        RezultatSignala rezultatSignalaBeta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.BETA, -1,-1,-1,-1);
-        RezultatSignala rezultatSignalaGama = new RezultatSignala(new Date(), pregled.getId(), TipSignala.GAMA, -1,-1,-1,-1);
-        RezultatSignala rezultatSignalaDelta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.DELTA, -1,-1,-1,-1);
-        RezultatSignala rezultatSignalaTeta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.TETA, -1,-1,-1,-1);
+        RezultatSignala rezultatSignalaAlfa = new RezultatSignala(new Date(), pregled.getId(), TipSignala.ALFA, -1, -1, -1, -1);
+        RezultatSignala rezultatSignalaBeta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.BETA, -1, -1, -1, -1);
+        RezultatSignala rezultatSignalaGama = new RezultatSignala(new Date(), pregled.getId(), TipSignala.GAMA, -1, -1, -1, -1);
+        RezultatSignala rezultatSignalaDelta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.DELTA, -1, -1, -1, -1);
+        RezultatSignala rezultatSignalaTeta = new RezultatSignala(new Date(), pregled.getId(), TipSignala.TETA, -1, -1, -1, -1);
         kieSession.insert(rezultatSignalaAlfa);
         kieSession.insert(rezultatSignalaBeta);
         kieSession.insert(rezultatSignalaGama);
@@ -124,7 +158,7 @@ public class PregledServis {
         kieSession.insert(rezultatSignalaTeta);
     }
 
-    public Pregled getTrenutniPregled(){
+    public Pregled getTrenutniPregled() {
         Doktor doktor = doktorServis.getTrenutnoUlogovanDoktorSaPregledom();
         if (doktor.getTrenutniPregled() == null) {
             throw new BadRequestException("Doktor nema trenutni pregled");
@@ -162,7 +196,7 @@ public class PregledServis {
         return pregledDTOS;
     }
 
-    private PregledDTO konvertujPregledToPregledDTO(Pregled pregled){
+    private PregledDTO konvertujPregledToPregledDTO(Pregled pregled) {
         return PregledDTO.builder()
                 .id(pregled.getId())
                 .pacijent(KorisnikDTOKonverter.konvertuj(pregled.getPacijent()))

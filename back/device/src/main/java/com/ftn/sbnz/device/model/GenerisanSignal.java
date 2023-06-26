@@ -1,4 +1,4 @@
-package com.ftn.sbnz2023tim3.model.modeli.dto;
+package com.ftn.sbnz.device.model;
 
 import lombok.*;
 
@@ -10,6 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class GenerisanSignal {
-
     private List<Signal> signals;
 }
