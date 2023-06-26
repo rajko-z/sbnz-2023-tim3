@@ -1,16 +1,13 @@
 package com.ftn.sbnz2023tim3.service.kontroleri;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.AlergijeDTO;
-import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 import com.ftn.sbnz2023tim3.model.modeli.dto.TextResponse;
-import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.IzdatLekDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.lekovi.Lek;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.PregledDTO;
 import com.ftn.sbnz2023tim3.model.modeli.dto.pregled.RezultatPregledaDTO;
 import com.ftn.sbnz2023tim3.model.modeli.tabele.Pregled;
 import com.ftn.sbnz2023tim3.service.servisi.LekoviServis;
 import com.ftn.sbnz2023tim3.service.servisi.PregledServis;
-import com.ftn.sbnz2023tim3.service.servisi.signali.SignalServis;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +23,6 @@ import java.util.List;
 public class PregledKontroler {
 
     private final PregledServis pregledServis;
-
-    private final SignalServis signalServis;
-
     private final LekoviServis lekoviServis;
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
@@ -43,13 +37,6 @@ public class PregledKontroler {
     public ResponseEntity<TextResponse> zapocniEeg() {
         pregledServis.zapocniEEG();
         return new ResponseEntity<>(new TextResponse("Uspesno zapocet EEG pregled"), HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('ROLE_DOKTOR')")
-    @GetMapping("/generisi-signal")
-    public ResponseEntity<GenerisanSignal> generisiSignal() {
-        GenerisanSignal signal = signalServis.generisiEegSignal();
-        return new ResponseEntity<>(signal, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
@@ -76,14 +63,14 @@ public class PregledKontroler {
 
     @PreAuthorize("hasRole('ROLE_DOKTOR')")
     @GetMapping("/doktor")
-    public ResponseEntity<List<PregledDTO>> getPreglediByDoktor(){
+    public ResponseEntity<List<PregledDTO>> getPreglediByDoktor() {
         List<PregledDTO> pregledi = pregledServis.getPreglediByDoktor();
         return new ResponseEntity<>(pregledi, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ROLE_PACIJENT')")
     @GetMapping("/pacijent")
-    public ResponseEntity<List<PregledDTO>> getPreglediByPacijent(){
+    public ResponseEntity<List<PregledDTO>> getPreglediByPacijent() {
         List<PregledDTO> pregledi = pregledServis.getPreglediByPacijent();
         return new ResponseEntity<>(pregledi, HttpStatus.OK);
     }

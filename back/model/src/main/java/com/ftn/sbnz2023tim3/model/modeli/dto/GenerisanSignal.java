@@ -12,10 +12,4 @@ import java.util.List;
 public class GenerisanSignal {
 
     private List<Signal> signals;
-
-//    private Signal alfaSignal;
-//    private Signal betaSignal;
-//    private Signal gamaSignal;
-//    private Signal deltaSignal;
-//    private Signal tetaSignal;
 }

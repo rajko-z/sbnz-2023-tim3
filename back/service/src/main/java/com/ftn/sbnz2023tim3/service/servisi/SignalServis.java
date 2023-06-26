@@ -1,4 +1,4 @@
-package com.ftn.sbnz2023tim3.service.servisi.signali;
+package com.ftn.sbnz2023tim3.service.servisi;
 
 import com.ftn.sbnz2023tim3.model.modeli.dto.GenerisanSignal;
 import com.ftn.sbnz2023tim3.service.konfiguracija.DRoolsKonfiguracija;

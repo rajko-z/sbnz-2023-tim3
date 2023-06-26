@@ -50,6 +50,7 @@ public class WebSecurityKonfiguracija extends WebSecurityConfigurerAdapter {
             .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 
             .authorizeRequests()
+            .antMatchers("/ws/**").permitAll()
             .anyRequest().authenticated().and()
             .cors().and()
             .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, korisnikServis), BasicAuthenticationFilter.class);
@@ -60,7 +61,7 @@ public class WebSecurityKonfiguracija extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(HttpMethod.POST,
-                "/**/auth/login");
+                "/**/auth/login", "/**/signali/preuzmi-signal");
 
         web.ignoring().antMatchers(HttpMethod.GET,
                 "/", "/webjars/**",
@@ -68,8 +69,10 @@ public class WebSecurityKonfiguracija extends WebSecurityConfigurerAdapter {
                 "favicon.ico",
                 "/**/*.html",
                 "**/ws",
+                "**/ws/**",
                 "/**/*.css",
-                "/**/*.js"
+                "/**/*.js",
+                "/socket/**"
                 );
     }
 }
